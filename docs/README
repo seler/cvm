@@ -14,7 +14,13 @@ Introduction
 What is CVM?
 ------------
 
-It's a web application, that allows it's users easily manage, share and publish their resumes.
+It's a web application, that allows it's users to easily manage, share and publish their resumes.
+It allows the user to create multiple identities for the purpose of managing resumes of multiple people, like family or friends. Each identity is able to contain multiple resumes of a person, so that each resume can be created for a specific job application. The user is able to choose a layout for the resume from templates designed by professional graphic artists.
+
+Publication and Sharing
+-----------------------
+
+The user is able to generate PDF files for printing or electronic use. The user is also able to publish a resume on the portal or to send a link, allowing the manager to view a resume for a limited period of time.
 
 How CVM works?
 --------------
