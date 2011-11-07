@@ -1,0 +1,93 @@
+{% extends 'portfolio/base.html' %}
+
+{% load portfolio_tags util_tags gallery_tags %}
+
+{% block portfolio_content %}
+    <div class="portfoliaPageUser">
+        <div class="block23 bgWhite">
+            <div class="block17 oh">
+                <div class="block1Name">
+                    <div class="block1NameBG">
+                        {% if object_id %}Edycja{% else %}Dodawanie{% endif %} wpisu
+                    </div>
+                </div>
+            </div>
+            <div class="portfolioForms">
+                <form action="." method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="preview" value="" />
+                    {{ form.portfolio }}
+                    <div class="formRow">
+                        <label>
+                            <span class="portfolioFormName">{{ form.title.label }} {% if form.title.field.required %}<span class="spanWymagane">*</span>{% endif %}</span>
+                            {{ form.title.errors }}
+                            <span class="formText">
+                                {{ form.title }}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="formRow">
+                        <label>
+                            <span class="portfolioFormName">{{ form.description.label }} {% if form.description.field.required %}<span class="spanWymagane">*</span>{% endif %}</span>
+                            {{ form.description.errors }}
+                            <span class="formTextarea">
+                                {{ form.description }}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="formRow">
+                        <label>
+                            <span class="portfolioFormName">{{ form.photo.label }} {% if form.name.photo.required %}<span class="spanWymagane">*</span>{% endif %}</span>
+                            {{ form.photo.errors }}
+                            <span class="formFile">
+                                {{ form.photo }}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="formRow">
+                        <label>
+                            <span class="portfolioFormName">{{ form.photo_author.label }} {% if form.photo_author.field.required %}<span class="spanWymagane">*</span>{% endif %}</span>
+                            {{ form.photo_author.errors }}
+                            <span class="formText">
+                                {{ form.photo_author }}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="formRow">
+                        <label>
+                            <span class="portfolioFormName">{{ form.photo_description.label }} {% if form.photo_description.field.required %}<span class="spanWymagane">*</span>{% endif %}</span>
+                            {{ form.photo_description.errors }}
+                            <span class="formTextarea">
+                                {{ form.photo_description }}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="formButton">
+                        <ul>
+                            {% if not published %}
+                                <li class="floatLeft">
+                                    <div class="formButtonAnuluj">
+                                        <a title="Podgląd" href="javascript:;" id="preview">PODGLĄD</a>
+                                    </div>
+                                </li>
+                            {% endif %}
+                            <li class="floatLeft">
+                                <div class="formButtonAnuluj">
+                                    <a title="Anuluj" href="javascript:;" id="cancel">ANULUJ</a>
+                                </div>
+                            </li>
+                            <li class="floatRight">
+                                <div class="formButtonClear">
+                                    <button type="reset">WYCZYŚĆ</button>
+                                </div>
+                                <div class="formButtonSave">
+                                    <button type="submit">ZAPISZ</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

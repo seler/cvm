@@ -1,0 +1,114 @@
+{% extends 'portfolio/album.html' %}
+
+{% load gallery_tags util_tags portfolio_tags %}
+
+{% block extra_head %}
+	<script src="{{MEDIA_URL}}js/swfobject.js" type="text/javascript"></script>
+    <script src="{{MEDIA_URL}}js/flowplayer-3.1.4.min.js"  type="text/javascript"></script>
+    <script type="text/javascript">
+        var current_file_id = {{ page_obj.object_list.0.id }};
+        var play_list = {
+            {% for obj in page_obj.object_list %}
+                {{ obj.id }}: [{{ forloop.counter0|add:page_obj.start_index }}, '{{ obj.title }}', '{{ obj.album }}', '{{ obj.display_count }}', {
+                    url: '{{ obj.file_converted }}',
+                    autoPlay: false,
+                }]
+                {% if not forloop.last %},{% endif %}
+            {% endfor %}
+        }
+        function on_start() {
+            $.get("{% url update_counter_by_content_label 0 'user_media' 'useraudio' %}".replace('0', current_file_id));
+        };
+        function show_audio(file_a) {
+            var file_id = $(file_a).parents('li').attr('id').replace('small-obj-', '');
+            var file_config = play_list[file_id];
+            current_file_id = file_id;
+            $f().setClip(file_config[4]);
+            $('#gallery .galleryCount').text(file_config[0]);
+            $('#gallery .musicLeftHead h3').text(file_config[1]);
+            if (file_config[2]) {
+                $('#album').text(file_config[2]);
+                $('#album').parents('h4').show();
+            } else {
+                $('#album').parents('h4').hide();
+            }
+
+            $('#display_count').text(file_config[3]);
+        }
+        $(document).ready(function() {
+            $('#gallery .musicRight h3 a, #gallery .musicRight img').click(function() {
+                show_audio($(this));
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block album_body %}
+    <div id="gallery" class="block23BodyGallery block23BodyMusic">
+        <div class="block23BodyGalleryHead oh">
+            <ul>
+                <li class="floatLeft">
+                    <h1>{{ album.name }} <span>{{ album.pub_date|date:'d.m.Y' }}</span></h1>
+                </li>
+                <li class="floatRight">
+                    <span class="galleryCount">{{ page_obj.start_index }}</span>/{{ paginator.count }}
+                </li>
+            </ul>
+        </div>
+        <div class="musicAll oh">
+            <div class="musicLeft floatLeft">
+                {% with page_obj.object_list.0 as curr_audio %}
+                    <div class="musicLeftHead oh">
+                        {% if curr_audio.image %}
+                            <div class="musicLeftHeadImg floatLeft">
+                                <img src="{% src_tag curr_audio.image 125 125 %}" alt="{{ curr_audio.title|striptags }}" />
+                            </div>
+                        {% endif %}
+                        <h3>{{ curr_audio.title }}</h3>
+                        <h4 {% if not curr_audio.album %}style="display: none;"{% endif %}>Album: <strong id="album">{{ curr_audio.album }}</strong></h4>
+                        <h4>Odtworzenia: <strong id="display_count">{{ curr_audio.display_count }}</strong></h4>
+                    </div>
+                    <div class="playerMusic">
+                        {% with album.id as audio_id %}
+                            {% with curr_audio.file_converted as file %}
+                                {% with 30 as height %}
+                                    {% with 552 as width %}
+                                        {% with 'on_start' as on_start_func %}
+                                            {% include 'includes/audio_player.html' %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% endwith %}
+                            {% endwith %}
+                        {% endwith %}
+                        <img src="{% url update_counter_by_content_label curr_audio.id 'user_media' 'useraudio' %}" alt="{% comment %}tego nie chcemy wyswietlac w przypadku braku obrazka{% endcomment %}" />
+                    </div>
+                    <p>{{ album.description }}</p>
+                {% endwith %}
+            </div>
+            <div class="musicRight floatRight">
+                <ul>
+                    {% for obj in page_obj.object_list %}
+                        <li id="small-obj-{{ obj.id }}">
+                            <div class="musicRightImg floatLeft">
+                                {% if obj.image %}
+                                    <img src="{% src_tag obj.image 90 90 1 %}" class="pointer" alt="{{ obj.title|striptags }}" />
+                                {% else %}
+                                    <img src="{{ MEDIA_URL }}images/img133.jpg" class="pointer" alt="{{ obj.title|striptags }}" />
+                                {% endif %}
+                                <img src="{{ MEDIA_URL }}images/playImg.png" alt="odtwórz" class="pointer playImg" />
+                            </div>
+                            <h3><a href="javascript:;" title="{{ obj.title|striptags }}">{{ obj.title }}</a></h3>
+                            {% if obj.album %}<h4>Album: <strong>{{ obj.album }}</strong></h4>{% endif %}
+                            <h4>Odtworzenia: <strong>{{ obj.display_count }}</strong></h4>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="musicPages">
+                    <div class="strony floatRight">
+                        {% portfolio_paginator_tag_query page_obj query_dict page_name %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

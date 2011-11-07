@@ -1,0 +1,18 @@
+{% load util_tags %}
+
+<div class="portfoliaAll bg333 oh">
+    <div class="block1Name">
+        <div class="block1NameBG">
+            WSZYSTKIE PRACE
+        </div>
+    </div>
+    {% for column in folders|swap_for:3 %}
+        {% if column %}
+            <ul{% if forloop.last %} class="portfoliaAllUlLast"{% endif %}>
+            {% for folder in column %}
+                <li><a href="{{ folder.get_absolute_url }}" title="{{ folder.name|striptags }}">{{ folder.name }}</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+</div>

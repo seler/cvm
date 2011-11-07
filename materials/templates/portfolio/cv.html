@@ -1,0 +1,303 @@
+{% extends 'portfolio/base.html' %}
+
+{% load portfolio_tags gallery_tags %}
+
+{% block title %}Biogram {{ object.user.username }} - {% endblock %}
+{% block description%}Biogram {{ object.user.username }}{% endblock%}
+{% block keywords%}biogram, cv, {{ object.user.username }}{%endblock%}
+
+{% block breadcrumb %}
+    <ul>
+        <li>
+            <div class="bredcrumbRFirst"><div class="bredcrumbDesc" onclick="location.href='/';">Strona główna</div></div>	
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{% url portfolio_index %}';">portfolia</div></div></div>
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{{ object.get_absolute_url }}';">{{ object.user.username }}</div></div></div>
+        </li>
+        <li>
+            <div class="bredcrumbDescLast">cv</div>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block profile_content %}
+    {% portfolio_header object 'cv' %}
+    <div class="block23 bgWhite">
+        <div class="block17 oh">
+            <div class="block1Name">
+                <div class="block1NameBG">
+                    BIOGRAM
+                </div>
+            </div>
+        </div>
+        <div class="block23BodyGallery">
+            <div class="block23BiogramBody oh">
+                <div class="block23BiogramItem oh">
+                    <div class="biogramImg floatLeft">
+                        <img src="{% src_tag object.photo 250 309 1 %}" alt="{{ object.get_full_name|striptags }}" />
+                    </div>
+                    <div class="biogramDesc">
+                        <h1>{{ object.get_full_name }}</h1>
+                        <h2>{{ object.city|default_if_none:'' }}{% if object.city and object.voyvodship %}/{% endif %}{{ object.voyvodship|default_if_none:'' }}{% if object.voyvodship and object.country %}, {% endif %}{{ object.country|default_if_none:'' }}</h2>
+                        {% with object.get_profesional_categories as portfolio_categories %}
+                            {% if portfolio_categories %}
+                                <h3>Profesja: {% for category in portfolio_categories %}{{ category.get_category_display }}{% if not forloop.last %}, {% endif %}{% endfor %}</h3>
+                            {% endif %}
+                        {% endwith %}
+                        {% with object.get_hobby_categories as portfolio_categories %}
+                            {% if portfolio_categories %}
+                                <h3>Pasja: {% for category in portfolio_categories %}{{ category.get_category_display }}{% if not forloop.last %}, {% endif %}{% endfor %}</h3>
+                            {% endif %}
+                        {% endwith %}
+                        {% if object.who_am_i %}
+                            <div class="block24All oh">
+                                <div class="block24">
+                                    <div class="block19ItemName">
+                                        <div class="block19ItemNameBG">
+                                            Kim jestem
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>{{ object.who_am_i|linebreaks }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% with object.get_education as education %}
+                    {% if education %}
+                        <div class="block23BiogramItem oh">
+                            <div class="block19Item">
+                                <div class="block19ItemName">
+                                    <div class="block19ItemNameBG">
+                                        Wykształcenie
+                                    </div>
+                                </div>
+                                <div class="biogramUlBody">
+                                    <ul>
+                                        {% for item in education %}
+                                            <li>
+                                                <div class="biogramLeft floatLeft">
+                                                    {% if item.start == item.end %}
+                                                        {{ item.start|date:"m Y" }}
+                                                    {% else %}
+                                                        {{ item.start|date:"Y" }} - {% if item.active %}aktualnie{% else %}{{ item.end|date:"Y" }}{% endif %}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="biogramRight floatRight">
+                                                    {{ item.name }}
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% with object.get_training as training %}
+                    {% if training %}
+                        <div class="block23BiogramItem oh">
+                            <div class="block19Item">
+                                <div class="block19ItemName">
+                                    <div class="block19ItemNameBG">
+                                        Szkolenia
+                                    </div>
+                                </div>
+                                <div class="biogramUlBody">
+                                    <ul>
+                                        {% for item in training %}
+                                            <li>
+                                                <div class="biogramLeft floatLeft">
+                                                    {% if item.start == item.end %}
+                                                        {{ item.start|date:"b Y" }}
+                                                    {% else %}
+                                                        {{ item.start|date:"Y" }} - {% if item.active %}aktualnie{% else %}{{ item.end|date:"Y" }}{% endif %}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="biogramRight floatRight">
+                                                    {{ item.name }}
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% with object.get_experience as experience %}
+                    {% if experience %}
+                        <div class="block23BiogramItem oh">
+                            <div class="block19Item">
+                                <div class="block19ItemName">
+                                    <div class="block19ItemNameBG">
+                                        Doświadczenie zawodowe
+                                    </div>
+                                </div>
+                                <div class="biogramUlBody">
+                                    <ul>
+                                        {% for item in experience %}
+                                            <li>
+                                                <div class="biogramLeft floatLeft">
+                                                    {% if item.start == item.end %}
+                                                        {{ item.start|date:"d.m.Y" }}
+                                                    {% else %}
+                                                        {{ item.start|date:"d.m.Y" }} - {% if item.active %}aktualnie{% else %}{{ item.end|date:"d.m.Y" }}{% endif %}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="biogramRight floatRight">
+                                                    {{ item.name|striptags }}
+                                                    <ul>
+                                                        {% for subitem in item.get_subitems %}
+                                                            <li>{{ subitem.name|striptags }}
+                                                                <ol>
+                                                                    {% for point in subitem.get_points %}
+                                                                        <li>{{ point|striptags }}</li>
+                                                                    {% endfor %}
+                                                                </ol>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% with object.get_qualifications as qualifications %}
+                    {% if qualifications %}
+                        <div class="block23BiogramItem">
+                            <div class="block19Item">
+                                <div class="block19ItemName">
+                                    <div class="block19ItemNameBG">
+                                        Dodatkowe kwalifikacje
+                                    </div>
+                                </div>
+                                <div class="biogramUlBody">
+                                    <ul>
+                                        {% for item in get_qualifications %}
+                                            <div class="biogramLeft floatLeft">
+                                                {{ item.name|striptags }}
+                                            </div>
+                                            <div class="biogramRight floatRight">
+                                                {{ item.description|striptags }}
+                                            </div>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% with object.get_achivements as achivements %}
+                    {% if achivements %}
+                        <div class="block23BiogramItem">
+                            <div class="block19Item">
+                                <div class="block19ItemName">
+                                    <div class="block19ItemNameBG">
+                                        Ważniejsze osiągnięcia i nagrody
+                                    </div>
+                                </div>
+                                <div class="biogramUlBody">
+                                    <ul>
+                                        {% for item in achivements %}
+                                            <div class="biogramLeft floatLeft">
+                                                {{ item.name|striptags }}
+                                            </div>
+                                            <div class="biogramRight floatRight">
+                                                {{ item.description|striptags }}
+                                            </div>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% if object.what_am_i_doing or object.clients %}
+                    <div class="block23BiogramItem">
+                        <div class="block19Item">
+                            <div class="block19ItemName">
+                                <div class="block19ItemNameBG">
+                                    Oferta
+                                </div>
+                            </div>
+                            <div class="biogramUlBody">
+                                <ul>
+                                    {% if object.what_am_i_doing %}
+                                        <li>
+                                            <div class="biogramLeft floatLeft">
+                                                Co robię:
+                                            </div>
+                                            <div class="biogramRight floatRight">
+                                                {{ object.what_am_i_doing|linebreaks }}
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                    {% if object.clients %}
+                                        <li>
+                                            <div class="biogramLeft floatLeft">
+                                                Dotychczasowi klienci:
+                                            </div>
+                                            <div class="biogramRight floatRight">
+                                                {{ object.clients|linebreaks }}
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% with object.get_hobby as hobby %}
+                    {% if hobbby %}
+                        <div class="block23BiogramItem">
+                            <div class="block19Item">
+                                <div class="block19ItemName">
+                                    <div class="block19ItemNameBG">
+                                        Zainteresowania
+                                    </div>
+                                </div>
+                                <div class="biogramUlBody">
+                                <ul>
+                                    {% for item in hobby %}
+                                        <li>
+                                            <div class="biogramLeft floatLeft">
+                                                {{ item.name }}
+                                            </div>
+                                            <div class="biogramRight floatRight">
+                                                {{ item.description|linebreaks }}
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        <div class="biogramFooter oh">
+            <ul class="leftEdit floatLeft displayNone admin_item{{ object.user_id }}">
+                <li>
+                    <a href="{% url portfolio_edit_cv %}" title="Edytuj biogram">EDYTUJ BIOGRAM</a>
+                </li> 
+            </ul>
+            <ul>
+                <li class="biogramFooterFirst">
+                    <a href="{% url portfolio_get_cv object.id %}" title="Ściągnij cv">ŚCIĄGNIJ CV</a>
+                </li>
+                <li class="biogramFooterFirst">
+                    <a href="{% url portfolio_get_portfolio object.id %}" title="Ściągnij portfolio">ŚCIĄGNIJ PORTFOLIO</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

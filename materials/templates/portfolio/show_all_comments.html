@@ -1,0 +1,67 @@
+{% extends "portfolio/album.html" %}
+
+{% load gallery_tags util_tags %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <ul>
+        <li>
+            <div class="bredcrumbRFirst"><div class="bredcrumbDesc" onclick="location.href='/';">Strona główna</div></div>	
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{% url portfolio_index %}';">portfolia</div></div></div>
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{{ object.portfolio.get_absolute_url }}';">{{ object.portfolio.user.username }}</div></div></div>
+        </li>
+        {% if object.folder_id %}
+            <li>
+                <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{{ object.folder.get_absolute_url }}';">{{ object.folder.name }}</div></div></div>
+            </li>
+        {% endif %}
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{{ object.get_absolute_url }}';">{{ object.name }}</div></div></div>
+        </li>
+        <li>
+            <div class="bredcrumbDescLast">Komentarze</div>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block portfolio_content %}
+    <div class="portfoliaPageUser">
+        <div class="block23 bgWhite">
+            <div class="block17 oh">
+                <div class="block1Name">
+                    <div class="block1NameBG">
+                        {{ object.folder.name }}
+                    </div>
+                </div>
+                <div class="strony floatRight">
+                    <div class="stronyCor">
+                        <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">wróć do albumu</a>
+                    </div>
+                </div>
+            </div>
+            {% block album_body %}
+                <div id="gallery" class="block23BodyGallery">
+                    <div class="block23BodyGalleryHead oh">
+                        <ul>
+                            <li class="floatLeft">
+                                <h1>{{ object.name }} <span>{{ object.pub_date|date:'d.m.Y' }}</span></h1>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>{{ object.description }}</p>
+                </div>
+            {% endblock %}
+        </div>
+        <div class="articleBlock5" id="comment_list_container">
+            {% with 1 as show_pager %}
+                {% include 'comments/comments_list_long.html' %}
+            {% endwith %}
+        </div>
+    </div>
+{% endblock %}

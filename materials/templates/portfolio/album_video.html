@@ -1,0 +1,94 @@
+{% extends 'portfolio/album.html' %}
+
+{% load gallery_tags util_tags %}
+
+{% block extra_head %}
+	<script src="{{MEDIA_URL}}js/swfobject.js" type="text/javascript"></script>
+    <script src="{{MEDIA_URL}}js/flowplayer-3.1.4.min.js"  type="text/javascript"></script>
+    <script type="text/javascript">
+        video_list = {
+            {% for obj in page_obj.object_list %}
+                {{ obj.id }}: [{{ forloop.counter0|add:page_obj.start_index }}, {url: '{{ obj.file_flv }}', title: '{{ obj.title }}'}]
+                {% if not forloop.last %},{% endif %}
+            {% endfor %}
+        }
+        function show_video(video_a) {
+            $('#gallery .block23BodyGalleryImgs li').removeClass('gallery2Active');
+            $(video_a).parent().addClass('gallery2Active');
+            var video_id = $(video_a).parent().attr('id').replace('small-obj-', '');
+            var video_config = video_list[video_id];
+            $f().setClip(video_config[1]);
+            $('#gallery .galleryCount').text(video_config[0]);
+            $('#gallery .block23FilmName h2').text(video_config[1].title);
+        }
+        $(document).ready(function() {
+            $('#gallery .block23BodyGalleryImgs a').mouseenter(function() {
+                show_video($(this));
+            });
+            $('#gallery .block23BodyGalleryImgs .slideshow').click(function() {
+                var playlist = Array();
+                {% for obj in page_obj.object_list %}
+                    playlist.push({url: '{{ obj.file_flv }}', title: '{{ obj.title }}'});
+                {% endfor %}
+                $f().setPlaylist(playlist);
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block album_body %}
+    <div id="gallery" class="block23BodyGallery block23BodyFilm">
+        <div class="block23BodyGalleryHead oh">
+            <ul>
+                <li class="floatLeft">
+                    <h1>{{ album.name }} <span>{{ album.pub_date|date:'d.m.Y' }}</span></h1>
+                </li>
+                <li class="floatRight">
+                    <span class="galleryCount">{{ page_obj.start_index }}</span>/{{ paginator.count }}
+                </li>
+            </ul>
+        </div>
+        <div class="oh">
+            <div class="block23BodyGalleryImg">
+                {% with album.id as video_id %}
+                    {% with page_obj.object_list.0.img_src as image %}
+                        {% with page_obj.object_list.0.file_flv as flv %}
+                            {% with 552 as width %}
+                                {% with 411 as height %}
+                                    {% include 'video/video_configuration.html' %}
+                                {% endwith %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% endwith %}
+                {% endwith %}
+            </div>
+            <div class="block23BodyGalleryImgs">
+                {% for row in page_obj.object_list|swap_by:'2' %}
+                    <ul>
+                    {% for obj in row %}
+                        {% if forloop.last and forloop.parentloop.last %}
+                            <li id="small-obj-{{ obj.id }}" class="zajawkaPrace">
+                                <a href="javascript:;" title="{{ obj.title }}" class="slideshow"><img src="{{ MEDIA_URL }}images/zajawkaPrace.png" class="zajawkaPraceImg" alt="slideshow" /></a><img src="{% src_tag obj.img_src 184 137 1 %}" alt="{{ obj.title|striptags }}" />
+                            </li>
+                        {% else %}
+                            <li id="small-obj-{{ obj.id }}" {% if forloop.first and forloop.parentloop.first %}class="gallery2Active"{% endif %}>
+                                <a href="javascript:;" title="{{ obj.title }}"><img src="{% src_tag obj.img_src 184 137 1 %}" alt="{{ obj.title|striptags }}" /></a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="block23FilmName">
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" title"Następna strona"><img src="{{ MEDIA_URL }}images/filmRight.png" class="pointer galleryRight" alt="Następna strona" /></a>
+            {% endif %}
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" title"Poprzednia strona"><img src="{{ MEDIA_URL }}images/filmLeft.png" class="pointer galleryLeft" alt="Poprzednia strona" /></a>
+            {% endif %}
+            <h2>{{ page_obj.object_list.0.title }}</h2>
+        </div>
+        <p>{{ album.description }}</p>
+    </div>
+{% endblock %}

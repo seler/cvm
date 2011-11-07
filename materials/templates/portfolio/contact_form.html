@@ -1,0 +1,105 @@
+{% extends 'portfolio/base.html' %}
+
+{% load portfolio_tags util_tags gallery_tags %}
+
+{% block extra_head %}
+    {{ block.supr }}
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/portfolio.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#register_form .formButton a').click(function() {
+                history.back();
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block portfolio_content %}
+    <div class="portfoliaPageUser">
+        {% portfolio_header object 'contact' %}
+        <div class="block17 oh">
+            <div class="block1Name">
+                <div class="block1NameBG">
+                    Edycja portfolio
+                </div>
+            </div>
+            <div class="strony floatRight">
+                <div class="stronyCor">
+                    <a href="javascript:history.back();" title="wróć do folderu">wróć do folderu - poniechaj edycję</a>
+                </div>
+            </div>
+        </div>
+        <div class="portfolioForms" id="register_form">
+            <form action="." method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- ogolne -->
+                <h2>Dane kontaktowe</h2>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.address.label }}</span>
+                        {{ portfolio_form.address.errors }}
+                        <span class="formTextarea">
+                            {{ portfolio_form.address }}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.phone.label }}</span>
+                        {{ portfolio_form.phone.errors }}
+                        <span class="formText">
+                            {{ portfolio_form.phone }}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.fax.label }}</span>
+                        {{ portfolio_form.fax.errors }}
+                        <span class="formText">
+                            {{ portfolio_form.fax }}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.facebook.label }}</span>
+                        {{ portfolio_form.facebook.errors }}
+                        <span class="formText">
+                            {{ portfolio_form.facebook }}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.www.label }}</span>
+                        {{ portfolio_form.www.errors }}
+                        <span class="formText">
+                            {{ portfolio_form.www }}
+                        </span>
+                    </label>
+                </div>
+
+                <p>* - wypełnienie tego pola jest wymagane</p>
+                <div class="formButton">
+                    <ul>
+                        <li class="floatLeft">
+                            <div class="formButtonAnuluj">
+                                <a title="Anuluj" href="javascript:;" id="cancel">ANULUJ</a>
+                            </div>
+                        </li>
+                        <li class="floatRight">
+                            <div class="formButtonClear">
+                                <button type="reset">WYCZYŚĆ</button>
+                            </div>
+                            <div class="formButtonSave">
+                                <button type="submit">ZAPISZ</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

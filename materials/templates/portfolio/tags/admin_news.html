@@ -1,0 +1,54 @@
+{% load portfolio_tags gallery_tags util_tags %}
+
+<div class="news">
+    <a id="top"><!-- --></a>
+    <div class="block17 oh bgWhite">
+        <div class="block1Name">
+            <div class="block1NameBG">
+                Newsy
+            </div>
+        </div>
+        {% if page_obj and page_obj.has_other_pages %}
+            <div class="strony floatRight">
+                {% portfolio_paginator_tag_query page_obj query_dict page_name %}
+            </div>
+        {% endif %}
+        <br />
+    </div>
+    <div class="block23 bgWhite">
+        {% if page_obj and page_obj.object_list %}
+            {% for news in page_obj.object_list %}
+                <div class="block17 oh">
+                    <div class="block1Name">
+                        <div class="block1NameBG">
+                            {{ news.pub_date|date:"d.m.Y" }}
+                        </div>
+                    </div>
+                </div>
+                <div class="newsBody oh">
+                    <div class="newsBodyLeft floatLeft">
+                        <h1>{{ news.title|striptags }}</h1>
+                        <p>{{ news.description }}</p>
+                        <div class="tools">
+                            <a title="Edytuj" href="{% url portfolio_edit_news object.id news.id %}">Edytuj</a>
+                            <a title="Usuń" href="{% url portfolio_remove_news object.id news.id %}?next={% url portfolio_admin %}">Usuń</a>
+                        </div>
+                    </div>
+                    {% if news.photo %}
+                        <div class="newsBodyRight floatRight">
+                            <div class="newBodyRightImg">
+                                <img src="{% src_tag news.photo 277 183 %}" alt="{{ news.photo_description|striptags }}" />
+                            </div>
+                            <p>{{ news.photo_description }}</p>
+                            {% if news.photo_author %}
+                                <div class="newBodyRightAutor">
+                                    Fot: <strong>{{ news.photo_author }}</strong>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>

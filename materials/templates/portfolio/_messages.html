@@ -1,0 +1,12 @@
+{% load portfolio_tags %}
+<div id="is_logged" style="display: none;">{% if request.user.is_authenticated %}{{ request.user.id }}{% endif %}</div>
+<div id="has_portfolio" style="display: none;">{% if has_portfolio %}True{% endif %}</div>
+<div id="is_friend" style="display: none;">{% if object and request.user.is_authenticated %}{{ request.user|is_friend:object }}{% endif %}</div>
+<div id="is_favorite" style="display: none;">{% if object and request.user.is_authenticated %}{{ request.user|is_favorite:object }}{% endif %}</div>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}

@@ -1,0 +1,126 @@
+{% load portfolio_tags %}
+
+<div class="block19 bgWhite">
+    <img src="{{ MEDIA_URL }}images/bgBlock19Top.png" alt="top" class="bgBlock19Top" />
+    <img src="{{ MEDIA_URL }}images/bgBlock19Bottom.png" alt="bottom" class="bgBlock19Bottom" />
+    <form action="." method="post" id="filter_form">
+        {% csrf_token %}
+        <div class="block19Item">
+            <div class="block19ItemName">
+                <div class="block19ItemNameBG">
+                    Rodzaj
+                </div>
+            </div>
+            <div class="block19ItemBodyUl">
+                {{ form.work_type|portfolio_append_filters:filters }}
+            </div>
+        </div>
+        <div class="block19Item">
+            <div class="block19ItemName">
+                <div class="block19ItemNameBG">
+                    Kategoria
+                </div>
+            </div>
+            <div class="block19ItemBodyUl">
+                {{ form.category|portfolio_append_filters:filters }}
+            </div>
+        </div>
+        <div class="block19Item">
+            <div class="block19ItemName">
+                <div class="block19ItemNameBG">
+                    Lokalizacja
+                </div>
+            </div>
+            <div class="block19ItemBodySelect">
+                <ul>
+                    <li>
+                        <div class="block19ItemDesc">
+                            państwo <span class="block19ItemNawias">(</span><span class="block19ItemCount">{% if filters.country %}{% portfolio_num 'country' filters.country filters %}{% else %}{% portfolio_num 'country' 0 filters %}{% endif %}</span><span class="block19ItemNawias">)</span>
+                        </div>
+                        <div class="block19ItemRow1">
+                            {{ form.country }}
+                        </div>
+                    </li>
+                    <li>
+                        <div class="block19ItemDesc">
+                            województwo/okręg <span class="block19ItemNawias">(</span><span class="block19ItemCount">{% if filters.voyvodship %}{% portfolio_num 'voyvodship' filters.voyvodship filters %}{% else %}{% portfolio_num 'voyvodship' 0 filters %}{% endif %}</span><span class="block19ItemNawias">)</span>
+                        </div>
+                        <div class="block19ItemRow1">
+                            {{ form.voyvodship }}
+                        </div>
+                    </li>
+                    <li>
+                        <div class="block19ItemDesc">
+                            miasto <span class="block19ItemNawias">(</span><span class="block19ItemCount">{% if filters.city %}{% portfolio_num 'city' filters.city filters %}{% else %}{% portfolio_num 'city' 0 filters %}{% endif %}</span><span class="block19ItemNawias">)</span>
+                        </div>
+                        <div class="block19ItemRow1">
+                            {{ form.city }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="block19Item marginBottom10">
+            <div class="block19ItemName">
+                <div class="block19ItemNameBG">
+                    Absolwent/ka
+                </div>
+            </div>
+            <div class="block19ItemBodySelect">
+                <ul>
+                    <li>
+                        <div class="block19ItemDesc">
+                            ukończona szkoła <span class="block19ItemNawias">(</span><span class="block19ItemCount">{% if filters.school %}{% portfolio_num 'school' filters.school filters %}{% else %}{% portfolio_num 'school' 0 filters %}{% endif %}</span><span class="block19ItemNawias">)</span>
+                        </div>
+                        <div class="block19ItemRow1">
+                            {{ form.school }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+            {% if filters_named %}
+            <div class="borderBottom"><!-- --></div>
+            <div class="block19Item2">
+                <div class="deleteFilter oh">
+                    <div class="deleteFilterDesc floatLeft">
+                        Usuń wszystkie aktywne filtry
+                    </div>
+                    <div class="deleteFilterRow floatRight">
+                        <a href="." title="Usuń wszystkie filtry"><img src="{{ MEDIA_URL }}images/delete.png" alt="Usuń wszystkie filtry" /></a>
+                    </div>
+                </div>
+                <div class="deleteBody" id="all_filters">
+                    <ul>
+                        {% for key, value, key_name, value_name in filters_named %}
+                            <li>
+                                <img src="{{ MEDIA_URL }}images/lineDelete.png" alt="Usuń" class="lineDelete" /><a href="javascript:;" title="Usuń {{ key_name }}: {{ value_name }}" rel="{{ key }}{% if key == 'work_type' or key == 'category' %}_{{ value }}{% endif %}"><img src="{{ MEDIA_URL }}images/delete.png" alt="Usuń" /></a>{{ key_name }}: <span>{{ value_name }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+        <div class="borderBottom"><!-- --></div>
+        <div class="blockFormButton">
+            {{ form.query }}
+            <button type="submit">szukaj</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#all_filters a').click(function() {
+            var item_id = $(this).attr('rel');
+            if (item_id.indexOf('_') != -1) {
+                var item_parts = item_id.rsplit('_', 1);
+                $('#filter_form input[name=' + item_parts[0] + '][value=' + item_parts[1] + ']').val('');
+            } else
+                $('#id_' + item_id).val('checked', false);
+            $('#filter_form').submit()
+        });
+        $('#filter_form input, #filter_form select').not('#id_query').change(function() {
+            $('#filter_form').submit()
+        });
+    });
+</script>

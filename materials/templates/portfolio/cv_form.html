@@ -1,0 +1,962 @@
+{% extends 'portfolio/base.html' %}
+
+{% load portfolio_tags util_tags gallery_tags %}
+
+{% block extra_head %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/jquery.autocomplete.css" />
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/extra.css" />
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.autocomplete.pack.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/portfolio.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#register_form .formButton a').click(function() {
+                history.back();
+                return false;
+            });
+            $("#id_country").autocomplete("{% url portfolio_autocomplete_country_list %}", {multiple: false, mustMatch: false, autoFill: false, max: 200});
+            $("#id_voyvodship").autocomplete("{% url portfolio_autocomplete_voyvodship_list %}", {multiple: false, mustMatch: false, autoFill: false, max: 200, extraParams: {
+                country: function() { return $('#id_country').val(); }
+            }});
+            $("#id_city").autocomplete("{% url portfolio_autocomplete_city_list %}", {multiple: false, mustMatch: false, autoFill: false, max: 200, extraParams: {
+                country: function() { return $('#id_country').val(); },
+                voyvodship: function() { return $('#id_voyvodship').val(); }
+            }});
+            $("#id_school").autocomplete("{% url portfolio_autocomplete_school_list %}", {multiple: false, mustMatch: false, autoFill: false, max: 200});
+            $('#add_category_form').click(function() {
+                return addForm(this, 'category');
+            });
+            $('#add_education_form').click(function() {
+                return addForm(this, 'education');
+            });
+            $('#add_training_form').click(function() {
+                return addForm(this, 'training');
+            });
+            $('#add_experience_form').click(function() {
+                return addForm(this, 'experience');
+            });
+            $('#add_qualification_form').click(function() {
+                return addForm(this, 'qualification');
+            });
+            $('#add_achivement_form').click(function() {
+                return addForm(this, 'achivement');
+            });
+            $('#add_hobby_form').click(function() {
+                return addForm(this, 'hobby');
+            });
+            $('.date-picker input').datePicker({startDate: '01/01/1900'})
+            
+            /**************/
+            /* HELP BOXES */
+            /**************/
+            $('.pomoclink a').live('click', function(){
+                $(this).addClass('openbox');
+                $(this).parent().next('.pomocbox').show();
+                return false;
+            });
+            $('.pomocbox a.closebox').live('click', function(){
+                $(this).parent().parent().hide();
+                $('a',$(this).parent().parent().prev('.pomoclink')).removeClass('openbox');
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block portfolio_content %}
+    <div class="portfoliaPageUser">
+        {% portfolio_header object 'cv' %}
+        <div class="block17 oh">
+            <div class="block1Name">
+                <div class="block1NameBG">
+                    Edycja biogramu
+                </div>
+            </div>
+            <div class="strony floatRight">
+                <div class="stronyCor">
+                    <a href="javascript:history.back();" title="wróć do folderu">wróć do folderu - poniechaj edycję</a>
+                </div>
+            </div>
+        </div>
+        <div class="portfolioForms" id="register_form">
+            <form action="." method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- ogolne -->
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.avatar.label }} <span class="spanWymagane">*</span></span>
+                        {{ portfolio_form.avatar.errors }}
+                        <span class="formFile">
+                            {% with portfolio_form.avatar as help_field %}
+                                {% include "portfolio/includes/help_field.html" %}
+                            {% endwith %}
+                            {{ portfolio_form.avatar }}
+                            {% with portfolio_form|field_value:'avatar' as file_path %}
+                                {% if file_path %}
+                                    <img src="{% src_tag file_path 110 110 1 %}" alt="Zdjęcie {{ file_path }}" />
+                                {% endif %}
+                            {% endwith %}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.photo.label }} <span class="spanWymagane">*</span></span>
+                        {{ portfolio_form.photo.errors }}
+                        <span class="formFile">
+                            {% with portfolio_form.photo as help_field %}
+                                {% include "portfolio/includes/help_field.html" %}
+                            {% endwith %}
+                            {{ portfolio_form.photo }}
+                            {% with portfolio_form|field_value:'photo' as file_path %}
+                                {% if file_path %}
+                                    <img src="{% src_tag file_path 100 124 1 %}" alt="Zdjęcie {{ file_path }}" />
+                                {% endif %}
+                            {% endwith %}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.lead_photo.label }} <span class="spanWymagane">*</span></span>
+                        {{ portfolio_form.lead_photo.errors }}
+                        <span class="formFile">
+                            {% with portfolio_form.lead_photo as help_field %}
+                                {% include "portfolio/includes/help_field.html" %}
+                            {% endwith %}
+                            {{ portfolio_form.lead_photo }}
+                            {% with portfolio_form|field_value:'lead_photo' as file_path %}
+                                {% if file_path %}
+                                    <img src="{% src_tag file_path 192 92 1 %}" alt="Zdjęcie {{ file_path }}" />
+                                {% endif %}
+                            {% endwith %}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.country.label }}</span>
+                        {{ portfolio_form.country.errors }}
+                        <span class="formText">
+                            {% with portfolio_form.country as help_field %}
+                                {% include "portfolio/includes/help_field.html" %}
+                            {% endwith %}
+                            {{ portfolio_form.country }}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.voyvodship.label }}</span>
+                        {{ portfolio_form.voyvodship.errors }}
+                        <span class="formText">
+                            {% with portfolio_form.voyvodship as help_field %}
+                                {% include "portfolio/includes/help_field.html" %}
+                            {% endwith %}
+                            {{ portfolio_form.voyvodship }}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.city.label }}</span>
+                        {{ portfolio_form.city.errors }}
+                        <span class="formText">
+                            {% with portfolio_form.city as help_field %}
+                                {% include "portfolio/includes/help_field.html" %}
+                            {% endwith %}
+                            {{ portfolio_form.city }}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.school.label }}</span>
+                        {{ portfolio_form.school.errors }}
+                        <span class="formText">
+                            {% with portfolio_form.school as help_field %}
+                                {% include "portfolio/includes/help_field.html" %}
+                            {% endwith %}
+                            {{ portfolio_form.school }}
+                        </span>
+                    </label>
+                </div>
+                <div id="category_formsets">
+                    {% with formsets.category as category_formset %}
+                        {{ category_formset.management_form }}
+                        {{ category_formset.non_form_errors }}
+                        {% with category_formset.empty_form as form %}
+                            <div id="formset_row_{{ form.prefix }}" class="formRow formset_row" style="display: none;">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.work_type.label }}</span>
+                                    {{ form.work_type.errors }}
+                                    <span class="formSelect">
+                                        {% with form.work_type as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.work_type }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.category.label }}</span>
+                                    {{ form.category.errors }}
+                                    <span class="formSelect">
+                                        {% with form.category as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.category }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endwith %}
+                        {% for form in category_formset.forms %}
+                            <div class="formRow formset_row">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.work_type.label }}</span>
+                                    {{ form.work_type.errors }}
+                                    <span class="formSelect">
+                                        {% with form.work_type as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.work_type }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.category.label }}</span>
+                                    {{ form.category.errors }}
+                                    <span class="formSelect">
+                                        {% with form.category as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.category }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <div class="formRow">
+                            <a id="add_category_form" href="javascript:;" title="Dodaj kategorię">Dodaj kolejną kategorię</a>
+                        </div>
+                    {% endwith %}
+                </div>
+
+                <h2>Biogram</h2>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.who_am_i.label }}</span>
+                        {{ portfolio_form.who_am_i.errors }}
+                        <span class="formTextarea">
+                            {% with portfolio_form.who_am_i as help_field %}
+                                {% include "portfolio/includes/help_field.html" %}
+                            {% endwith %}
+                            {{ portfolio_form.who_am_i }}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.what_am_i_doing.label }}</span>
+                        {{ portfolio_form.what_am_i_doing.errors }}
+                        <span class="formTextarea">
+                            {% with portfolio_form.what_am_i_doing as help_field %}
+                            {% with "<p>to jest jakiś długi i skomplikowany help_text</p><p><i>Lorem ipsum dolor sit amet...</i></p>" as override_help_text %}
+                                {% include "portfolio/includes/help_field.html" %}
+                            {% endwith %}
+                            {% endwith %}
+                            {{ portfolio_form.what_am_i_doing }}
+                        </span>
+                    </label>
+                </div>
+                <div class="formRow">
+                    <label>
+                        <span class="portfolioFormName">{{ portfolio_form.clients.label }}</span>
+                        {{ portfolio_form.clients.errors }}
+                        <span class="formTextarea">
+                            {% with portfolio_form.clients as help_field %}
+                                {% include "portfolio/includes/help_field.html" %}
+                            {% endwith %}
+                            {{ portfolio_form.clients }}
+                        </span>
+                    </label>
+                </div>
+
+                <h2>Edukacja</h2>
+                <div id="education_formsets">
+                    {% with formsets.education as education_formset %}
+                        {{ education_formset.management_form }}
+                        {{ education_formset.non_form_errors }}
+                        {% with education_formset.empty_form as form %}
+                            <div id="formset_row_{{ form.prefix }}" class="formRow formset_row" style="display: none;">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.name as help_field %}
+                                        {# with "<p>to jest help text</p>" as override_help_text #}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {# endwith #}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <div class="formDates">
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.start.label }}</span>
+                                        {{ form.start.errors }}
+                                        <span class="formText date-picker">
+                                            {% with form.start as help_field %}
+                                                {% include "portfolio/includes/help_field.html" %}
+                                            {% endwith %}
+                                            {{ form.start }}
+                                        </span>
+                                    </label>
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.end.label }}</span>
+                                        {{ form.end.errors }}
+                                        <span class="formText date-picker">
+                                            {% with form.end as help_field %}
+                                                {% include "portfolio/includes/help_field.html" %}
+                                            {% endwith %}
+                                            {{ form.end }}
+                                        </span>
+                                    </label>
+                                </div>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.active.label }}</span>
+                                    {{ form.active.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.active as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.active }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endwith %}
+                        {% for form in education_formset.forms %}
+                            <div class="formRow formset_row">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.name as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <div class="formDates">
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.start.label }}</span>
+                                        {{ form.start.errors }}
+                                        <span class="formText date-picker">
+                                            {% with form.start as help_field %}
+                                                {% include "portfolio/includes/help_field.html" %}
+                                            {% endwith %}
+                                            {{ form.start }}
+                                        </span>
+                                    </label>
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.end.label }}</span>
+                                        {{ form.end.errors }}
+                                        <span class="formText date-picker">
+                                            {% with form.end as help_field %}
+                                                {% include "portfolio/includes/help_field.html" %}
+                                            {% endwith %}
+                                            {{ form.end }}
+                                        </span>
+                                    </label>
+                                </div>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.active.label }}</span>
+                                    {{ form.active.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.active as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.active }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <div class="formRow">
+                            <a id="add_education_form" href="javascript:;" title="Dodaj szkołę">Dodaj kolejną szkołę</a>
+                        </div>
+                    {% endwith %}
+                </div>
+
+                <h2>Szkolenia</h2>
+                <div id="training_formsets">
+                    {% with formsets.training as training_formset %}
+                        {{ training_formset.management_form }}
+                        {{ training_formset.non_form_errors }}
+                        {% with training_formset.empty_form as form %}
+                            <div id="formset_row_{{ form.prefix }}" class="formRow formset_row" style="display: none;">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.name as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <div class="formDates">
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.start.label }}</span>
+                                        {{ form.start.errors }}
+                                        <span class="formText date-picker">
+                                            {% with form.start as help_field %}
+                                                {% include "portfolio/includes/help_field.html" %}
+                                            {% endwith %}
+                                            {{ form.start }}
+                                        </span>
+                                    </label>
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.end.label }}</span>
+                                        {{ form.end.errors }}
+                                        <span class="formText date-picker">
+                                            {% with form.end as help_field %}
+                                                {% include "portfolio/includes/help_field.html" %}
+                                            {% endwith %}
+                                            {{ form.end }}
+                                        </span>
+                                    </label>
+                                </div>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.active.label }}</span>
+                                    {{ form.active.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.active as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.active }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endwith %}
+                        {% for form in training_formset.forms %}
+                            <div class="formRow formset_row">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.name as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <div class="formDates">
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.start.label }}</span>
+                                        {{ form.start.errors }}
+                                        <span class="formText date-picker">
+                                            {% with form.start as help_field %}
+                                                {% include "portfolio/includes/help_field.html" %}
+                                            {% endwith %}
+                                            {{ form.start }}
+                                        </span>
+                                    </label>
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.end.label }}</span>
+                                        {{ form.end.errors }}
+                                        <span class="formText date-picker">
+                                            {% with form.end as help_field %}
+                                                {% include "portfolio/includes/help_field.html" %}
+                                            {% endwith %}
+                                            {{ form.end }}
+                                        </span>
+                                    </label>
+                                </div>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.active.label }}</span>
+                                    {{ form.active.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.active as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.active }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <div class="formRow">
+                            <a id="add_training_form" href="javascript:;" title="Dodaj szkolenie">Dodaj kolejne szkolenie</a>
+                        </div>
+                    {% endwith %}
+                </div>
+
+                <h2>Doświadczenie</h2>
+                <div id="experience_formsets">
+                    {% with formsets.experience as experience_formset %}
+                        {{ experience_formset.management_form }}
+                        {{ experience_formset.non_form_errors }}
+                        {% with experience_formset.empty_form as form %}
+                            <div id="formset_row_{{ form.prefix }}" class="formRow formset_row" style="display: none;">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.name as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <div class="formDates">
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.start.label }}</span>
+                                        {{ form.start.errors }}
+                                        <span class="formText date-picker">
+                                            {% with form.start as help_field %}
+                                                {% include "portfolio/includes/help_field.html" %}
+                                            {% endwith %}
+                                            {{ form.start }}
+                                        </span>
+                                    </label>
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.end.label }}</span>
+                                        {{ form.end.errors }}
+                                        <span class="formText date-picker">
+                                            {% with form.end as help_field %}
+                                                {% include "portfolio/includes/help_field.html" %}
+                                            {% endwith %}
+                                            {{ form.end }}
+                                        </span>
+                                    </label>
+                                </div>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.active.label }}</span>
+                                    {{ form.active.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.active as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.active }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endwith %}
+                        {% for form in experience_formset.forms %}
+                            <div class="formRow formset_row">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.name as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <div class="formDates">
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.start.label }}</span>
+                                        {{ form.start.errors }}
+                                        <span class="formText date-picker">
+                                        {% with form.start as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                            {{ form.start }}
+                                        </span>
+                                    </label>
+                                    <label>
+                                        <span class="portfolioFormName">{{ form.end.label }}</span>
+                                        {{ form.end.errors }}
+                                        <span class="formText date-picker">
+                                        {% with form.end as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                            {{ form.end }}
+                                        </span>
+                                    </label>
+                                </div>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.active.label }}</span>
+                                    {{ form.active.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.active as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.active }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <div class="formRow">
+                            <a id="add_experience_form" href="javascript:;" title="Dodaj doświadczenie">Dodaj kolejne doświadczenie</a>
+                        </div>
+                    {% endwith %}
+                </div>
+                
+                <h2>Dodatkowe kwalifikacje</h2>
+                <div id="qualification_formsets">
+                    {% with formsets.qualification as qualification_formset %}
+                        {{ qualification_formset.management_form }}
+                        {{ qualification_formset.non_form_errors }}
+                        {% with qualification_formset.empty_form as form %}
+                            <div id="formset_row_{{ form.prefix }}" class="formRow formset_row" style="display: none;">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formText">
+                                        {% with form.name as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.description.label }}</span>
+                                    {{ form.description.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.description as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.description }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endwith %}
+                        {% for form in qualification_formset.forms %}
+                            <div class="formRow formset_row">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formText">
+                                        {% with form.name as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.description.label }}</span>
+                                    {{ form.description.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.description as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.description }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <div class="formRow">
+                            <a id="add_qualification_form" href="javascript:;" title="Dodaj kwalifikacje">Dodaj kolejne kwalifikacje</a>
+                        </div>
+                    {% endwith %}
+                </div>
+
+                <h2>Ważniejsze osiągnięcia i nagrody</h2>
+                <div id="achivement_formsets">
+                    {% with formsets.achivement as achivement_formset %}
+                        {{ achivement_formset.management_form }}
+                        {{ achivement_formset.non_form_errors }}
+                        {% with achivement_formset.empty_form as form %}
+                            <div id="formset_row_{{ form.prefix }}" class="formRow formset_row" style="display: none;">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formText">
+                                        {% with form.name as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.description.label }}</span>
+                                    {{ form.description.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.description as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.description }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endwith %}
+                        {% for form in achivement_formset.forms %}
+                            <div class="formRow formset_row">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formText">
+                                        {% with form.name as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.description.label }}</span>
+                                    {{ form.description.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.description as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.description }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <div class="formRow">
+                            <a id="add_achivement_form" href="javascript:;" title="Dodaj osiągnięcia">Dodaj kolejne osiągnięcia</a>
+                        </div>
+                    {% endwith %}
+                </div>
+
+                <h2>Zainteresowania</h2>
+                <div id="hobby_formsets">
+                    {% with formsets.hobby as hobby_formset %}
+                        {{ hobby_formset.management_form }}
+                        {{ hobby_formset.non_form_errors }}
+                        {% with hobby_formset.empty_form as form %}
+                            <div id="formset_row_{{ form.prefix }}" class="formRow formset_row" style="display: none;">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formText">
+                                        {% with form.name as help_field %}
+                                        {# with "<p>to jest jakiś długi i skomplikowany help_text</p><p><i>Lorem ipsum dolor sit amet...</i></p>" as override_help_text #}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {# endwith #}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.description.label }}</span>
+                                    {{ form.description.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.description as help_field %}
+                                        {# with "<p>to jest jakiś długi i skomplikowany help_text</p><p><i>Lorem ipsum dolor sit amet...</i></p>" as override_help_text #}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {# endwith #}
+                                        {% endwith %}
+                                        {{ form.description }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endwith %}
+                        {% for form in hobby_formset.forms %}
+                            <div class="formRow formset_row">
+                                <hr />
+                                {{ form.id }}
+                                <label>
+                                    <span class="portfolioFormName">{{ form.name.label }}</span>
+                                    {{ form.name.errors }}
+                                    <span class="formText">
+                                        {% with form.name as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.name }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.description.label }}</span>
+                                    {{ form.description.errors }}
+                                    <span class="formTextarea">
+                                        {% with form.description as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.description }}
+                                    </span>
+                                </label>
+                                <label>
+                                    <span class="portfolioFormName">{{ form.DELETE.label }}</span>
+                                    {{ form.DELETE.errors }}
+                                    <span class="formCheckbox">
+                                        {% with form.DELETE as help_field %}
+                                            {% include "portfolio/includes/help_field.html" %}
+                                        {% endwith %}
+                                        {{ form.DELETE }}
+                                    </span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <div class="formRow">
+                            <a id="add_hobby_form" href="javascript:;" title="Dodaj zainteresowania">Dodaj kolejne zainteresowania</a>
+                        </div>
+                    {% endwith %}
+                </div>
+                <p>* - wypełnienie tego pola jest wymagane</p>
+                <div class="formButton">
+                    <ul>
+                        <li class="floatLeft">
+                            <div class="formButtonAnuluj">
+                                <a title="Anuluj" href="javascript:;" id="cancel">ANULUJ</a>
+                            </div>
+                        </li>
+                        <li class="floatRight">
+                            <div class="formButtonClear">
+                                <button type="reset">WYCZYŚĆ</button>
+                            </div>
+                            <div class="formButtonSave">
+                                <button type="submit">ZAPISZ</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

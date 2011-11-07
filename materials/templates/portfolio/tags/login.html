@@ -1,0 +1,187 @@
+{% load gallery_tags vbulletin_tags %}
+<div id="HeadBlockCarusel" class="pageHeadRight floatRight">
+    <div class="headRightHead">
+        <ul>
+            <li class="headBookmark1 floatLeft headActive" id="portfolia_tab" onclick="location.href='{% url portfolio_index %}'">
+                portfolia
+            </li>
+            <li class="headBookmark2 floatRight bgYellow logged_item" style="display: none;">
+                <a title="Wyloguj" href="{% url vb_logout %}">wyloguj</a>
+            </li>
+            <li class="headAdd headAddWhite logged_item" style="display: none;">
+                <a title="Panel administracyjny" href="{% url portfolio_admin %}">profil</a>
+            </li>
+            <li class="headBookmark2 floatRight bgYellow anonymous_item" id="login_tab">
+                zaloguj
+            </li>
+            <li class="headAdd headAddWhite anonymous_item">
+                <a title="Załóż konto" href="{% vb_url %}register.php">załóż</a>
+            </li>
+        </ul>
+    </div>
+    <div class="headRightBodyAll">
+        <div class="kontenerLi jcarousel-skin-tango headRightBody">
+            <ul>
+                {% if latest %}
+                    <li>
+                        <a href="{{ latest.0.get_absolute_url }}" title="{{ latest.0.user.username }}"><img src="{% src_tag latest.0.lead_photo 187 70 1 %}" alt="{{ latest.0.user.username }}" /></a>
+                    </li>
+                {% endif %}
+                <li>
+                    <div class="jCName">
+                        <img src="{{ MEDIA_URL }}images/portfolia.png" alt="portfolia" />
+                    </div>
+                    <div class="jCCount">
+                        <span class="jCBig">{{ photos_num }} </span>zdjęć
+                    </div>
+                </li>
+                {% if latest %}
+                    <li>
+                        <a href="{{ latest.1.get_absolute_url }}" title="{{ latest.1.user.username }}"><img src="{% src_tag latest.1.lead_photo 187 70 1 %}" alt="{{ latest.1.user.username }}" /></a>
+                    </li>
+                {% endif %}
+                <li>
+                    <div class="jCName">
+                        <img src="{{ MEDIA_URL }}images/portfolia.png" alt="portfolia" />
+                    </div>
+                    <div class="jCCount">
+                        <span class="jCBig">{{ projects_num }} </span>prac
+                    </div>
+                </li>
+                {% if latest %}
+                    <li>
+                        <a href="{{ latest.2.get_absolute_url }}" title="{{ latest.2.user.username }}"><img src="{% src_tag latest.2.lead_photo 187 70 1 %}" alt="{{ latest.2.user.username }}" /></a>
+                    </li>
+                {% endif %}
+                <li>
+                    <div class="jCName">
+                        <img src="{{ MEDIA_URL }}images/portfolia.png" alt="portfolia" />
+                    </div>
+                    <div class="jCCount">
+                        <span class="jCBig">{{ videos_num }} </span>filmów
+                    </div>
+                </li>
+                {% if latest %}
+                    <li>
+                        <a href="{{ latest.3.get_absolute_url }}" title="{{ latest.3.user.username }}"><img src="{% src_tag latest.3.lead_photo 187 70 1 %}" alt="{{ latest.2.user.username }}" /></a>
+                    </li>
+                {% endif %}
+                <li>
+                    <div class="jCName">
+                        <img src="{{ MEDIA_URL }}images/portfolia.png" alt="portfolia" />
+                    </div>
+                    <div class="jCCount">
+                        <span class="jCBig">{{ audios_num }} </span>muzy
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="headRightBodyAll2All" style="display: none;">
+        <img class="headToggle" alt="zaloguj" src="{{ MEDIA_URL }}images/headZaloguj.png" />
+        <form action="{% vb_url %}login.php?do=login" method="post" onsubmit="md5hash(vb_login_password, vb_login_md5password, vb_login_md5password_utf, $show[nopasswordempty])">
+            <div class="headRightBodyAll2Form">
+                <label>
+                    <span class="headLogDesc floatLeft">
+                        Użytkownik
+                    </span>
+                    <span class="headLogInput floatLeft">
+                        <input type="text" name="vb_login_username" value="Login" onblur="if(value== '') {value=defaultValue;};" onfocus="if(value==defaultValue) {value='';};"/>
+                    </span>
+                </label>
+                <label>
+                    <span class="headLogDesc floatLeft">
+                        Hasło
+                    </span>
+                    <span class="headLogInput floatLeft">
+                        <input type="password" name="vb_login_password" value="Hasło" onblur="if(value== '') {value=defaultValue;};" onfocus="if(value==defaultValue) {value='';};"/>
+                    </span>
+                </label>
+                <div class="headButton oh">
+                    <ul>
+                        <li class="headButtonLiFirst floatLeft">
+                            <a title="Zapomniałem hasła" href="{% vb_url %}login.php?do=lostpw">Zapomniałem hasła</a>
+                        </li>
+                        <li class="floatRight">
+                            <input type="hidden" name="securitytoken" value="guest" />
+                            <input type="hidden" name="do" value="login" /> 
+                            <input type="hidden" name="s" value="" />
+                            <input type="hidden" name="url" value="http://www.{{ request.site.domain }}{% url portfolio_after_login %}" />
+                            <input type="hidden" name="vb_login_md5password" />
+                            <input type="hidden" name="vb_login_md5password_utf" />
+                            <button type="submit"><!-- --></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#login_tab').click(function() {
+            $('#HeadBlockCarusel .headRightBodyAll').hide();
+            $('#HeadBlockCarusel .headRightBodyAll2All').show();
+        });
+        $('#portfolia_tab').click(function() {
+            $('#HeadBlockCarusel .headRightBodyAll').show();
+            $('#HeadBlockCarusel .headRightBodyAll2All').hide();
+        });
+        $('#messages_block').load('{% url portfolio_is_logged %}{% if object %}?object_id={{ object.id }}{% endif %}', function() {
+            var user_id  = $('#is_logged').text();
+            if (user_id) {
+                {% comment %} to jest brzydkie, bo skanuje po calej stronie, ale za duzo jest tych pol do ukrycia, aby je tu wypisywac {% endcomment %}
+                $('.logged_item').show();
+                $('.admin_item' + user_id).show();
+                $('.admin_hide_item' + user_id).hide();
+                $('.anonymous_item').hide();
+                if ($('#has_portfolio').text() == 'True') {
+                    $('.has_not_portfolio').hide();
+                }
+                $('#folders_block').load('{% url portfolio_folders_order %}', function() {
+                    $(document).bind('reveal.facebox', function() {
+                        $('#facebox .save_order').click(function() {
+                            $(this).parents('form').submit();
+                            return false;
+                        });
+                        $('#facebox .albumClickBottom').click(function() {
+                            var current_li = $(this).parents('li');
+                            var next_li = current_li.next();
+                            if (next_li) {
+                                next_li.after(current_li.detach());
+                                var current_order = current_li.find('input[name*=ORDER]');
+                                var next_order = next_li.find('input[name*=ORDER]');
+                                tmp = current_order.val();
+                                current_order.val(next_order.val());
+                                next_order.val(tmp);
+                            }
+                        });
+                        $('#facebox .albumClickTop').click(function() {
+                            var current_li = $(this).parents('li');
+                            var prev_li = current_li.prev();
+                            if (prev_li) {
+                                prev_li.before(current_li.detach());
+                                var current_order = current_li.find('input[name*=ORDER]');
+                                var prev_order = prev_li.find('input[name*=ORDER]');
+                                tmp = current_order.val();
+                                current_order.val(prev_order.val());
+                                prev_order.val(tmp);
+                            }
+                        });
+                    });
+                    $('#folders_order').facebox();
+                });
+            }
+            var is_friend = $('#is_friend');
+            if (is_friend.text() != 'False') {
+                $('#add_friend').hide();
+                $('#remove_friend').show();
+            }
+            var is_favorite = $('#is_favorite');
+            if (is_favorite.text() != 'False') {
+                $('#add_favorite').hide();
+                $('#remove_favorite').show();
+            }
+        });
+    });
+</script>

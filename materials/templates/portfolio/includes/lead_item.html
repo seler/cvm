@@ -1,0 +1,31 @@
+{% load gallery_tags %}
+<div class="block1Img">
+    <img src="{% src_tag object.lead_photo lead_width lead_height 1 %}" alt="{{ object.get_full_name }}" class="pointer" onclick="location.href='{{ object.get_absolute_url }}';" />
+    <div class="divH1_2">
+        <div class="floatLeft">
+            <img src="{% src_tag object.avatar 70 70 1 %}" alt="{{ object.get_full_name }}" class="pointer" onclick="location.href='{{ object.get_absolute_url }}';" />
+        </div>
+        <div class="portfolioHerald floatLeft">
+            <div class="divH1_2Desc">
+                <h2><a href="{{ object.get_absolute_url }}" title="{{ object.get_full_name|striptags }}">{{ object.get_full_name }}</a></h2>
+                <div class="divH1_2DescRow1">
+                    {{ object.city|default_if_none:'' }}{% if object.city and object.voyvodship %}/{% endif %}{{ object.voyvodship|default_if_none:'' }}{% if object.voyvodship and object.country %},{% endif %} {{ object.country|default_if_none:'' }}
+                </div>
+                {% with object.get_profesional_categories as categories %}
+                    {% if categories %}
+                        <div class="divH1_2DescRow2">
+                            <span>Profesja: </span>{% for category in categories %}{{ category.get_category_display }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% with object.get_hobby_categories as categories %}
+                    {% if categories %}
+                        <div class="divH1_2DescRow2">
+                            <span>Pasja: </span>{% for category in categories %}{{ category.get_category_display }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+{% load gallery_tags vbulletin_tags %}
+
+{% if object_list %}
+    <div class="block1 bgWhite">
+        <div class="block1Name">
+            <div class="block1NameBG">
+                {{ title|upper }}
+            </div>
+        </div>
+        <div class="block1PortBody">
+            {% for object in object_list %}
+                {% with 600 as lead_width %}
+                    {% with 200 as lead_height %}
+                        {% include 'portfolio/includes/lead_item.html' %}
+                    {% endwith %}
+                {% endwith %}
+            {% endfor %}
+        </div>
+        <div class="block1Footer">
+            <ul class="oh">
+                <li class="moreLeft floatLeft has_not_portfolio logged_item" style="display: none;">
+                    <span class="pointer" onclick="location.href='{% url portfolio_edit_cv %}';">stwórz własne portfolio</span>
+                </li>
+                <li class="moreRight floatRight">
+                    <span class="pointer" onclick="location.href='{% url portfolio_top title %}';">więcej</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endif %}

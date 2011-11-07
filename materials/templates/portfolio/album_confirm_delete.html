@@ -1,0 +1,40 @@
+{% extends 'portfolio/base.html' %}
+
+{% load portfolio_tags util_tags gallery_tags %}
+
+{% block portfolio_content %}
+    <div class="portfoliaPageUser">
+        <div class="block23 bgWhite">
+            <div class="block17 oh">
+                <div class="block1Name">
+                    <div class="block1NameBG">
+                        Usuwanie albumu
+                    </div>
+                </div>
+            </div>
+            <div class="portfolioForms">
+                <form action="." method="post">
+                    {% csrf_token %}
+                    {% if next %}
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    {% endif %}
+                    Czy chcesz usunąć "{{ object.name }}"?
+                    <div class="formButton">
+                        <ul>
+                            <li class="floatLeft">
+                                <div class="formButtonAnuluj">
+                                    <a title="Anuluj" href="javascript:;" id="cancel">ANULUJ</a>
+                                </div>
+                            </li>
+                            <li class="floatRight">
+                                <div class="formButtonSave">
+                                    <button type="submit">USUŃ</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

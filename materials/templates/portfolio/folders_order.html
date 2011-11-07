@@ -1,0 +1,32 @@
+{% load util_tags %}
+<div class="album">
+    <h3>Edytuj kolejność albumów</h3>
+    <form action="{% url portfolio_folders_order %}" method="POST">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <ul>
+            {% for form in formset.forms %}
+                <li>
+                    <div class="floatLeft">
+                        {{ form|field_value:'name' }}
+                        <span class="displayNone">{{ form.id }}{{ form.name }}{{ form.ORDER }}</span>
+                    </div>
+                    <div class="floatRight">
+                        <div class="albumClickBottom albumActive">
+
+                            <!-- -->
+                        </div>
+                        <div class="albumClickTop albumActive">
+                            <!-- -->
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="albumFooter">
+            <div class="floatRight">
+                <a href="javascript:;" title="Zapisz sortowanie" class="save_order">Zapisz sortowanie</a>
+            </div>
+        </div>
+    </form>
+</div>

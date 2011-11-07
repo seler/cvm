@@ -1,0 +1,17 @@
+{% if override_help_text or help_field.help_text %}
+<span class="pomoclink">
+    <a href="#">?</a> {# dodać ``class="openbox"`` jeżeli jest otwarty #}
+</span>
+<span class="pomocbox" style="display: none;">
+    <span class="content">
+        <span class="connector"><!-- --></span>
+        <a href="#" class="closebox"><!-- --></a>
+        <span class="naglowek">{{ help_field.label }}</span>
+        {% if override_help_text %}
+        {{ override_help_text|safe }}
+        {% else %}
+        {{ help_field.help_text|safe }}
+        {% endif %}
+    </span>
+</span>
+{% endif %}

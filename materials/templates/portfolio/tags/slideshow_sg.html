@@ -1,0 +1,70 @@
+{% load gallery_tags %}
+
+<div class="top_article">
+    <div class="top_line"><!-- --></div>
+    <div class="bottom_line"><!-- --></div>
+    <div id="mycarousel2" class="jcarousel-skin-big">
+        <div class="jcarousel-control"> 
+            {% for object in object_list %}
+                <a href="javascript:;" title="{{ object.name|striptags }}">{{ forloop.counter }}</a> 
+            {% endfor %}
+        </div> 
+        <ul>
+            {% for object in object_list %}
+                <li>
+                    <div class="block1 bgWhite">
+                        <div class="portfolioMonth">
+                            PORTFOLIO MIESIĄCA
+                        </div>
+                        <div class="block1Img">
+                            <img src="{% src_tag object.lead_photo 960 460 1 %}" alt="{{ object.name|striptags }}" class="pointer" onclick="location.href='{{ object.get_absolute_url }}';" />
+                            <div class="divH1_2">
+                                <div class="floatLeft">
+                                    <img src="{% src_tag object.avatar 110 110 1 %}" alt="{{ object.get_full_name|striptags }}" class="pointer" onclick="location.href='{{ object.get_absolute_url }}';" />
+                                </div>
+                                <div class="portfolioHerald floatLeft">
+                                    <div class="rating oh">
+                                        <div class="floatLeft">
+                                            {% for rating in object.get_rating %}
+                                                <span>
+                                                {% if rating %}
+                                                    <img alt="Oceń na {{ forloop.couner }}" src="{{ MEDIA_URL }}images/rating_yellow.png" />
+                                                {% else %}
+                                                    <img alt="Oceń na {{ forloop.couner }}" src="{{ MEDIA_URL }}images/rating_silver.png" />
+                                                {% endif %}
+                                                </span>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="job floatRight">
+                                            PRACE <span class="nawias">(</span><span class="jobCount">{{ object.get_work_num }}</span><span class="nawias">)</span>
+                                        </div>
+                                    </div>
+                                    <div class="divH1_2Desc">
+                                        <h1><a href="{{ object.get_absolute_url }}" title="{{ object.get_full_name|striptags }}">{{ object.get_full_name }}</a></h1>
+                                        <div class="divH1_2DescRow1">
+                                            {{ object.city|default_if_none:'' }}{% if object.city and object.voyvodship %}/{% endif %}{{ object.voyvodship|default_if_none:'' }}{% if object.voyvodship and object.country %},{% endif %} {{ object.country|default_if_none:'' }}
+                                        </div>
+                                        {% with object.get_profesional_categories as categories %}
+                                            {% if categories %}
+                                                <div class="divH1_2DescRow2">
+                                                    <span>Profesja: </span>{% for category in categories %}{{ category.get_category_display }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                        {% with object.get_hobby_categories as categories %}
+                                            {% if categories %}
+                                                <div class="divH1_2DescRow2">
+                                                    <span>Pasja: </span>{% for category in categories %}{{ category.get_category_display }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

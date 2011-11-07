@@ -1,0 +1,54 @@
+{% load gallery_tags util_tags %}
+<html>
+<body>
+    {% block profile_content %}
+        {% for album in object.album_set.all %}
+            {% if album.album_type == 1 %} {# photo album #}
+                <div class="block23 bgWhite">
+                    <div class="block17 oh">
+                        <div class="block1Name">
+                            <div class="block1NameBG">
+                                {{ album.folder.name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="gallery" class="block23BodyGallery">
+                        <div class="block23BodyGalleryHead oh">
+                            <ul>
+                                <li class="floatLeft">
+                                    <h1>{{ album.name }} <span>{{ album.pub_date|date:'d.m.Y' }}</span></h1>
+                                </li>
+                                <li class="floatRight">
+                                    {{ paginator.count }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="block23BodyGalleryImg">
+                            <div>
+                                <img src="{% src_tag album.photo_gallery.photos.all.0.image 920 610 1 %}" alt="{{ photo.title|striptags }}" />
+                            </div>
+                        </div>
+                        <div class="block23BodyGalleryImgs">
+                            {% for row in album.photo_gallery.photos.all|swap_by:'5' %}
+                                <ul>
+                                {% for photo in row %}
+                                    {% if forloop.last and forloop.parentloop.last %}
+                                        <li id="small-photo-{{ photo.id }}" class="zajawkaPrace">
+                                            <img src="{% src_tag photo.image 184 137 1 %}" alt="{{ photo.title|striptags }}" />
+                                        </li>
+                                    {% else %}
+                                        <li id="small-photo-{{ photo.id }}" {% if forloop.first and forloop.parentloop.first %}class="gallery2Active"{% endif %}>
+                                            <img src="{% src_tag photo.image 184 137 1 %}" alt="{{ photo.title|striptags }}" />
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                </ul>
+                            {% endfor %}
+                        </div>
+                        <p>{{ album.description }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endblock %}
+</body>

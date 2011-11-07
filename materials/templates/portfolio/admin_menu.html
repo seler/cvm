@@ -1,0 +1,21 @@
+{% if portfolio %}
+    <a href="javascript:;" title="Administracja">administracja <img alt="Administracja" src="{{ MEDIA_URL }}images/adminImg.png" class="adminImgSRC"></a>
+	<div class="adminImgAllBlock">
+	    <ul>
+	        <li>
+	            <a title="Nieopublikowane prace" href="{% url portfolio_admin %}"><strong>PRACE</strong></a>
+	            <div>- <a title="Dodaj album" href="{% url portfolio_add_album portfolio.id %}">dodaj album</a></div>
+	            <div>- <a title="Edytuj kolejność" id="folders_order" href="#folders_block">edytuj kolejność</a></div>
+	        </li>
+	        <li>
+	            <a title="Dodaj news" href="{% url portfolio_add_news portfolio.id %}"><strong>DODAJ NEWS</strong></a>
+	        </li>
+	        <li>
+	            <a title="Edytuj biogram" href="{% url portfolio_edit_cv %}"><strong>EDYTUJ BIOGRAM</strong></a>
+	        </li>
+	        <li>
+	            <a title="Edytuj kontakt" href="{% url portfolio_edit_contact %}"><strong>EDYTUJ KONTAKT</strong></a>
+	        </li>
+	    </ul>
+	</div>
+{% endif %}

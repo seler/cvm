@@ -1,0 +1,90 @@
+{% load gallery_tags portfolio_tags %}
+<div class="top_article">
+    <div class="top_line"><!-- --></div>
+    <div class="bottom_line"><!-- --></div>
+    <div id="mycarousel2" class="jcarousel-skin-big">
+        <div class="jcarousel-control"> 
+            {% for object in object_list %}
+                <a href="javascript:;" title="{{ object.name|striptags }}">{{ forloop.counter }}</a> 
+            {% endfor %}
+        </div> 
+        <ul>
+            {% for object in object_list %}
+                <li>
+                    <div class="block1 bgWhite">
+                        <div class="portfolioOption admin_hide_item{{ portfolio.user_id }}">
+                            <span class="portfolioOption1 logged_item displayNone">
+                                <span class="tagBefore1">+</span>
+                                <a href="{% url portfolio_remove_favorite portfolio.id %}" title="usuń z ulubionych {{ portfolio.get_full_name|striptags }}" id="remove_favorite" style="display: none;">usuń z ulubionych</a>
+                                <a href="{% url portfolio_add_favorite portfolio.id %}" title="dodaj do ulubionych {{ portfolio.get_full_name|striptags }}" id="add_favorite">dodaj do ulubionych</a>
+                            </span>
+                            <span class="portfolioOption2">
+                                <span class="tagBefore2">&laquo;</span><a href="javascript:;" title="wróć do wyników wyszukiwania" class="back_link">wróć do wyników wyszukiwania</a>
+                            </span>
+                        </div>
+                        <div class="block1Img">
+                            {% if object.lead_photo %}
+                                <img src="{% src_tag object.lead_photo 960 460 1 %}" alt="{{ object.name|striptags }}" class="pointer" onclick="location.href='{{ object.get_absolute_url }}';" />
+                            {% endif %}
+                            <div class="divH1_2">
+                                <div class="floatLeft">
+                                    <img src="{% src_tag portfolio.avatar 110 110 1 %}" alt="{{ portfolio.get_full_name|striptags }}" class="pointer" onclick="location.href='{{ portfolio.get_absolute_url }}';" />
+                                </div>
+                                <div class="portfolioHerald floatLeft">
+                                    <div class="rating oh">
+                                        <div class="floatLeft">
+                                            {% for rating in portfolio.get_rating %}
+                                                <span>
+                                                {% if rating %}
+                                                    <img alt="Oceń na {{ forloop.couner }}" src="{{ MEDIA_URL }}images/rating_yellow.png" />
+                                                {% else %}
+                                                    <img alt="Oceń na {{ forloop.couner }}" src="{{ MEDIA_URL }}images/rating_silver.png" />
+                                                {% endif %}
+                                                </span>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="job floatRight">
+                                            PRACE <span class="nawias">(</span><span class="jobCount">{{ portfolio.get_work_num }}</span><span class="nawias">)</span>
+                                        </div>
+                                    </div>
+                                    <div class="divH1_2Desc">
+                                        <h1><a href="{{ portfolio.get_absolute_url }}" title="{{ portfolio.get_full_name|striptags }}">{{ portfolio.get_full_name }}</a></h1>
+                                        <div class="divH1_2DescRow1">
+                                            {{ portfolio.city|default_if_none:'' }}{% if portfolio.city and portfolio.voyvodship %}/{% endif %}{{ portfolio.voyvodship|default_if_none:'' }}{% if portfolio.voyvodship and portfolio.country %},{% endif %} {{ portfolio.country|default_if_none:'' }}
+                                        </div>
+                                        {% with portfolio.get_profesional_categories as portfolio_categories %}
+                                            {% if portfolio_categories %}
+                                                <div class="divH1_2DescRow2">
+                                                    <span>Profesja: </span>{% for category in portfolio_categories %}{{ category.get_category_display }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                        {% with portfolio.get_hobby_categories as portfolio_categories %}
+                                            {% if portfolio_categories %}
+                                                <div class="divH1_2DescRow2">
+                                                    <span>Pasja: </span>{% for category in portfolio_categories %}{{ category.get_category_display }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        if (history.length > 1) {
+            $('#mycarousel2 .back_link').click(function() {
+                history.back();
+                return false;
+            });
+        } else {
+            $('#mycarousel2 .back_link').parent().hide();
+        }
+    });
+</script>

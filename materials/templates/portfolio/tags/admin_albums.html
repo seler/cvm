@@ -1,0 +1,44 @@
+{% load portfolio_tags gallery_tags util_tags %}
+
+<div class="block23 bgWhite">
+    <div class="block17 oh">
+        <div class="block1Name">
+            <div class="block1NameBG">
+                Albumy
+            </div>
+        </div>
+        {% if page_obj and page_obj.has_other_pages %}
+            <div class="strony floatRight">
+                {% portfolio_paginator_tag_query page_obj query_dict page_name %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="block23Body">
+        {% if page_obj and page_obj.object_list %}
+            {% for row in page_obj.object_list|swap_by:"2" %}
+                <ul>
+                    {% for album in row %}
+                        <li{% if forloop.first %} class="block23BodyLiFirst"{% endif %}>
+                            <div class="block23BodyImg">
+                                {% if album.lead_photo %}
+                                    <img src="{% src_tag album.lead_photo 450 260 1 %}" alt="{{ album.name|striptags }}" class="pointer" onclick="location.href='{{ album.get_absolute_url }}';" />
+                                {% endif %}
+                                <div class="divH1_3">
+                                    <h2><a title="{{ album.name|striptags }}" href="{{ album.get_absolute_url }}">{{ album.name }}</a> {% if album.folder_id and album.folder.name %}({{ album.folder.name }}){% endif %}</h2>
+                                    {% if album.pub_date %}
+                                        <span class="divH1_3Date">{{ album.pub_date|date:"d b Y" }}</span>
+                                    {% endif %}
+                                    {% if not album.active %}
+                                        <a href="{% url portfolio_publish_album object.id album.id %}" title="Publikuj">Publikuj</a>
+                                    {% endif %}
+                                    <a href="{% url portfolio_edit_album object.id album.id %}" title="Edytuj">Edytuj</a>
+                                    <a href="{% url portfolio_remove_album object.id album.id %}?next={% url portfolio_admin %}" title="Usuń">Usuń</a>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>

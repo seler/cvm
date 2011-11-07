@@ -1,0 +1,33 @@
+{% extends '__base__.html' %}
+
+{% load portfolio_tags %}
+
+{% block title %}Portfolia  - {% endblock %}
+{% block description%}Portfolia{% endblock%}
+{% block keywords%}portfolia{%endblock%}
+{% block content_class %}othersiteSite portfolia{% endblock %}
+
+{% block content %}
+    <div class="breadcrumb oh">
+        {% block breadcrumb %}
+            <ul>
+                <li>
+                    <div class="bredcrumbRFirst"><div class="bredcrumbDesc" onclick="location.href='/';">Strona główna</div></div>	
+                </li>
+                <li>
+                    <div class="bredcrumbDescLast">portfolia</div>
+                </li>
+            </ul>
+        {% endblock %}
+    </div>
+    {% block content_top %}
+        {% portfolio_menu '' %}
+    {% endblock %}
+    {% block portfolio_content %}
+        <div class="portfoliaPageUser bgNone">
+            {% block profile_content %}
+            {% endblock %}
+            {% portfolio_folders object %}
+        </div>
+    {% endblock %}
+{% endblock %}

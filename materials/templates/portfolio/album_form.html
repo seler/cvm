@@ -1,0 +1,345 @@
+{% extends 'portfolio/base.html' %}
+
+{% load portfolio_tags util_tags gallery_tags %}
+
+{% block extra_head %}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/jquery.autocomplete.css" />
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.autocomplete.pack.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/portfolio.js"></script>
+    <script type="text/javascript">
+        <!--
+            $(document).ready(function() {
+                $("#id_folder").autocomplete("{% url portfolio_autocomplete_folder_list object.id %}", {multiple: false, mustMatch: false, autoFill: false, max: 200}
+                );
+                $('#add_photo_form').click(function() {
+                    return addForm(this, 'photo');
+                });
+                $('#add_video_form').click(function() {
+                    return addForm(this, 'video');
+                });
+                $('#add_audio_form').click(function() {
+                    return addForm(this, 'audio');
+                });
+                $('#id_album_type_0').click(function() {
+                    $('#photo_formsets').show();
+                    $('#video_formsets').hide();
+                    $('#audio_formsets').hide();
+                });
+                $('#id_album_type_1').click(function() {
+                    $('#photo_formsets').hide();
+                    $('#video_formsets').show();
+                    $('#audio_formsets').hide();
+                });
+                $('#id_album_type_2').click(function() {
+                    $('#photo_formsets').hide();
+                    $('#video_formsets').hide();
+                    $('#audio_formsets').show();
+                });
+            });
+        //-->
+    </script>
+{% endblock %}
+
+{% block portfolio_content %}
+    <div class="portfoliaPageUser">
+        {% portfolio_header object 'work' %}
+        <div class="block23 bgWhite">
+            <div class="block17 oh">
+                <div class="block1Name">
+                    <div class="block1NameBG">
+                        {% if form.instance.id %}Edycja{% else %}Dodawanie{% endif %} albumu
+                    </div>
+                </div>
+                <div class="strony floatRight">
+                    <div class="stronyCor">
+                        <a href="javascript:history.back();" title="wróć do folderu">wróć do folderu - poniechaj edycję</a>
+                    </div>
+                </div>
+            </div>
+            <div class="portfolioForms">
+                <form action="." method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="preview" value="" />
+                    {{ form.portfolio }}
+                    <div class="formRow">
+                        <span class="portfolioFormName">{{ form.album_type.label }} {% if form.album_type.field.required %}<span class="spanWymagane">*</span>{% endif %}</span>
+                        {{ form.album_type.errors }}
+                        <span class="formRadio">
+                            {{ form.album_type }}
+                        </span>
+                    </div>
+                    <div class="formRow">
+                        <label>
+                            <span class="portfolioFormName">{{ form.folder.label }} {% if form.label.field.required %}<span class="spanWymagane">*</span>{% endif %}</span>
+                            {{ form.folder.errors }}
+                            <span class="formText">
+                                {{ form.folder }}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="formRow">
+                        <label>
+                            <span class="portfolioFormName">{{ form.name.label }} {% if form.name.field.required %}<span class="spanWymagane">*</span>{% endif %}</span>
+                            {{ form.name.errors }}
+                            <span class="formText">
+                                {{ form.name }}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="formRow">
+                        <label>
+                            <span class="portfolioFormName">{{ form.lead_photo.label }} {% if form.lead_photo.field.required %}<span class="spanWymagane">*</span>{% endif %}</span>
+                            {{ form.lead_photo.errors }}
+                            <span class="formFile">
+                                {{ form.lead_photo }}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="formRow">
+                        <label>
+                            <span class="portfolioFormName">{{ form.description.label }} {% if form.description.field.required %}<span class="spanWymagane">*</span>{% endif %}</span>
+                            {{ form.description.errors }}
+                            <span class="formTextarea">
+                                {{ form.description }}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="formRow">
+                        <label>
+                            <span class="portfolioFormName">{{ form.user_selected.label }} {% if form.user_selected.field.required %}<span class="spanWymagane">*</span>{% endif %}</span>
+                            {{ form.user_selected.errors }}
+                            <span class="formCheckbox">
+                                {{ form.user_selected }}
+                            </span>
+                        </label>
+                    </div>
+                    {% with form|field_value:'album_type'|default_if_none:'1'|to_int as album_type_value %}
+                        <div id="photo_formsets" {% if album_type_value != 1 %}style="display: none"{% endif %}>
+                            {% with formsets.photo as photo_formset %}
+                                {{ photo_formset.management_form }}
+                                {% with photo_formset.empty_form as form %}
+                                    <div id="formset_row_{{ form.prefix }}" class="formRow formset_row" style="display: none;">
+                                        <hr />
+                                        {{ form.id }}
+                                        <label>
+                                            <span class="portfolioFormName">{{ form.title.label }}</span>
+                                            {{ form.title.errors }}
+                                            <span class="formText">
+                                                {{ form.title }}
+                                            </span>
+                                        </label>
+                                        <label>
+                                            <span class="portfolioFormName">Załaduj plik ze zdjęciem</span>
+                                            {{ form.image.errors }}
+                                            <span class="formFile">
+                                                {{ form.image }}
+                                            </span>
+                                        </label>
+                                    </div>
+                                {% endwith %}
+                                {% for form in photo_formset.forms %}
+                                    {% with form|field_value:'image' as file_path %}
+                                        <div class="formRow{% if not file_path %} formset_row{% endif %}">
+                                            <hr />
+                                            {{ form.id }}
+                                            <label>
+                                                <span class="portfolioFormName">{{ form.title.label }}</span>
+                                                {{ form.title.errors }}
+                                                <span class="formText">
+                                                    {{ form.title }}
+                                                </span>
+                                            </label>
+                                            <label>
+                                                <span class="portfolioFormName">Załaduj plik ze zdjęciem</span>
+                                                {{ form.image.errors }}
+                                                {% if file_path %}
+                                                    <span class="formCheckbox">
+                                                        <img src="{% src_tag file_path 100 100 %}" alt="Zdjęcie {{ file_path }}" />
+                                                        {{ form.DELETE }}Usuń
+                                                    </span>
+                                                {% else %}
+                                                    <span class="formFile">
+                                                        {{ form.image }}
+                                                    </span>
+                                                {% endif %}
+                                            </label>
+                                        </div>
+                                    {% endwith %}
+                                {% endfor %}
+                                <div class="formRow">
+                                    <a id="add_photo_form" href="javascript:;" title="Dodaj zdjęcie">Dodaj kolejne zdjęcie</a>
+                                </div>
+                            {% endwith %}
+                        </div>
+                        <div id="video_formsets" {% if album_type_value != 2 %}style="display: none"{% endif %}>
+                            {% with formsets.video as video_formset %}
+                                {{ video_formset.management_form }}
+                                {% with video_formset.empty_form as form %}
+                                    <div id="formset_row_{{ form.prefix }}" class="formRow formset_row" style="display: none;">
+                                        <hr />
+                                        {{ form.id }}
+                                        <label>
+                                            <span class="portfolioFormName">{{ form.title.label }}</span>
+                                            {{ form.title.errors }}
+                                            <span class="formText">
+                                                {{ form.title }}
+                                            </span>
+                                        </label>
+                                        <label>
+                                            <span class="portfolioFormName">{{ form.file.label }}</span>
+                                            {{ form.file.errors }}
+                                            <span class="formFile">
+                                                {{ form.file }}
+                                            </span>
+                                        </label>
+                                    </div>
+                                {% endwith %}
+                                {% for form in video_formset.forms %}
+                                    {% with form|field_value:'file' as file_path %}
+                                        <div class="formRow{% if not file_path %} formset_row{% endif %}">
+                                            <hr />
+                                            {{ form.id }}
+                                            <label>
+                                                <span class="portfolioFormName">{{ form.title.label }}</span>
+                                                {{ form.title.errors }}
+                                                <span class="formText">
+                                                    {{ form.title }}
+                                                </span>
+                                            </label>
+                                            <label>
+                                                <span class="portfolioFormName">{{ form.file.label }}</span>
+                                                {{ form.file.errors }}
+                                                {% if file_path %}
+                                                    {{ file_path }}
+                                                    <span class="formCheckbox">{{ form.DELETE }}</span>
+                                                {% else %}
+                                                    <span class="formFile">
+                                                        {{ form.file }}
+                                                    </span>
+                                                {% endif %}
+                                            </label>
+                                        </div>
+                                    {% endwith %}
+                                {% endfor %}
+                                <div class="formRow">
+                                    <a id="add_video_form" href="javascript:;" title="Dodaj wideo">Dodaj kolejne wideo</a>
+                                </div>
+                            {% endwith %}
+                        </div>
+                        <div id="audio_formsets" {% if album_type_value != 3 %}style="display: none"{% endif %}>
+                            {% with formsets.audio as audio_formset %}
+                                {{ audio_formset.management_form }}
+                                {% with audio_formset.empty_form as form %}
+                                    <div id="formset_row_{{ form.prefix }}" class="formRow formset_row" style="display: none;">
+                                        <hr />
+                                        {{ form.id }}
+                                        <label>
+                                            <span class="portfolioFormName">{{ form.title.label }}</span>
+                                            {{ form.title.errors }}
+                                            <span class="formText">
+                                                {{ form.title }}
+                                            </span>
+                                        </label>
+                                        <label>
+                                            <span class="portfolioFormName">{{ form.image.label }}</span>
+                                            {{ form.image.errors }}
+                                            {% with form|field_value:'image' as image_path %}
+                                                {% if image_path %}
+                                                    {{ image_path }}
+                                                {% else %}
+                                                    <span class="formFile">
+                                                        {{ form.image }}
+                                                    </span>
+                                                {% endif %}
+                                            {% endwith %}
+                                        </label>
+                                        <label>
+                                            <span class="portfolioFormName">{{ form.file.label }}</span>
+                                            {{ form.file.errors }}
+                                            {% if file_path %}
+                                                {{ file_path }}
+                                                <span class="formCheckbox">{{ form.DELETE }}</span>
+                                            {% else %}
+                                                <span class="formFile">
+                                                    {{ form.file }}
+                                                </span>
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                {% endwith %}
+                                {% for form in audio_formset.forms %}
+                                    {% with form|field_value:'file' as file_path %}
+                                        <div class="formRow{% if not file_path %} formset_row{% endif %}">
+                                            <hr />
+                                            {{ form.id }}
+                                            <label>
+                                                <span class="portfolioFormName">{{ form.title.label }}</span>
+                                                {{ form.title.errors }}
+                                                <span class="formText">
+                                                    {{ form.title }}
+                                                </span>
+                                            </label>
+                                            <label>
+                                                <span class="portfolioFormName">{{ form.image.label }}</span>
+                                                {{ form.image.errors }}
+                                                {% with form|field_value:'image' as image_path %}
+                                                    {% if image_path %}
+                                                        {{ image_path }}
+                                                    {% else %}
+                                                        <span class="formFile">
+                                                            {{ form.image }}
+                                                        </span>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </label>
+                                            <label>
+                                                <span class="portfolioFormName">{{ form.file.label }}</span>
+                                                {{ form.file.errors }}
+                                                {% if file_path %}
+                                                    {{ file_path }}
+                                                    <span class="formCheckbox">{{ form.DELETE }}</span>
+                                                {% else %}
+                                                    <span class="formFile">
+                                                        {{ form.file }}
+                                                    </span>
+                                                {% endif %}
+                                            </label>
+                                        </div>
+                                    {% endwith %}
+                                {% endfor %}
+                                <div class="formRow">
+                                    <a id="add_audio_form" href="javascript:;" title="Dodaj audio">Dodaj kolejne audio</a>
+                                </div>
+                            {% endwith %}
+                        </div>
+                    {% endwith %}
+                    <p>* - wypełnienie tego pola jest wymagane</p>
+                    <div class="formButton">
+                        <ul>
+                            {% if not form.instance.id or not form.instance.active %}
+                                <li class="floatLeft">
+                                    <div class="formButtonAnuluj">
+                                        <a title="Podgląd" href="javascript:;" id="preview">PODGLĄD</a>
+                                    </div>
+                                </li>
+                            {% endif %}
+                            <li class="floatLeft">
+                                <div class="formButtonAnuluj">
+                                    <a title="Anuluj" href="javascript:;" id="cancel">ANULUJ</a>
+                                </div>
+                            </li>
+                            <li class="floatRight">
+                                <div class="formButtonClear">
+                                    <button type="reset">WYCZYŚĆ</button>
+                                </div>
+                                <div class="formButtonSave">
+                                    <button type="submit">ZAPISZ</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

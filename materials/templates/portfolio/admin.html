@@ -1,0 +1,39 @@
+{% extends 'portfolio/profile.html' %}
+
+{% load portfolio_tags %}
+
+{% block content_top %}
+    {% portfolio_menu '' %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <ul>
+        <li>
+            <div class="bredcrumbRFirst"><div class="bredcrumbDesc" onclick="location.href='/';">Strona główna</div></div>	
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{% url portfolio_index %}';">portfolia</div></div></div>
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{{ object.get_absolute_url }}';">{{ object.user.username }}</div></div></div>
+        </li>
+        <li>
+            <div class="bredcrumbDescLast">admin</div>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block profile_content %}
+    {% portfolio_header object '' %}
+    <div class="block23 bgWhite">
+        <div class="block17 oh">
+            <div class="block1Name">
+                <div class="block1NameBG">
+                    Nieopublikowane
+                </div>
+            </div>
+        </div>
+    </div>
+    {% portfolio_admin_albums object %}
+    {% portfolio_admin_news object %}
+{% endblock %}

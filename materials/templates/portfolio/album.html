@@ -1,0 +1,172 @@
+{% extends 'portfolio/base.html' %}
+
+{% load portfolio_tags gallery_tags util_tags %}
+
+{% block title %}Album {{ object.name }} - {% endblock %}
+{% block description%}Album {{ object.name }}{% endblock%}
+{% block keywords%}portfolio, {{ object.user.username }}, album, {{ object.name }}{%endblock%}
+
+{% block extra_head %}
+    <script type="text/javascript">
+        var current_slide = 0;
+        function show_photo(photo_li) {
+            $('#gallery .block23BodyGalleryImgs li').removeClass('gallery2Active');
+            var big_photo_id = $(photo_li).addClass('gallery2Active').attr('id').replace('small-photo-', '#big-photo-');
+            $('#gallery .block23BodyGalleryImg div').hide();
+            var photo_num = $(big_photo_id).show().attr('rel');
+            $('#gallery .galleryCount').text(photo_num);
+        }
+        function slideshow() {
+                var photo_lis = $('#gallery .block23BodyGalleryImgs li');
+                var current_li = photo_lis.eq(current_slide);
+                show_photo(current_li);
+                current_slide += 1;
+                if (current_slide < photo_lis.length )
+                    setTimeout(slideshow, 3000);
+        }
+        function show_next_prev(obj) {
+            obj.show();
+            $('#gallery .block23BodyGalleryImgs li').removeClass('gallery2Active');
+            var curr_id = obj.attr('id').replace('big-photo-', '#small-photo-');
+            $(curr_id).addClass('gallery2Active');
+            var photo_num = obj.attr('rel');
+            $('#gallery .galleryCount').text(photo_num);
+        }
+        $(document).ready(function() {
+            $('#next_photo').click(function() {
+                var current = $('#gallery .block23BodyGalleryImg div').filter(':visible');
+                var next = current.next('div');
+                if (next.length) {
+                    current.hide();
+                    show_next_prev(next);
+                }
+            });
+            $('#prev_photo').click(function() {
+                var current = $('#gallery .block23BodyGalleryImg div').filter(':visible');
+                var prev = current.prev('div');
+                if (prev.length) {
+                    current.hide();
+                    show_next_prev(prev);
+                }
+            });
+            $('#gallery .block23BodyGalleryImgs a').mouseenter(function() {
+                $('#gallery .block23BodyGalleryImgs li').removeClass('gallery2Active');
+                $(this).parent().addClass('gallery2Active');
+            });
+            $('#gallery .block23BodyGalleryImgs a').click(function() {
+                show_photo($(this).parent());
+            });
+            $('#gallery .block23BodyGalleryImgs .slideshow').click(function() {
+                current_slide = 0;
+                setTimeout(slideshow, 0);
+            });
+            {% with album|get_content_type as content_type %}
+                {% if content_type %}
+                    $('#comment_list_container').load('{% url comments_ajax_comment_list content_type.id album.id %}', function() {
+                        $('#comment_list_container .artCzytajDalej1').hide();
+                    });
+                {% endif %}
+            {% endwith %}
+        });
+    </script>
+{% endblock %}
+
+{% block breadcrumb %}
+    <ul>
+        <li>
+            <div class="bredcrumbRFirst"><div class="bredcrumbDesc" onclick="location.href='/';">Strona główna</div></div>	
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{% url portfolio_index %}';">portfolia</div></div></div>
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{{ album.portfolio.get_absolute_url }}';">{{ album.portfolio.user.username }}</div></div></div>
+        </li>
+        {% if album.folder_id %}
+            <li>
+                <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{{ album.folder.get_absolute_url }}';">{{ album.folder.name }}</div></div></div>
+            </li>
+        {% endif %}
+        <li>
+            <div class="bredcrumbDescLast">{{ album.name }}</div>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block profile_content %}
+    {% portfolio_header object 'work' %}
+    <div class="block23 bgWhite">
+        <div class="block17 oh">
+            <div class="block1Name">
+                <div class="block1NameBG">
+                    {{ album.folder.name }}
+                </div>
+            </div>
+            <div class="strony floatRight">
+                <div class="stronyCor">
+                    <a href="{{ album.folder.get_absolute_url }}" title="wróć do folderu">wróć do folderu</a>
+                </div>
+            </div>
+            <div class="strony floatRight admin_item{{ object.user_id }}" style="display: none">
+                <div class="stronyCor">
+                    <a href="{% url portfolio_edit_album object.id album.id %}" title="edytuj">edytuj</a>
+                </div>
+            </div>
+            <div class="strony floatRight admin_item{{ object.user_id }}" style="display: none">
+                <div class="stronyCor">
+                    <a href="{% url portfolio_remove_album object.id album.id %}" title="usuń">usuń</a>
+                </div>
+            </div>
+        </div>
+        {% block album_body %}
+            <div id="gallery" class="block23BodyGallery">
+                <div class="block23BodyGalleryHead oh">
+                    <ul>
+                        <li class="floatLeft">
+                            <h1>{{ album.name }} <span>{{ album.pub_date|date:'d.m.Y' }}</span></h1>
+                        </li>
+                        <li class="floatRight">
+                            <span class="galleryCount">{{ page_obj.start_index }}</span>/{{ paginator.count }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="block23BodyGalleryImg">
+                    <a href="javascript:;" title"Następna strona" id="next_photo"><img src="{{ MEDIA_URL }}images/galleryRight.png" class="pointer galleryRight" alt="Następna strona" /></a>
+                    <a href="javascript:;" title"Poprzednia strona" id="prev_photo"><img src="{{ MEDIA_URL }}images/galleryLeft.png" class="pointer galleryLeft" alt="Poprzednia strona" /></a>
+                    {% for photo in page_obj.object_list %}
+                        <div id="big-photo-{{ photo.id }}" rel="{{ forloop.counter0|add:page_obj.start_index }}" {% if not forloop.first %}style="display: none;"{% endif %}>
+                            <img src="{% src_tag photo.image 920 %}" alt="{{ photo.title|striptags }}" />
+                            <h2>{{ photo.title|striptags }}</h2>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="block23BodyGalleryImgs">
+                    {% for row in object_list|swap_by:'5' %}
+                        <ul>
+                        {% for photo in row %}
+                            {% if prev_page_image == photo %}
+                                <li class="zajawkaPrace">
+                                    <a href="?page={{ page_obj.prev_page_number }}" title="Poprzednia strona" class="slideshow"><img src="{{ MEDIA_URL }}images/zajawkaPracePrev.png" class="zajawkaPraceImg" alt="pokaz slajdów" /></a><img src="{% src_tag prev_page_image.image 184 137 1 %}" alt="{{ prev_page_image.title|striptags }}" />
+                                </li>
+                            {% else %}
+                                {% if next_page_image == photo %}
+                                    <li class="zajawkaPrace">
+                                        <a href="?page={{ page_obj.next_page_number }}" title="Następna strona" class="slideshow"><img src="{{ MEDIA_URL }}images/zajawkaPrace.png" class="zajawkaPraceImg" alt="pokaz slajdów" /></a><img src="{% src_tag next_page_image.image 184 137 1 %}" alt="{{ next_page_image.title|striptags }}" />
+                                    </li>
+                                {% else %}
+                                    <li id="small-photo-{{ photo.id }}" {% if forloop.first and forloop.parentloop.first %}class="gallery2Active"{% endif %}>
+                                        <a href="javascript:;" title="{{ photo.title }}"><img src="{% src_tag photo.image 184 137 1 %}" alt="{{ photo.title|striptags }}" /></a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                    {% endfor %}
+                </div>
+                <p>{{ album.description }}</p>
+            </div>
+        {% endblock %}
+    </div>
+    <div class="articleBlock5" id="comment_list_container">
+    </div>
+{% endblock %}

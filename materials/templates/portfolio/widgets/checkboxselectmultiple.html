@@ -1,0 +1,16 @@
+{% load portfolio_tags %}
+<ul>
+    {% for option_name, option_value, option_label, input, label_for, checked in items %}
+        {% portfolio_num option_name option_value filters as num %}
+        {% if num or checked %}
+            <li{% if checked %} class="block19ItemActive"{% endif %}>
+                <div class="block19ItemDesc floatLeft">
+                    {{ option_label }} <span class="block19ItemNawias">(</span><span class="block19ItemCount">{{ num }}</span><span class="block19ItemNawias">)</span>
+                </div>
+                <div class="block19ItemForm floatRight">
+                    {{ input }}
+                </div>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

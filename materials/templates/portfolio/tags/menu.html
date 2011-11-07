@@ -1,0 +1,20 @@
+{% load vbulletin_tags %}
+<div class="hdr_top portfolia_hdr" id="portfolio_menu">
+    <div class="corner">
+        <ul>
+            <li class="sp"><span><!-- --></span></li>
+            <li><a href="{% url portfolio_index %}" title="Portfolia">PORTFOLIA (<span class="num">{{ portfolios_num }}</span>)</a></li>
+            <li class="sp"><span><!-- --></span></li>
+            <li{% if selected == 'najlepsze' %} class="cornerActive"{% endif %}><a href="{% url portfolio_top 'najlepsze' %}" title="Najlepsze">NAJLEPSZE</a></li>
+            <li class="sp"><span><!-- --></span></li>
+            <li{% if selected == 'najnowsze' %} class="cornerActive"{% endif %}><a href="{% url portfolio_top 'najnowsze' %}" title="Najnowsze">NAJNOWSZE</a></li>
+            <li class="sp"><span><!-- --></span></li>
+            <li{% if selected == 'komentowane' %} class="cornerActive"{% endif %}><a href="{% url portfolio_top 'komentowane' %}" title="Komentowane">KOMENTOWANE</a></li>
+            <li class="sp"><span><!-- --></span></li>
+            <li class="{% if selected == 'ulubione' %}cornerActive{% endif %} logged_item" style="display: none;"><a href="{% url portfolio_top 'ulubione' %}" title="Ulubione">ULUBIONE</a></li>
+            <li class="sp logged_item" style="display: none;"><span><!-- --></span></li>
+            <li class="{% if selected == 'znajomi' %}cornerActive{% endif %} logged_item" style="display: none;"><a href="{% url portfolio_top 'znajomi' %}" title="Znajomi">ZNAJOMI</a></li>
+            <li class="createPortfolio oh has_not_portfolio logged_item" style="display: none;"><a href="{% url portfolio_edit_cv %}" title="Stwórz portfolio">STWÓRZ PORTFOLIO</a><div class="createPortfolioArrow floatLeft"><!-- --></div></li>
+        </ul>
+    </div>
+</div>

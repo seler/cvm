@@ -1,0 +1,36 @@
+{% extends 'portfolio/index.html' %}
+
+{% load adv_tags portfolio_tags %}
+
+{% block title %}{{ params.lead_type|title }}  potfolia - {% endblock %}
+{% block description%}{{ params.lead_type|title }} potfolia {% endblock%}
+{% block keywords%}portfolia, {{ params.lead_type }}{%endblock%}
+
+{% block content_top %}
+    {% portfolio_menu params.lead_type %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <ul>
+        <li>
+            <div class="bredcrumbRFirst"><div class="bredcrumbDesc" onclick="location.href='/';">Strona główna</div></div>	
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{% url portfolio_index %}';">portfolia</div></div></div>
+        </li>
+        <li>
+            <div class="bredcrumbDescLast">{{ params.lead_type }}</div>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block portfolio_content_left %}
+    {% portfolio_top params.lead_type %}
+    <div class="bill_bottom">
+        {% comment %}
+        <!-- site=pb;bp=g1;bs=468x60;ucat=budowa;uscat=budowa%2fdomydrewniane -->
+       <div id="bmone2n-248.2.3.5"><img alt="reklama" src="{{ MEDIA_URL }}images/img41.jpg"></div>
+        {% endcomment %}
+        {% adv "468x60" "g1" adv_cat adv_scat request.GET %}
+    </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+<div class="portfolioForms">
+    <form action="{% url portfolio_send_message %}" method="POST">
+        {% csrf_token %}
+        {{ form.portfolio }}
+        <div class="formRow">
+            <label>
+                <span class="portfolioFormName">{{ form.subject.label }}</span>
+                {{ form.subject.errors }}
+                <span class="formText">
+                    {{ form.subject }}
+                </span>
+            </label>
+        </div>
+        <div class="formRow">
+            <label>
+                <span class="portfolioFormName">{{ form.body.label }}</span>
+                {{ form.body.errors }}
+                <span class="formTextarea">
+                    {{ form.body }}
+                </span>
+            </label>
+        </div>
+        <div class="formButton">
+            <ul>
+                <li class="floatLeft">
+                    <div class="formButtonAnuluj">
+                        <a title="Anuluj" href="javascript:;" id="cancel">ANULUJ</a>
+                    </div>
+                </li>
+                <li class="floatRight">
+                    <div class="formButtonClear">
+                        <button type="reset">WYCZYŚĆ</button>
+                    </div>
+                    <div class="formButtonSave">
+                        <button type="submit">WYŚLIJ</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>

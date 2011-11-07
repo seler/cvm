@@ -1,0 +1,25 @@
+{% load util_tags gallery_tags %}
+{% if object_list %}
+    <div class="friends bgWhite oh">
+        <div class="block1Name">
+            <div class="block1NameBG">
+                ZNAJOMI
+            </div>
+        </div>
+        {% for row in object_list|swap_by:"8" %}
+            <ul>
+                {% for friend in row %}
+                    <li>
+                        <div class="friendsImg">
+                            <img src="{% src_tag friend.avatar 100 100 1 %}" alt="{{ friend.get_full_name }}" class="pointer" onclick="location.href='{{ friend.get_absolute_url }}'" />
+                        </div>
+                        <div class="friendsName">
+                            <a href="{{ friend.get_absolute_url }}" title="{{ friend.get_full_name }}">{{ friend.user.first_name }}<br />
+                            {{ friend.friend.last_name }}</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+{% endif %}

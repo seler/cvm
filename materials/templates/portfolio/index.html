@@ -1,0 +1,87 @@
+{% extends 'portfolio/base.html' %}
+
+{% load cache portfolio_tags archipedia_tags vbulletin_tags %}
+
+{% block content_top %}
+    {% portfolio_menu '' %}
+    {% cache 900 portfolio_slideshow_sg %}
+        {% portfolio_slideshow_sg %}
+    {% endcache %}
+{% endblock %}
+    
+{% block portfolio_content %}
+    <div class="bodyBlockLeft floatLeft">
+        {% block portfolio_content_left %}
+            {% cache 900 portfolio_stats %}
+                {% portfolio_stats %}
+            {% endcache %}
+            {% portfolio_lead 'najlepsze' %}
+            {% portfolio_lead 'najnowsze' %}
+            {% portfolio_lead 'komentowane' %}
+        {% endblock %}
+    </div>
+    <div class="bodyBlockRight floatRight">
+        {% block portfolio_content_right %}
+            {% portfolio_filters %}
+            {% include 'includes/adv_300x250_right_1.html' %}
+            <div class="block20 bg333 anonymous_item">
+                <div class="block1Name">
+                    <div class="block1NameBG">
+                        <img src="{{ MEDIA_URL }}images/portfolio.png" alt="portfolio" />
+                    </div>
+                </div>
+                <div class="block20Body">
+                    <form action="{% vb_url %}login.php?do=login" method="post" onsubmit="md5hash(vb_login_password, vb_login_md5password, vb_login_md5password_utf, $show[nopasswordempty])">
+                        <div class="block20Form">
+                            <label>
+                                <span class="block20FormDesc floatLeft">
+                                    Użytkownik
+                                </span>
+                                <span class="block20FormInput floatLeft">
+                                    <input type="text" name="vb_login_username" value="Login" onblur="if(value== '') {value=defaultValue;};" onfocus="if(value==defaultValue) {value='';};"/>
+                                </span>
+                            </label>
+                            <label>
+                                <span class="block20FormDesc floatLeft">
+                                    Hasło
+                                </span>
+                                <span class="block20FormInput floatLeft">
+                                    <input type="password" name="vb_login_password" value="Hasło" onblur="if(value== '') {value=defaultValue;};" onfocus="if(value==defaultValue) {value='';};"/>
+                                </span>
+                            </label>
+                            <div class="block20FormCheckbox">
+                                <span class="block20FormDesc floatLeft">
+                                    <!-- -->
+                                </span>
+                                <label><input type="checkbox" name="cookieuser" checked="checked" />Nie wylogowuj mnie</label>
+                            </div>
+                            <div class="block20FormButton oh">
+                                <span class="block20FormDesc floatLeft">
+                                    <!-- -->
+                                </span>
+                                <ul>
+                                    <li>
+                                    	<input type="hidden" name="securitytoken" value="guest" />
+			                            <input type="hidden" name="do" value="login" /> 
+			                            <input type="hidden" name="s" value="" />
+                                        <input type="hidden" name="url" value="http://www.{{ request.site.domain }}{% url portfolio_after_login %}" />
+			                            <input type="hidden" name="vb_login_md5password" />
+			                            <input type="hidden" name="vb_login_md5password_utf" />
+                                        <button type="submit"><!-- --></button>
+                                    </li>
+                                    <li class="block20Pass">
+                                        <a href="{% vb_url %}login.php?do=lostpw" title="Zapomniałem hasła">Zapomniałem hasła</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% include 'portfolio/includes/co_daje_portfolio.html' %}
+            {% include 'includes/archikalendarium_box.html' %}
+            {% archipedia_lead %}
+            {% include 'includes/tvrama_right.html' %}
+        {% endblock %}
+    </div>
+{% endblock %}

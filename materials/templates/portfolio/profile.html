@@ -1,0 +1,33 @@
+{% extends 'portfolio/base.html' %}
+
+{% load portfolio_tags %}
+
+{% block title %}Portfolio {{ object.user.username }} - {% endblock %}
+{% block description%}Portfolio {{ object.user.username }}{% endblock%}
+{% block keywords%}portfolio, {{ object.user.username }}{%endblock%}
+
+{% block content_top %}
+    {% portfolio_menu '' %}
+    {% portfolio_slideshow object %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <ul>
+        <li>
+            <div class="bredcrumbRFirst"><div class="bredcrumbDesc" onclick="location.href='/';">Strona główna</div></div>	
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{% url portfolio_index %}';">portfolia</div></div></div>
+        </li>
+        <li>
+            <div class="bredcrumbDescLast">prace</div>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block profile_content %}
+    {% portfolio_header object 'work' %}
+    {% for folder in object.folder_set.published.all|slice:":3" %}
+        {% portfolio_folder folder %}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'portfolio/base.html' %}
+
+{% load gallery_tags portfolio_tags paginator_tags %}
+
+{% block title %}News {{ object.user.username }} - {% endblock %}
+{% block description%}news {{ object.user.username }}{% endblock%}
+{% block keywords%}news, {{ object.user.username }}{%endblock%}
+
+{% block breadcrumb %}
+    <ul>
+        <li>
+            <div class="bredcrumbRFirst"><div class="bredcrumbDesc" onclick="location.href='/';">Strona główna</div></div>	
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{% url portfolio_index %}';">portfolia</div></div></div>
+        </li>
+        <li>
+            <div class="bredcrumbL"><div class="bredcrumbR"><div class="bredcrumbDesc" onclick="location.href='{{ object.get_absolute_url }}';">{{ object.user.username }}</div></div></div>
+        </li>
+        <li>
+            <div class="bredcrumbDescLast">news</div>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block profile_content %}
+    {% portfolio_header object 'news' %}
+    <div class="news">
+        <a id="top"><!-- --></a>
+        <div class="block17 oh bgWhite">
+            <div class="block1Name">
+                    <div class="block1NameBG">
+                        NEWSY
+                    </div>
+                </div>
+            <div class="strony floatRight">
+                {% paginator_tag_query page_obj query_dict %}
+            </div>
+        </div>
+        <div class="block23 bgWhite newsBodyForm displayNone admin_item{{ object.user_id }}">
+            <div class="block17 block17Cor">
+                <div class="block1NameNews">
+                    <div class="block1NameBGNews">
+                        {% if form.instance.id %}EDYTUJ{% else %}DODAJ{% endif %} NEWS
+                    </div>
+                </div>
+            </div>
+            <div class="newsBody oh">
+                <form action="." method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.portfolio }}
+                    <input type="hidden" name="preview" value="" />
+                    <div class="newsBodyLeft floatLeft">
+                        <div class="oh">
+                            <label>
+                                <span class="commentForm">{{ form.title.label }}:</span>
+                                {{ form.title.errors }}
+                                {{ form.title }}
+                            </label>
+                        </div>
+                        <div class="oh">
+                            <label>
+                                <span class="commentForm">{{ form.description.label }}:</span>
+                                {{ form.description.errors }}
+                                {{ form.description }}
+                        </div>
+                        <div class="newsSumit">
+                            <ul>
+                                <li class="newsSavePublish">
+                                    <a title="Zapisz i publikuj" href="javascript:;" id="publish">Zapisz i publikuj</a>
+                                </li>
+                                {% if not form.instance.id or not form.instance.active %}
+                                    <li class="newsSave">
+                                        <a title="Zapisz" href="javascript:;" id="preview">Zapisz</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="newsBodyRight floatRight">
+                        <label class="newBodyFormAddImage">
+                            <span>{{ form.photo.label }}</span>
+                            {{ form.photo.errors }}
+                            {{ form.photo }}
+                        </label>
+                        <label>
+                            <span>Opis zdjęcia</span>
+                            <textarea name="#" cols="50" rows="4"></textarea>
+                        </label>
+                        <label class="marginBottom0Autor">
+                            <span>{{ form.photo_author.label }}</span>
+                            {{ form.photo_author.errors }}
+                            {{ form.photo_author }}
+                        </label>
+                        <label class="newBodyFormCheckbox">
+                            <input type="checkbox" name="#"><span>Wyrażam zgodę na publikację zdjęcia</span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% for news in object_list %}
+            <div class="block23 bgWhite">
+                <div class="block17 oh">
+                    <div class="block1Name">
+                        <div class="block1NameBG">
+                            {{ news.pub_date|date:"d.m.Y" }}
+                        </div>
+                    </div>
+                </div>
+                <div class="newsBody oh">
+                    <div class="newsBodyLeft floatLeft">
+                        <h1>{{ news.title|striptags }}</h1>
+                        <p>{{ news.description }}</p>
+                        <div class="tools admin_item{{ object.user_id }}" style="display: none;">
+                            <a title="Edytuj" href="{% url portfolio_edit_news object.id news.id %}">Edytuj</a>
+                            <a title="Usuń" href="{% url portfolio_remove_news object.id news.id %}">Usuń</a>
+                        </div>
+                    </div>
+                    {% if news.photo %}
+                        <div class="newsBodyRight floatRight">
+                            <div class="newBodyRightImg">
+                                <img src="{% src_tag news.photo 277 183 %}" alt="{{ news.photo_description|striptags }}" />
+                            </div>
+                            <p>{{ news.photo_description }}</p>
+                            {% if news.photo_author %}
+                                <div class="newBodyRightAutor">
+                                    Fot: <strong>{{ news.photo_author }}</strong>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="block17 oh bgWhite">
+            <div class="block16Item1Size">
+                <div class="block16Item1">
+                    <div class="block16Item1Arrow">
+                        <span class="pointer" onclick="location.href='#top';">do góry</span>
+                    </div>
+                </div>
+            </div>
+            <div class="strony floatRight">
+                {% paginator_tag_query page_obj query_dict %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

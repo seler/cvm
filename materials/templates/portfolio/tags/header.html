@@ -1,0 +1,75 @@
+{% load gallery_tags articles_tags %}
+{% if portfolio %}
+
+<div class="hdr_top portfolia_hdr" id="portfolio_header">
+    <div class="corner">
+        <div class="cornerLeft floatLeft">
+            <img src="{% src_tag portfolio.photo 40 40 1 %}" alt="{{ portfolio.get_full_name|striptags }}" class="pointer" onclick="location.href='{{ portfolio.get_absolute_url }}';" />
+            <a href="{{ portfolio.get_absolute_url }}" title="{{ portfolio.get_full_name|striptags }}">{{ portfolio.get_full_name|truncate_chars:15 }}</a>
+        </div>
+        <ul>
+            <li class="adminImg admin_item{{ portfolio.user_id }}"></li>
+            <li class="sp"><span><!-- --></span></li>
+            <li{% if selected == 'work' %} class="cornerActive"{% endif %}><a href="{{ portfolio.get_absolute_url }}" title="Prace {{ portfolio.get_full_name|striptags }}">PRACE (<span class="num">{{ portfolio.get_work_num }}</span>)</a></li>
+            <li class="sp"><span><!-- --></span></li>
+            <li{% if selected == 'cv' %} class="cornerActive"{% endif %}><a href="{% url portfolio_cv portfolio.id %}" title="Biogram {{ portfolio.get_full_name|striptags }}">BIOGRAM</a></li>
+            <li class="sp"><span><!-- --></span></li>
+            <li{% if selected == 'news' %} class="cornerActive"{% endif %}><a href="{% url portfolio_news portfolio.id %}" title="News {{ portfolio.get_full_name|striptags }}">NEWS</a></li>
+            <li class="sp"><span><!-- --></span></li>
+            <li{% if selected == 'contact' %} class="cornerActive"{% endif %}><a href="{% url portfolio_contact portfolio.id %}" title="Kontakt {{ portfolio.get_full_name|striptags }}">KONTAKT</a></li>
+            <li class="sp"><span><!-- --></span></li>
+            <li id="your_note" style="display: none;" class="createPortfolio oh">Twoja ocena:</li>
+            <li>
+                <div class="rating oh" id="header_rating">	
+                    {% for rating in portfolio.get_rating %}
+                        <span>
+                            <img class="rating_yellow" {% if not rating %}style="display: none;"{% endif %} alt="Oceń na {{ forloop.counter }}" rel="{{ forloop.counter }}" src="{{ MEDIA_URL }}images/rating_yellow_big.png" />
+                            <img class="rating_silver" {% if rating %}style="display: none;"{% endif %} alt="Oceń na {{ forloop.counter }}" rel="{{ forloop.counter }}" src="{{ MEDIA_URL }}images/rating_silver_big.png" />
+                        </span>
+                    {% endfor %}
+                    <form action="{% url portfolio_rate portfolio.id %}" method="post">
+                        {% csrf_token %}
+                        <input id="rating_field" type="hidden" name="rating" value="{{ portfolio.get_total_rating }}" />
+                    </form>
+                </div>
+            </li>
+            <li class="createPortfolio oh admin_hide_item{{ portfolio.user_id }}"><a href="javascript:;" title="Oceń profil" id="rate_profile">OCEŃ PROFIL</a><div class="createPortfolioArrow floatLeft"><!-- --></div></li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        function rate(rating) {
+            $('#header_rating img.rating_yellow').slice(rating).hide();
+            $('#header_rating img.rating_silver').slice(rating).show();
+            $('#header_rating img.rating_yellow').slice(0, rating).show();
+            $('#header_rating img.rating_silver').slice(0, rating).hide();
+            $('#rating_field').val(rating);
+        }
+        var rating = $.cookie('archiramaportfoliovote{{ portfolio.id }}');
+        if (rating) {
+            $('#rate_profile').parent().hide();
+            $('#your_note').show();
+            rate(rating);
+        } else {
+            $('#header_rating img').click(function() {
+                var rating = $(this).attr('rel');
+                rate(rating);
+                $('#header_rating img').unbind('mouseover');
+            });
+            $('#header_rating img').mouseover(function() {
+                var rating = $(this).attr('rel');
+                rate(rating);
+            });
+            $('#rate_profile').click(function() {
+                $('#header_rating form').submit();
+                return false;
+            });
+        }
+		// {% if user.is_authenticated and user == portfolio.user %}
+		      $('#portfolio_header .admin_item{{ portfolio.user_id }}').load('{% url portfolio_admin_menu %}');
+	    // {% endif %}
+    });
+</script>
+<div id="folders_block" style="display: none;"></div>
+{% endif %}
