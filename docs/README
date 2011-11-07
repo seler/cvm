@@ -34,11 +34,6 @@ How CVM works?
  4. User Shares or Publish Resume
  5. User edits or creates new Resumes
 
-asdfasdfasdf
-------------
-
-bla bla bla
-
 Structure
 =========
 
@@ -146,6 +141,3 @@ Model fields:
 :from date:
 :to date:
 :current:
-
-
-
