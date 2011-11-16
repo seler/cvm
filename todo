@@ -1,0 +1,5 @@
+model Photo razem polem CropImageField -seler
+templatetag do miniaturek z obrazków z pola CropImageField -seler
+model Identity -seler
+illu - sobie sam napisz :p
+
