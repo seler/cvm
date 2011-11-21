@@ -1,6 +1,8 @@
 syntax: glob
 *~
 *_
+*.pyc
+*.db
 
 syntax: regexp
 ^\.project
