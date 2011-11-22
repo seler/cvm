@@ -72,6 +72,20 @@ def generate_new_image(original_image_path, image_path, mode, width, height):
 
     return image_path
 
+def process_image(original_image, width, height, mode):
+    original_image_path = original_image.name
+
+    image_path = os.path.join(settings.MEDIA_ROOT, generate_image_path(mode, width, height, original_image_path))
+
+    storage = get_storage_class(settings.DEFAULT_FILE_STORAGE)()
+
+    if not storage.exists(image_path):
+        if not storage.exists(original_image_path):
+            image_path = generate_error_image(width, height, getattr(settings, 'IMAGE_ERROR_TEXT'), None)
+        else:
+            image_path = generate_new_image(original_image_path, image_path , mode, width, height)
+
+    return settings.MEDIA_URL + generate_image_path(mode, width, height, image_path)
 
 class ImageNode(template.Node):
     """
@@ -88,20 +102,8 @@ class ImageNode(template.Node):
         self.context_name = context_name
 
     def render(self, context):
-        original_image_path = self.original_image.resolve(context).name
 
-        image_path = os.path.join(settings.MEDIA_ROOT, generate_image_path(self.mode, self.width, self.height, original_image_path))
-
-        storage = get_storage_class(settings.DEFAULT_FILE_STORAGE)()
-
-        if not storage.exists(image_path):
-            if not storage.exists(original_image_path):
-                image_path = generate_error_image(self.width, self.height, getattr(settings, 'IMAGE_ERROR_TEXT'), None)
-            else:
-                image_path = generate_new_image(original_image_path, image_path , self.mode, self.width, self.height)
-
-        result = settings.MEDIA_URL + generate_image_path(self.mode, self.width, self.height, image_path)
-
+        result = process_image(self.original_image.resolve(context), self.width, self.height, self.mode)
 
         if self.context_name:
             context[self.context_name] = result
