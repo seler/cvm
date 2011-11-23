@@ -57,13 +57,16 @@ class Resume(models.Model):
 
 
 class Section(models.Model):
-    TYPE_LIST = 1
-    TYPE_DATELIST = 2
-    TYPE_DEFINITIONLIST = 3
+    TYPE_LIST = 1             # deprecated?
+    TYPE_DATELIST = 2         # html ul with dates?
+    TYPE_DEFINITIONLIST = 3   # html dl tag
+    TYPE_UNORDEREDLIST = 4    # html ul tag
+    TYPE_ORDEREDLIST = 5      # html ol tag
     TYPE_CHOICES = (
-         (TYPE_LIST, _(u'plain list')),
          (TYPE_DATELIST, _(u'date list')),
-         (TYPE_DEFINITIONLIST, _(u'definition list'))
+         (TYPE_DEFINITIONLIST, _(u'definition list')),
+         (TYPE_UNORDEREDLIST, _(u'bulleted list')),
+         (TYPE_OREREDLIST, _(u'numbered list')),
     )
     resume = models.ForeignKey('Resume', verbose_name=_(u'resume'))
     title = models.CharField(verbose_name=_(u'title'), max_length=100)
