@@ -1,4 +1,10 @@
 from django.views.generic import DetailView
 
-class ResumeDetailView(DetailView):
+from .models import Resume
 
+class ResumeDetailView(DetailView):
+    queryset = Resume.objects.public()
+
+    def get_object(self, queryset=None):
+        queryset = self.get_queryset().filter(identity__user__username=self.kwargs.get('username'))
+        return DetailView.get_object(self, queryset=queryset)

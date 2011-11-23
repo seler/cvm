@@ -3,6 +3,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from .managers import ResumeManager
+from django.core.urlresolvers import reverse
 
 class Template(models.Model):
     name = models.CharField(max_length=256, verbose_name=_(u'name'))
@@ -22,8 +24,8 @@ class TemplateVariant(models.Model):
     slug = models.SlugField(max_length=64, verbose_name=_('slug'))
 
     class Meta:
-        verbose_name = _(u'variant')
-        verbose_name_plural = _(u'variants')
+        verbose_name = _(u'template variant')
+        verbose_name_plural = _(u'template variants')
 
     def __unicode__(self):
         return '%s/%s' % (self.template.name, self.name)
@@ -33,6 +35,7 @@ class Resume(models.Model):
     identity = models.ForeignKey('accounts.Identity',
                                  verbose_name=_(u'identity'))
     name = models.CharField(verbose_name=_(u'name'), max_length=256)
+    slug = models.SlugField(verbose_name=_(u'slug'), max_length=64)
     creation_date = models.DateTimeField(verbose_name=_(u'creation date'),
                                          auto_now_add=True)
     modification_date = models.DateTimeField(
@@ -48,12 +51,23 @@ class Resume(models.Model):
             verbose_name=_(u'is public'),
             default=False,)
 
+    objects = ResumeManager()
+
     class Meta:
         verbose_name = _(u'resume')
         verbose_name_plural = _(u'resumes')
 
+    def validate_unique(self, exclude=None):
+        # TODO: validate that resume.slug and identity.user.username 
+        # are unique together
+        super(Resume, self).validate_unique(self, exclude=exclude)
+
     def __unicode__(self):
         return '%s/%s' % (self.identity.name, self.name)
+
+    def get_absolute_url(self):
+        kwargs = {'username': self.identity.user.username, 'slug':self.slug}
+        return reverse('resume_detail', kwargs=kwargs)
 
 
 class Section(models.Model):

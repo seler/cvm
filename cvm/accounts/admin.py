@@ -8,7 +8,7 @@ class IdentityFieldAdminInline(admin.TabularInline):
 
 
 class IdentityAdmin(admin.ModelAdmin):
-    list_display = ('system_name', 'avatar_image', 'user')
+    list_display = ('name', 'avatar_image', 'user')
     list_filter = ('user',)
     list_select_related = True
     search_fields = ('name',)
