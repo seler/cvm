@@ -7,7 +7,7 @@ class Identity(models.Model):
                                    help_text=_("""put here anything so you can 
                                    identify your identity"""), max_length=64)
     user = models.ForeignKey('auth.User', verbose_name=_(u'user'))
-    avatar = models.ImageField(upload_to='avatar', verbose_name=_(u'avatar'))
+    avatar = models.ImageField(upload_to='avatar', verbose_name=_(u'avatar'), blank=True)
 
 
     class Meta:

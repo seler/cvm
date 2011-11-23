@@ -117,7 +117,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-
+    
+    'cvm.cvm1',
     'cvm.accounts'
 )
 
