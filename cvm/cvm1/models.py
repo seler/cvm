@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import datetime
-
-from django.contrib.auth.models import User
 from django.db import models
-from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -61,13 +57,19 @@ class Resume(models.Model):
 
 
 class Section(models.Model):
-    SEC_TYPES = list(enumerate([u'', u'wypunktowana', u'datowana', u'słownikowa']))  # TODO: ustawic stale zamiast enumerte
-
+    TYPE_LIST = 1
+    TYPE_DATELIST = 2
+    TYPE_DEFINITIONLIST = 3
+    TYPE_CHOICES = (
+         (TYPE_LIST, _(u'plain list')),
+         (TYPE_DATELIST, _(u'date list')),
+         (TYPE_DEFINITIONLIST, _(u'definition list'))
+    )
     resume = models.ForeignKey('Resume', verbose_name=_(u'resume'))
     title = models.CharField(verbose_name=_(u'title'), max_length=100)
-    sec_type = models.PositiveSmallIntegerField(
+    type = models.PositiveSmallIntegerField(
             verbose_name=_(u'type'),
-            choices=SEC_TYPES,)
+            choices=TYPE_CHOICES)
 
     class Meta:
         verbose_name = _(u'section')
@@ -87,6 +89,7 @@ class SectionEntry(models.Model):
             verbose_name=_(u'to date'), 
             blank=True,
             null=True)
+    current = models.BooleanField(default=False)
     title = models.CharField(
             verbose_name=_(u'title'),
             blank=True,
