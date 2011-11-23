@@ -43,17 +43,17 @@ class Resume(models.Model):
             verbose_name=_(u'template variant'),)
     active = models.BooleanField(
             verbose_name=_(u'is active'),
-            defult=False,)
+            default=False,)
     public = models.BooleanField(
             verbose_name=_(u'is public'),
-            default=False, )
+            default=False,)
 
     class Meta:
         verbose_name = _(u'resume')
         verbose_name_plural = _(u'resumes')
 
     def __unicode__(self):
-        return '%s/%s' % (self.identity.system_name, self.name)
+        return '%s/%s' % (self.identity.name, self.name)
 
 
 class Section(models.Model):
@@ -66,7 +66,7 @@ class Section(models.Model):
          (TYPE_DATELIST, _(u'date list')),
          (TYPE_DEFINITIONLIST, _(u'definition list')),
          (TYPE_UNORDEREDLIST, _(u'bulleted list')),
-         (TYPE_OREREDLIST, _(u'numbered list')),
+         (TYPE_ORDEREDLIST, _(u'numbered list')),
     )
     resume = models.ForeignKey('Resume', verbose_name=_(u'resume'))
     title = models.CharField(verbose_name=_(u'title'), max_length=100)
@@ -85,11 +85,11 @@ class Section(models.Model):
 class SectionEntry(models.Model):
     section = models.ForeignKey(Section)
     from_date = models.DateField(
-            verbose_name=_(u'from date'), 
-            blank=True, 
+            verbose_name=_(u'from date'),
+            blank=True,
             null=True)
     to_date = models.DateField(
-            verbose_name=_(u'to date'), 
+            verbose_name=_(u'to date'),
             blank=True,
             null=True)
     current = models.BooleanField(default=False)
