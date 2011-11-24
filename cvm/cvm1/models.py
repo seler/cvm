@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
+from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .managers import ResumeManager
-from django.core.urlresolvers import reverse
 
 class Template(models.Model):
     name = models.CharField(max_length=256, verbose_name=_(u'name'))
@@ -29,6 +30,9 @@ class TemplateVariant(models.Model):
 
     def __unicode__(self):
         return '%s/%s' % (self.template.name, self.name)
+
+    def get_template_name(self):
+        return '%s/%s/%s.%s' % (settings.RESUME_TEMPLATES_DIR_NAME, self.template.slug, self.slug, settings.RESUME_TEMPLATES_FORMAT)
 
 
 class Resume(models.Model):
@@ -69,13 +73,15 @@ class Resume(models.Model):
         kwargs = {'username': self.identity.user.username, 'slug':self.slug}
         return reverse('resume_detail', kwargs=kwargs)
 
+    def get_template_name(self):
+        return self.template_variant.get_template_name()
+
 
 class Section(models.Model):
-    TYPE_LIST = 1             # deprecated?
-    TYPE_DATELIST = 2         # html ul with dates?
-    TYPE_DEFINITIONLIST = 3   # html dl tag
-    TYPE_UNORDEREDLIST = 4    # html ul tag
-    TYPE_ORDEREDLIST = 5      # html ol tag
+    TYPE_DATELIST = 1         # html ul with dates?
+    TYPE_DEFINITIONLIST = 2   # html dl tag
+    TYPE_UNORDEREDLIST = 3    # html ul tag
+    TYPE_ORDEREDLIST = 4      # html ol tag
     TYPE_CHOICES = (
          (TYPE_DATELIST, _(u'date list')),
          (TYPE_DEFINITIONLIST, _(u'definition list')),

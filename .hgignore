@@ -7,4 +7,5 @@ syntax: glob
 syntax: regexp
 ^\.project
 ^\.pydevproject
+^\.settings
 ^cvm/media/

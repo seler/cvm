@@ -108,6 +108,10 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+# TEMPLATE_DIRS/RESUME_TEMPLATES_DIR_NAME/template_name/template_variant.RESUME_TEMPLATES_FORMAT
+RESUME_TEMPLATES_DIR_NAME = 'templates'
+RESUME_TEMPLATES_FORMAT = 'html'
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -117,7 +121,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    
+
     'cvm.cvm1',
     'cvm.accounts'
 )
