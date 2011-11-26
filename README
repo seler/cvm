@@ -1,0 +1,143 @@
+===
+CVM
+===
+
+------------------------
+Curriculum Vitae Manager
+------------------------
+
+.. contents:: Table of contents
+
+Introduction
+============
+
+What is CVM?
+------------
+
+It's a web application, that allows it's users to easily manage, share and publish their resumes.
+It allows the user to create multiple identities for the purpose of managing resumes of multiple people, like family or friends. Each identity is able to contain multiple resumes of a person, so that each resume can be created for a specific job application. The user is able to choose a layout for the resume from templates designed by professional graphic artists.
+
+Publication and Sharing
+-----------------------
+
+The user is able to generate PDF files for printing or electronic use. The user is also able to publish a resume on the portal or to send a link, allowing the manager to view a resume for a limited period of time.
+
+How CVM works?
+--------------
+
+ 1. User registers
+ 2. User creates new Resume
+ 3. User fills in Resume
+    a. User creates or chooses already created Identity
+    b. User uploads or chooses already uploaded Photo
+    c. Users fills in Sections and Entries
+ 4. User Shares or Publish Resume
+ 5. User edits or creates new Resumes
+
+Structure
+=========
+
+User
+----
+
+Model containg basic user account information. All Resumes, Identities, Photos, Payments, Invoices etc are tied to User instance.
+
+Fields:
+
+:username: 
+:first name:
+:last name:
+:email:
+:password:
+:last login:
+:date joined:
+
+Identity
+--------
+
+Model containing identity details. All it's fields are custom. Uppon creation there are some predefined and prepopulated fields:
+
+:first name: prepopulated with Users first name
+:last name: prepopulated with Users last name
+:email: prepopulated with Users email
+:phone no.: empty
+:address line 1: empty # TODO: or maybe it's better to have form as ``textarea``?
+:address line 2: empty
+:address line 3: empty
+
+Model fields:
+
+:user: foreign key to User instance
+:fields: custom IdentityFields
+
+
+IdentityField
+~~~~~~~~~~~~~
+
+Custom Identity fields.
+
+Model fields:
+
+:name:
+:value:
+:order:
+
+Photo
+-----
+
+Model containing original uploaded photo, cropped version and thumbnail.
+
+Model fields:
+
+:image:
+
+# TODO: uzupelnic i zastanowic sie jak to rozwiazac
+
+Resume
+------
+
+# TODO: write description
+
+Model fields:
+
+:user: 
+:identity:
+:photo:
+:creation date:
+:modification date:
+:template variant: 
+:cos jeszcze?:
+
+Template
+--------
+
+:name:
+:slug: it will be name of folder where variants are (ie: if slug is 'name' then folder location is 'templates/templates/name/'
+
+TemplateVariant
+~~~~~~~~~~~~~~~
+
+:template:
+:name:
+:slug: template file name w/o '.html'
+
+Section
+-------
+
+Resume sections ie. Experience, Education, Skills etc.
+
+Model fields:
+
+:name:
+:type: choices: bulleted, dated, ...
+
+SectionEntry
+~~~~~~~~~~~~
+
+Section entry.
+
+Model fields:
+
+:from date:
+:to date:
+:current:
