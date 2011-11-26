@@ -71,7 +71,7 @@ class Resume(models.Model):
     def validate_unique(self, exclude=None):
         # TODO: validate that resume.slug and identity.user.username 
         # are unique together
-        super(Resume, self).validate_unique(self, exclude=exclude)
+        pass
 
     def __unicode__(self):
         return '%s/%s' % (self.identity.name, self.name)

@@ -131,7 +131,8 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 
     'cvm.cvm1',
-    'cvm.accounts'
+    'cvm.accounts',
+    'cvm.sharing',
 )
 
 # A sample logging configuration. The only tangible logging
