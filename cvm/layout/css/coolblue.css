@@ -2,8 +2,7 @@
 	Template Name : CoolBlue
 	Template Code : S-0031
 	Version : 1.0
-	Author : Erwin Aligam
-	Author URI : http://www.styleshout.com/
+	Authors : Erwin Aligam (www.styleshout.com), Rafał Selewońko <rafal@selewonko.com>
 	Last Date Modified : March 10, 2010
  -------------------------------------------------------------------------------- */
 
@@ -14,7 +13,7 @@ body {
 	font: 12px/170% 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
 	color: #777;
 	margin: 0; padding: 0;
-	background: url(../images/bg.jpg);
+	background: url(../img/bg.jpg);
 }
 /* links */
 a:link, a:visited {
@@ -97,7 +96,7 @@ blockquote {
   	margin: 10px 25px;
   	padding: 10px 20px 10px 32px;
   	border: 1px solid #F0F0F0;
-  	background: #f8f8f8 url(../images/quote.gif) no-repeat 12px 12px;
+  	background: #f8f8f8 url(../img/quote.gif) no-repeat 12px 12px;
   	font-weight: normal;
   	font-size: 17px;
   	line-height: 1.5em;
@@ -186,7 +185,7 @@ input.button {
   float: left;
   height: 200px;
   width: 100%;
-  background: url(../images/header-bg.jpg) repeat-x;
+  background: url(../img/header-bg.jpg) repeat-x;
 }
 #header {
   position: relative;
@@ -197,14 +196,16 @@ input.button {
 #header h1#logo-text { margin: 0; padding: 0; }
 #header h1#logo-text a {
 	position: absolute;
-	margin: 0; padding: 0 5px 0 0;
-	font: bold 55px 'Trebuchet MS', 'Helvetica Neue', Arial, Sans-Serif;
-	letter-spacing: -4px;
-	color: #333;
+	margin: 0; padding: 0;
 	text-decoration: none;
+	background: transparent url(../img/logo.png) 0 0 no-repeat;
+	display:block;
+	width: 405px;
+	height: 120px;
+	text-indent: -999999999px;
+	overflow: hidden;
 
-  	/* change the values of top and left to adjust the position of the logo*/
-	top: 82px; left: 25px;
+	top: 72px; left: 10px;
 }
 #header p#slogan {
 	position: absolute;
@@ -221,17 +222,16 @@ input.button {
 	top: 142px; left: 30px;
 }
 
-/* RSS */
-#header p#rss {
+/* user-nav */
+#header #user-nav {
   position: absolute;
-  width: 175px;
-  height: 50px;
-  top: 15px;  right: 17px;
-  padding: 0; margin: 0;
-  text-align: right;
+  width: 500px;
+  right: 0;
+  position: absolute;
+  top: 25px;
+  margin: 0; padding: 0;
 }
-#header p#rss a {
-  background: transparent url(../images/rss.gif) no-repeat left center;
+/*#header #user-nav a {
   color: #baa7a7;
   height: 30px;
   font: bold 12px 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
@@ -239,7 +239,7 @@ input.button {
   padding: 10px 0 0 30px;
   display: block;
 }
-#header p#rss a:hover { color: #fff; }
+#header #user-nav a:hover { color: #fff; }*/
 
 /* Quick Search */
 form#quick-search {
@@ -254,7 +254,7 @@ fieldset.search {
 	border: none;
    width: 250px; height: 40px;
    padding: 0; margin: 0;
-   background: url(../images/search.gif) no-repeat;
+   background: url(../img/search.gif) no-repeat;
 }
 .search input {
   	border: none;
@@ -279,7 +279,7 @@ fieldset.search {
   	height: 40px;
   	cursor: pointer;
   	text-indent: -9999px;
-  	background: #fbc900 url(../images/search.gif) no-repeat top right;
+  	background: #fbc900 url(../img/search.gif) no-repeat top right;
 }
 
 /*  navigation  */
@@ -289,30 +289,33 @@ fieldset.search {
 	margin: 0; padding: 0;
 	width: 750px;
 }
-#header #nav ul {
-	float: left;	
-	list-style: none;
-	margin: 0; padding: 0;
-	height: 45px;
+#header #nav ul, #header #user-nav ul {
+    float: left;    
+    list-style: none;
+    margin: 0; padding: 0;
+    height: 45px;
 }
-#header #nav ul li {
+#header #user-nav ul {
+    float: right !important;
+}
+#header #nav ul li, #header #user-nav ul li {
 	float: left;
 	margin: 0; padding: 0;			
 }
-#header #nav ul li a {
+#header #nav ul li a, #header #user-nav ul li a {
 	float:left;
 	margin: 0;
-	padding: 0 15px 29px 15px;
+	padding: 0 10px 29px 10px;
 	color: #baa7a7;
 	font: bold 12px 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
 }
-#header #nav ul li a:hover, 
-#header #nav ul li a:active {
+#header #nav ul li a:hover, #header #user-nav ul li a:hover, 
+#header #nav ul li a:active, #header #user-nav ul li a:active {
 	border: none;
 	color: #fff;
 }
-#header #nav ul li#current a {
-	background: transparent url(../images/current.jpg) no-repeat center bottom;
+#header #nav ul li#current a, #header #user-nav ul li#current a {
+	background: transparent url(../img/current.jpg) no-repeat center bottom;
 	color: #fff;
 }
 
@@ -328,7 +331,7 @@ fieldset.search {
    width: 1000px;
    margin: 0 auto;
    padding: 0 0 20px 0;
-   background: #FFF url(../images/content.gif) repeat-y center top;
+   background: #FFF url(../img/content.gif) repeat-y center top;
    overflow: hidden;
 }
 
@@ -414,7 +417,7 @@ fieldset.search {
 	line-height: 1.5em;
 	padding: 8px 5px 8px 20px;
 	margin: 0;
-	background: url(../images/document.gif) no-repeat 3px 11px;
+	background: url(../img/document.gif) no-repeat 3px 11px;
 }
 * html body .popular ul li { height: 1%; }
 .popular ul li a:link,
@@ -464,7 +467,7 @@ fieldset.search {
 	padding: 0 0 10px 0;
    margin: 0;
    width: 100%;
-	background: url(../images/footer-line.gif) repeat-x left bottom;
+	background: url(../img/footer-line.gif) repeat-x left bottom;
 
 	/* border-bottom: 1px solid #326B8D;  */
 }
@@ -505,14 +508,14 @@ p.thumbs img {
 	text-align: left;
 	margin-left: 20px;
    padding: 0;
-	background: url(../images/footer-line.gif) repeat-x left top;
+	background: url(../img/footer-line.gif) repeat-x left top;
 }
 .recent-comments ul li {
 	list-style: none;
 	font-size: 12px;
 	line-height: 1.5em;
 	padding: 7px 5px 7px 20px;
-	background: url(../images/speech_bubble.gif) no-repeat 3px 11px;
+	background: url(../img/speech_bubble.gif) no-repeat 3px 11px;
 }
 * html body .recent-comments ul li { height: 1%; }
 .recent-comments ul li a:link,
@@ -524,7 +527,7 @@ p.thumbs img {
 
 /* footer-list */
 .footer-list ul {
-	background: url(../images/footer-line.gif) repeat-x left top;
+	background: url(../img/footer-line.gif) repeat-x left top;
 	list-style: none;
 	padding: 0;
 	margin-left: 20px;
@@ -567,7 +570,7 @@ ul.subscribe-stuff li img {
 	font-size: .9em;
 	color: #C2DBE7;
    overflow: hidden;
-   background: url(../images/footer-line.gif) repeat-x left top;
+   background: url(../img/footer-line.gif) repeat-x left top;
 }
 #footer-bottom a { color: #fff; }
 #footer-bottom a:hover { color: #99CCFF; }
@@ -653,7 +656,7 @@ ul.subscribe-stuff li img {
 
 /* dateinfo */
 .left p.dateinfo {
-  background: url(../images/date-bg.gif) no-repeat;
+  background: url(../img/date-bg.gif) no-repeat;
   height: 83px;
   width: 68px;
   margin: 12px 0 0 70px;
@@ -701,11 +704,11 @@ ul.subscribe-stuff li img {
 }
 * html body .left .post-meta ul li { height: 1%; }
 
-.left .post-meta ul.tags li { background: url(../images/tag.gif) no-repeat 2px center; }
-.left .post-meta ul li.user { background: url(../images/user.gif) no-repeat 2px center; }
-.left .post-meta ul li.time { background: url(../images/clock.gif) no-repeat 2px center; }
-.left .post-meta ul li.comment { background: url(../images/comment.gif) no-repeat 2px center; }
-.left .post-meta ul li.permalink { background: url(../images/permalink.gif) no-repeat 2px center; }
+.left .post-meta ul.tags li { background: url(../img/tag.gif) no-repeat 2px center; }
+.left .post-meta ul li.user { background: url(../img/user.gif) no-repeat 2px center; }
+.left .post-meta ul li.time { background: url(../img/clock.gif) no-repeat 2px center; }
+.left .post-meta ul li.comment { background: url(../img/comment.gif) no-repeat 2px center; }
+.left .post-meta ul li.permalink { background: url(../img/permalink.gif) no-repeat 2px center; }
 
 .left .post-meta ul li a { color: #147DB6; }
 .left .post-meta ul li a:hover { color: #333; }
