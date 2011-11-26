@@ -1,0 +1,4 @@
+
+    resume = {{ object.resume.name }} {{HOST}}{{ object.get_absolute_url }} 
+    from_date = {{ object.from_date }}
+    to_date = {{ object.to_date }}

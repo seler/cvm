@@ -18,6 +18,33 @@ class Identity(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_email(self):
+        try:
+            email_qs = IdentityField.objects.filter(type=IdentityField.TYPE_EMAIL, identity=self)[:1]
+            email = email_qs.get()
+        except IdentityField.DoesNotExist:
+            email = self.user.email
+        return email
+
+
+    def get_fields(self):
+        fields = []
+        for field in self.identity_fields.all():
+            fields.append(field.name, field.value, field.get_type_display())
+        return fields
+
+    def get_field_names(self):
+        names = []
+        for field in self.identity_fields.all():
+            names.append(field.name)
+        return names
+
+    def get_field_values(self):
+        values = []
+        for field in self.identity_fields.all():
+            values.append(field.value)
+        return values
+
 
 class IdentityField(models.Model):
     TYPE_STRING = 0
@@ -28,7 +55,7 @@ class IdentityField(models.Model):
         (TYPE_STRING, _(u'email address')),
         (TYPE_STRING, _(u'url address'))
     )
-    identity = models.ForeignKey('Identity', verbose_name=_('identity'))
+    identity = models.ForeignKey('Identity', verbose_name=_('identity'), related_name='identity_fields')
     name = models.CharField(max_length=64, verbose_name=_(u'field name'))
     value = models.CharField(max_length=512, verbose_name=_(u'field value'))
     type = models.SmallIntegerField(verbose_name=_(u'field type'),
