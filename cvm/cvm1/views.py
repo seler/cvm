@@ -3,7 +3,6 @@ from django.views.generic import DetailView
 from .models import Resume
 
 class ResumeDetailView(DetailView):
-
     def get_queryset(self):
         self.queryset = Resume.objects.qs_for_view(self.request, self.kwargs.get('username'), self.kwargs.get('slug'))
         return self.queryset._clone()
