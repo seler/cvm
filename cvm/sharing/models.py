@@ -47,7 +47,7 @@ class Share(models.Model):
         self.send_email(update)
 
     def send_email(self, update=False):
-        email_to = [self.email, self.resume.identity.user.email]
+        email_to = [self.email]
         message, html_message = self._get_email_message(update=update)
         email_from = u'%s <%s>' % (self.resume.identity.name, self.resume.identity.get_email())
         subject = _(u'%s sends you his/her resume') % (self.resume.identity.name)
