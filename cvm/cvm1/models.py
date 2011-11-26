@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 
+import os
+
+from xhtml2pdf import pisa
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.template.context import Context
+from django.template.defaultfilters import slugify
+from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _
 
 from .managers import ResumeManager
@@ -75,6 +82,18 @@ class Resume(models.Model):
 
     def get_template_name(self):
         return self.template_variant.get_template_name()
+
+    def get_pdf_filename(self):
+        username = slugify(self.identity.user.username)
+        return 'resume/pdf/%s/%s.pdf' % (username, self.slug)
+
+    def generate_pdf(self):
+        t = get_template(self.get_template_name())
+        c = Context({'object': self, 'STATIC_URL': settings.STATIC_URL})
+        filename = os.path.join(settings.MEDIA_ROOT, self.get_pdf_filename())
+        html = t.render(c)
+        return pisa.CreatePDF(html, file(filename, "wb"))
+    generate_pdf.alters_data = True
 
 
 class Section(models.Model):
