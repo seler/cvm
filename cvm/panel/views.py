@@ -9,7 +9,7 @@ from django.views.generic import DetailView, ListView, UpdateView, CreateView, D
 from django.template import RequestContext
 from resumes.models import Resume, Identity
 from sharing.models import Share
-from .forms import IdentityForm, ShareForm
+from .forms import IdentityForm, ShareForm, IdentityFieldFormSet
 from django.core.urlresolvers import reverse
 from django.utils.functional import lazy
 from django.contrib import messages
@@ -115,15 +115,61 @@ class IdentityCreateView(MyCreateView):
     object_name = 'identity'
     model = Identity
     form_class = IdentityForm
+    template_name = 'panel/identity_form.html'
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        identity_field_formset = context['identity_field_formset']
+        if identity_field_formset.is_valid():
+            self.object = form.save()
+            identity_field_formset.instance = self.object
+            identity_field_formset.save()
+            return super(IdentityCreateView, self).form_valid(form)
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_context_data(self, **kwargs):
+        context = super(IdentityCreateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['identity_field_formset'] = IdentityFieldFormSet(self.request.POST)
+        else:
+            context['identity_field_formset'] = IdentityFieldFormSet()
+        return context
 
 
 class IdentityUpdateView(MyUpdateView):
     form_class = IdentityForm
     object_name = 'identity'
+    template_name = 'panel/identity_form.html'
 
     def get_queryset(self):
         self.queryset = Identity.objects.filter(user=self.request.user)
         return self.queryset._clone()
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        identity_field_formset = context['identity_field_formset']
+        if identity_field_formset.is_valid():
+            self.object = form.save()
+            identity_field_formset.instance = self.object
+            identity_field_formset.save()
+            return super(IdentityUpdateView, self).form_valid(form)
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_context_data(self, **kwargs):
+        context = super(IdentityUpdateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['identity_field_formset'] = IdentityFieldFormSet(self.request.POST)
+        else:
+            context['identity_field_formset'] = IdentityFieldFormSet()
+        return context
 
 
 class IdentityDeleteView(MyDeleteView):

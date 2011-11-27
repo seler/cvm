@@ -1,4 +1,4 @@
-{% load i18n %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{% load i18n resume_tags %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         {% block head %} <title>{% block title %}{% endblock %}cv manager - rafał selewońko, indefinite</title>
@@ -163,21 +163,7 @@
         <!-- footer-outer -->
         <div id="footer-outer" class="clear">
             <div id="footer-wrap">
-                <div id="gallery" class="clear">
-                    <h3>Flickr Photos </h3>
-                    <p class="thumbs">
-                        <a href="index.html"><img src="img/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-                        <a href="index.html"><img src="img/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-                        <a href="index.html"><img src="img/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-                        <a href="index.html"><img src="img/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-                        <a href="index.html"><img src="img/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-                        <a href="index.html"><img src="img/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-                        <a href="index.html"><img src="img/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-                        <a href="index.html"><img src="img/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-                        <a href="index.html"><img src="img/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-                        <a href="index.html"><img src="img/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-                    </p>
-                </div>
+                {% latest_resumes 10 in "resumes/tags/latest_resumes_avatars.html" %}
                 <div class="col-a">
                     <h3>Contact Info</h3>
                     <p>

@@ -1,0 +1,30 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+
+{% block title %}{% spaceless %}
+{% if object %}{% trans "edit" %}{% else %}{% trans "create" %}{% endif %} {{ object_name }} - {{ block.super }}
+{% endspaceless %}
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url home %}">{% trans "home" %}</a>
+    &rsaquo; <a href="{% url panel_home %}">{% trans "panel" %}</a>
+    &rsaquo; {% if object %}{% trans "edit" %}{% else %}{% trans "create" %}{% endif %} {{ object_name }}
+</div>
+{% endblock %}
+
+{% block main %}
+<div id="panel-home">
+    <h3>{% if object %}{% trans "edit" %}{% else %}{% trans "create" %}{% endif %} {{ object_name }}</h3>
+    {% if object %}<h4>{{ object }}</h4>{% endif %}
+    <form action="." enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ identity_field_formset.as_p}}
+        <p class="no-border">
+            <input type="submit" tabindex="5" value="{% trans "save" %}" class="button">
+        </p>
+    </form>
+</div>
+{% endblock main %}

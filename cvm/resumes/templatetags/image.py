@@ -8,7 +8,6 @@ from django.core.files.storage import get_storage_class
 import Image, ImageDraw, ImageFont
 from StringIO import StringIO
 from django.core.files.base import ContentFile
-from pdb import Pdb
 
 register = template.Library()
 

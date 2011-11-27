@@ -1,0 +1,9 @@
+{% load i18n image %}
+<div id="gallery" class="clear">
+    <h3>{% trans "Latest resumes" %}</h3>
+    <p class="thumbs">
+        {% for object in object_list %}
+        <a href="{{ object.get_absolute_url }}" title="{{ object.identity }}"><img src="{% image object.identity.avatar 40x40 crop %}" width="40" height="40" alt="{{ object.identity }}" /></a>
+        {% endfor %}
+    </p>
+</div>

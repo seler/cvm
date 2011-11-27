@@ -65,8 +65,8 @@ class IdentityField(models.Model):
     TYPE_URL = 2
     TYPE_CHOICES = (
         (TYPE_STRING, _(u'text')),
-        (TYPE_STRING, _(u'email address')),
-        (TYPE_STRING, _(u'url address'))
+        (TYPE_EMAIL, _(u'email address')),
+        (TYPE_URL, _(u'url address'))
     )
     identity = models.ForeignKey('Identity', verbose_name=_('identity'), related_name='identity_fields')
     name = models.CharField(max_length=64, verbose_name=_(u'field name'))
