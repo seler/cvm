@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ flatpage.title }}{% endblock %}
+
+{% block menu %}
+    {% with flatpage.url as active %}
+        {% include "includes/menu.html" %}
+        {% include "includes/user_menu.html" %}
+    {% endwith %}
+{% endblock menu %}
+
+{% block main %}{{ flatpage.content }}{%endblock %}

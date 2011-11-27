@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Identity(models.Model):
+    # TODO: move to app resumes (cvm1)
     name = models.CharField(verbose_name=_(u'name'), max_length=256,
                             help_text=_("Your first and last name."))
     occupation = models.CharField(verbose_name=_(u'occupation'),
@@ -67,3 +68,10 @@ class IdentityField(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Profile(models.Model):
+    user = models.OneToOneField('auth.User')
+    name = models.CharField(max_length=200, blank=True)
+
+    def __unicode__(self):
+        return self.name or unicode(self.user)

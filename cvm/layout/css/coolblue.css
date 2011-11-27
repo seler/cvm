@@ -904,3 +904,25 @@ ul.archive li .post-details a:visited {
 	height:0;
 	content: " ";
 }  
+
+/*******/
+/* CVM */
+/*******/
+#panel-home table {
+    width: 690px;
+}
+#panel-home table td {
+    vertical-align: middle;
+}
+/*#panel-home td.avatar {
+    border: 0;
+    padding: 0;
+}*/
+#panel-home td.avatar img {
+    border: 0;
+    padding: 0;
+    border-radius: 0;
+}
+#panel-home form input[type=text] {
+    display: block;
+}

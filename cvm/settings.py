@@ -79,6 +79,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_PATH, 'layout'),
 )
 
 # List of finder classes that know how to find static files in
@@ -105,6 +106,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'cvm.urls'
@@ -120,6 +122,8 @@ TEMPLATE_DIRS = (
 RESUME_TEMPLATES_DIR_NAME = 'templates'
 RESUME_TEMPLATES_FORMAT = 'html'
 
+ACCOUNT_ACTIVATION_DAYS = 7
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -129,10 +133,15 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'django.contrib.humanize',
+    'django.contrib.flatpages',
 
-    'cvm.cvm1',
-    'cvm.accounts',
-    'cvm.sharing',
+    'registration',
+
+    'cvm1',
+    'accounts',
+    'sharing',
+    'panel',
 )
 
 # A sample logging configuration. The only tangible logging

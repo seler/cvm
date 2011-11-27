@@ -1,0 +1,22 @@
+<div id="nav">
+    <ul>
+        <li{% ifequal active "home" %} id="current"{% endifequal %}>
+            <a href="{% url home %}">home</a>
+        </li>
+        <li{% ifequal active "resumes" %} id="current"{% endifequal %}>
+            <a href="{% url resume_list %}">resumes</a>
+        </li>
+        <li{% ifequal active "blog" %} id="current"{% endifequal %}>
+            <a href="blog.html">blog</a>
+        </li>
+        <li{% ifequal active "archives" %} id="current"{% endifequal %}>
+            <a href="archives.html">archives</a>
+        </li>
+        <li{% ifequal active "support" %} id="current"{% endifequal %}>
+            <a href="index.html">support</a>
+        </li>
+        <li{% ifequal active "/about/" %} id="current"{% endifequal %}>
+            <a href="/about/">about</a>
+        </li>
+    </ul>
+</div>

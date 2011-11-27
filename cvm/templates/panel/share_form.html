@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n image %}
+
+{% block title %}share{% endblock title %}
+
+{% block menu %}
+    {% with "panel_home" as active %}
+        {% include "includes/menu.html" %}
+        {% include "includes/user_menu.html" %}
+    {% endwith %}
+{% endblock menu %}
+
+{% block main %}
+<div id="panel-home">
+    <h3>{% trans "edit/create share" %}</h3>
+    <form action="." enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p class="no-border">
+            <input type="submit" tabindex="5" value="{% trans "save" %}" class="button">
+        </p>
+    </form>
+</div>
+{% endblock main %}

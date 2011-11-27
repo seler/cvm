@@ -1,0 +1,27 @@
+<div id="user-nav">
+    <ul>
+        {% if user.is_authenticated %}
+        <li{% ifequal active "panel_home" %} id="current"{% endifequal %}>
+            <a href="{% url panel_home %}">panel</a>
+        </li>
+        <li{% ifequal active "account" %} id="current"{% endifequal %}>
+            <a href="{% url edit_profile %}">account</a>
+        </li>
+        {% if user.is_staff %}
+        <li>
+            <a href="/admin/">admin</a>
+        </li>
+        {% endif %}
+        <li{% ifequal active "logout" %} id="current"{% endifequal %}>
+            <a href="/accounts/logout/">logout ({{ user.username }})</a>
+        </li>
+        {% else %}
+        <li{% ifequal active "login" %} id="current"{% endifequal %}>
+            <a href="/accounts/login/">login</a>
+        </li>
+        <li{% ifequal active "register" %} id="current"{% endifequal %}>
+            <a href="{% url registration_register %}">register</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
