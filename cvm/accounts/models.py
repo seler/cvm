@@ -17,7 +17,7 @@ class Identity(models.Model):
         verbose_name_plural = _(u'identities')
 
     def __unicode__(self):
-        return self.name
+        return '%s, %s' % (self.name, self.occupation)
 
     def get_email(self):
         try:

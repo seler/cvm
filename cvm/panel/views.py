@@ -4,7 +4,7 @@ import hashlib
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.views.generic import DetailView, ListView, UpdateView, CreateView
+from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
 from accounts.models import Identity
 from django.template import RequestContext
 from cvm1.models import Resume
@@ -12,8 +12,77 @@ from sharing.models import Share
 from .forms import IdentityForm, ShareForm
 from django.core.urlresolvers import reverse
 from django.utils.functional import lazy
+from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 
 reverse_lazy = lambda name = None, *args : lazy(reverse, str)(name, args=args)
+
+
+class MyCreateView(CreateView):
+    object_name = None
+    success_url = reverse_lazy('panel_home')
+    template_name = None
+
+    def get_template_names(self):
+        if self.template_name:
+            return [self.template_name]
+        else:
+            return super(MyCreateView, self).get_template_names()
+
+    def get_form_kwargs(self):
+        kwargs = super(MyCreateView, self).get_form_kwargs()
+        kwargs.update({'request':self.request})
+        return kwargs
+
+    def form_valid(self, form):
+        message = _("Successfully created new %s.") % self.object_name
+        messages.success(self.request, message)
+        return super(MyCreateView, self).form_valid(form)
+
+
+class MyUpdateView(UpdateView):
+    object_name = None
+    success_url = reverse_lazy('panel_home')
+    template_name = None
+
+    def get_template_names(self):
+        if self.template_name:
+            return [self.template_name]
+        else:
+            return super(MyUpdateView, self).get_template_names()
+
+    def get_context_data(self, **kwargs):
+        context = super(MyUpdateView, self).get_context_data(**kwargs)
+        context['object_name'] = self.object_name
+        return context
+
+    def form_valid(self, form):
+        message = _("Successfully updated %s \"%s\".") % (self.object_name, self.object)
+        messages.success(self.request, message)
+        return super(MyUpdateView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(MyUpdateView, self).get_form_kwargs()
+        kwargs.update({'request':self.request})
+        return kwargs
+
+class MyDeleteView(DeleteView):
+    object_name = None
+    success_url = reverse_lazy('panel_home')
+
+    def get_template_names(self):
+        return ['panel/confirm_delete.html']
+
+    def get_context_data(self, **kwargs):
+        context = super(MyDeleteView, self).get_context_data(**kwargs)
+        context['object_name'] = self.object_name
+        return context
+
+    def post(self, *args, **kwargs):
+        message = _("Successfully deleted %s \"%s\".") % (self.object_name, self.get_object())
+        messages.success(self.request, message)
+        return super(MyDeleteView, self).post(*args, **kwargs)
+
 
 @login_required
 def home(request):
@@ -24,60 +93,60 @@ def home(request):
     }
     return render_to_response('panel/home.html', context_vars, context_instance=RequestContext(request))
 
-class IdentityCreateView(CreateView):
+
+class IdentityCreateView(MyCreateView):
+    object_name = 'identity'
+    template_name = 'panel/identity_form.html'
     model = Identity
     form_class = IdentityForm
-    success_url = reverse_lazy('panel_home')
 
-    def get_template_names(self):
-        return ['panel/identity_form.html']
 
-    def get_form_kwargs(self):
-        kwargs = super(IdentityCreateView, self).get_form_kwargs()
-        kwargs.update({'request':self.request})
-        return kwargs
-
-class IdentityUpdateView(UpdateView):
+class IdentityUpdateView(MyUpdateView):
     form_class = IdentityForm
-    success_url = reverse_lazy('panel_home')
+    object_name = 'identity'
+    template_name = 'panel/identity_form.html'
 
     def get_queryset(self):
         self.queryset = Identity.objects.filter(user=self.request.user)
         return self.queryset._clone()
 
-    def get_template_names(self):
-        return ['panel/identity_form.html']
+
+class IdentityDeleteView(MyDeleteView):
+    model = Identity
+    object_name = 'identity'
+
+    def get_queryset(self):
+        self.queryset = Identity.objects.filter(user=self.request.user)
+        return self.queryset._clone()
 
 
-class ShareCreateView(CreateView):
+class ShareCreateView(MyCreateView):
     model = Share
     form_class = ShareForm
-    success_url = reverse_lazy('panel_home')
-
-    def get_template_names(self):
-        return ['panel/share_form.html']
-
-    def get_form_kwargs(self):
-        kwargs = super(ShareCreateView, self).get_form_kwargs()
-        kwargs.update({'request':self.request})
-        return kwargs
+    object_name = 'share'
+    template_name = 'panel/share_form.html'
 
     def get_initial(self):
         self.initial.update({'resume': self.kwargs.get('resume_pk', None)})
         return self.initial
 
-class ShareUpdateView(UpdateView):
+
+class ShareUpdateView(MyUpdateView):
     form_class = ShareForm
-    success_url = reverse_lazy('panel_home')
+    object_name = 'share'
+    template_name = 'panel/share_form.html'
 
     def get_queryset(self):
         self.queryset = Share.objects.filter(resume__identity__user=self.request.user)
         return self.queryset._clone()
 
-    def get_template_names(self):
-        return ['panel/share_form.html']
 
-    def get_form_kwargs(self):
-        kwargs = super(ShareUpdateView, self).get_form_kwargs()
-        kwargs.update({'request':self.request})
-        return kwargs
+
+
+class ShareDeleteView(MyDeleteView):
+    model = Share
+    object_name = 'share'
+
+    def get_queryset(self):
+        self.queryset = Share.objects.filter(resume__identity__user=self.request.user)
+        return self.queryset._clone()
