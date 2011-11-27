@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 )
 
-if settings.SERVE_STATIC:
+if getattr(settings, 'SERVE_STATIC', False):
     from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
