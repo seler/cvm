@@ -6,9 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
-from accounts.models import Identity
 from django.template import RequestContext
-from resumes.models import Resume
+from resumes.models import Resume, Identity
 from sharing.models import Share
 from .forms import IdentityForm, ShareForm
 from django.core.urlresolvers import reverse

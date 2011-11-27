@@ -1,9 +1,8 @@
 from __future__ import absolute_import
 from django import forms
 
-from accounts.models import Identity
 from sharing.models import Share
-from cvm.resumes.models import Resume
+from resumes.models import Resume, Identity
 
 class IdentityForm(forms.ModelForm):
     class Meta(object):

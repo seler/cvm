@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from django.conf.urls.defaults import patterns, url, include
 from registration.forms import RegistrationFormUniqueEmail
-from .views import edit_profile, IdentityListView
+from .views import edit_profile
 
 urlpatterns = patterns('',
 #    url(r'^resumes/', ResumeListView.as_view(), name='cp_resume_list'),
