@@ -4,86 +4,83 @@
 {% block title %}resumes{% endblock title %}
 
 {% block menu %}
-    {% with "panel_home" as active %}
-        {% include "includes/menu.html" %}
-        {% include "includes/user_menu.html" %}
-    {% endwith %}
+{% with "panel_home" as active %}
+{% include "includes/menu.html" %}
+{% include "includes/user_menu.html" %}
+{% endwith %}
 {% endblock menu %}
 
 {% block main %}
-{% block identities %}
 <div id="panel-home">
-<h3>{% trans "your identities" %}</h3>
-<a href='{% url panel_identity_create %}'>{% trans "create" %}</a>
-<table>
-    <tr>
-        <th>{% trans "avatar" %}</th>
-        <th>{% trans "name" %}</th>
-        <th>{% trans "occupation" %}</th>
-        <th class="actions">{% trans "actions" %}</th>
-    </tr>
-    {% for identity in identity_list %}
-    <tr>
-        <td class="avatar"><img src="{% image identity.avatar 80x80 crop %}" width="80" height="80" alt="{{ identity.name }}"></td>
-        <td>{{ identity.name }}</td>
-        <td>{{ identity.occupation }}</td>
-        <td class="actions">
-            <a class="action update" href="{% url panel_identity_update identity.id %}" title="{% trans "update identity" %}">{% trans "update" %}</a>
-            <a class="action delete" href="{% url panel_identity_delete identity.id %}" title="{% trans "delete identity" %}">{% trans "delete" %}</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-{% endblock identities %}
-{% block resumes %}
-<h3>{% trans "your resumes" %}</h3>
-<a href='{% url panel_resume_create %}'>{% trans "create" %}</a>
-<table>
-    <tr>
-        <th>{% trans "identity" %}</th>
-        <th>{% trans "name" %}</th>
-        <th>{% trans "template" %}</th>
-        <th class="actions">{% trans "actions" %}</th>
-    </tr>
-    {% for resume in resume_list %}
-    <tr>
-        <td class="avatar"><img src="{% image resume.identity.avatar 80x80 crop %}" width="80" height="80" alt="{{ resume.identity.name }} ({{ resume.identity.occupation }})" title="{{ resume.identity.name }} ({{ resume.identity.occupation }})"><br>{{ resume.identity.name }}</td>
-        <td>{{ resume.name }}</td>
-        <td>{{ resume.template_variant }}</td>
-        <td class="actions">
-            <a class="action update" href="{% url panel_resume_update resume.id %}" title="{% trans "update resume" %}">{% trans "update" %}</a>
-            <a class="action delete" href="{% url panel_resume_delete resume.id %}" title="{% trans "delete resume" %}">{% trans "delete" %}</a>
-            <a class="action share" href="{% url panel_resume_share resume.id %}" title="{% trans "share resume" %}">{% trans "share" %}</a>
-            <a class="action preview" href="{{ resume.get_absolute_url }}" title="{% trans "preview resume" %}">{% trans "preview" %}</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-{% endblock resumes %}
-{% block shares %}
-<h3>{% trans "your shares" %}</h3>
-<a href='{% url panel_share_create %}'>{% trans "create" %}</a>
-<table>
-    <tr>
-        <th>{% trans "resume" %}</th>
-        <th>{% trans "person" %}</th>
-        <th>{% trans "from date" %}</th>
-        <th>{% trans "to date" %}</th>
-        <th class="actions">{% trans "actions" %}</th>
-    </tr>
-    {% for share in share_list %}
-    <tr>
-        <td>{{ share.resume }}</td>
-        <td>{{ share.name }} &lt;{{ share.email }}&gt;</td>
-        <td>{{ share.from_date }}</td>
-        <td>{{ share.to_date }}</td>
-        <td class="actions">
-            <a class="action update" href="{% url panel_share_update share.id %}" title="{% trans "update share" %}">{% trans "update" %}</a>
-            <a class="action delete" href="{% url panel_share_delete share.id %}" title="{% trans "delete share" %}">{% trans "delete" %}</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-{% endblock shares %}
+    {% block identities %}
+    <div class="panel-block">
+        <h3>{% trans "your identities" %}</h3>
+        <a class="action create" href='{% url panel_identity_create %}'>{% trans "create" %}</a>
+        <table>
+            <tr>
+                <th>{% trans "avatar" %}</th>
+                <th>{% trans "name" %}</th>
+                <th>{% trans "occupation" %}</th>
+                <th class="actions">{% trans "actions" %}</th>
+            </tr>
+            {% for identity in identity_list %}
+            <tr>
+                <td class="avatar"><img src="{% image identity.avatar 80x80 crop %}" width="80" height="80" alt="{{ identity.name }}"></td>
+                <td>{{ identity.name }}</td>
+                <td>{{ identity.occupation }}</td>
+                <td class="actions"><a class="action update" href="{% url panel_identity_update identity.id %}" title="{% trans "update identity" %}">{% trans "update" %}</a><a class="action delete" href="{% url panel_identity_delete identity.id %}" title="{% trans "delete identity" %}">{% trans "delete" %}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endblock identities %}
+    {% block resumes %}
+    <div class="panel-block">
+        <h3>{% trans "your resumes" %}</h3>
+        <a class="action create" href='{% url panel_resume_create %}'>{% trans "create" %}</a>
+        <table>
+            <tr>
+                <th>{% trans "identity" %}</th>
+                <th>{% trans "name" %}</th>
+                <th>{% trans "template" %}</th>
+                <th class="actions">{% trans "actions" %}</th>
+            </tr>
+            {% for resume in resume_list %}
+            <tr>
+                <td class="avatar"><img src="{% image resume.identity.avatar 80x80 crop %}" width="80" height="80" alt="{{ resume.identity.name }} ({{ resume.identity.occupation }})" title="{{ resume.identity.name }} ({{ resume.identity.occupation }})">
+                <br>
+                {{ resume.identity.name }}</td>
+                <td>{{ resume.name }}</td>
+                <td>{{ resume.template_variant }}</td>
+                <td class="actions"><a class="action update" href="{% url panel_resume_update resume.id %}" title="{% trans "update resume" %}">{% trans "update" %}</a><a class="action delete" href="{% url panel_resume_delete resume.id %}" title="{% trans "delete resume" %}">{% trans "delete" %}</a><a class="action share" href="{% url panel_resume_share resume.id %}" title="{% trans "share resume" %}">{% trans "share" %}</a><a class="action preview" href="{{ resume.get_absolute_url }}" title="{% trans "preview resume" %}">{% trans "preview" %}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endblock resumes %}
+    {% block shares %}
+    <div class="panel-block">
+        <h3>{% trans "your shares" %}</h3>
+        <a class="action create" href='{% url panel_share_create %}'>{% trans "create" %}</a>
+        <table>
+            <tr>
+                <th>{% trans "resume" %}</th>
+                <th>{% trans "person" %}</th>
+                <th>{% trans "from date" %}</th>
+                <th>{% trans "to date" %}</th>
+                <th class="actions">{% trans "actions" %}</th>
+            </tr>
+            {% for share in share_list %}
+            <tr>
+                <td>{{ share.resume }}</td>
+                <td>{{ share.name }} &lt;{{ share.email }}&gt;</td>
+                <td>{{ share.from_date }}</td>
+                <td>{{ share.to_date }}</td>
+                <td class="actions"><a class="action update" href="{% url panel_share_update share.id %}" title="{% trans "update share" %}">{% trans "update" %}</a><a class="action delete" href="{% url panel_share_delete share.id %}" title="{% trans "delete share" %}">{% trans "delete" %}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endblock shares %}
 </div>
-{% endblock main %}
+{% endblock main %} 

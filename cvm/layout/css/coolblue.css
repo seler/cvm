@@ -18,9 +18,9 @@ body {
 /* links */
 a:link, a:visited {
 	text-decoration: none;
-	color: #FF409F;
+	color: #147DB6;
 }
-a:hover { color: #147DB6; }
+a:hover { color: #FF409F; }
 a:link.more, a:visited.more {
 	float: left;
 	margin-top: 20px;
@@ -925,4 +925,44 @@ ul.archive li .post-details a:visited {
 }
 #panel-home form input[type=text] {
     display: block;
+}
+
+#panel-home .action {
+    background: transparent url(../img/icons/cross.png) left center no-repeat;
+    padding: 5px 5px 5px 20px;
+    display: block;
+    line-height: 16px;
+    font-size: 11px;
+}
+
+#panel-home .action.create {
+    position:absolute;
+    top: 30px;
+    right: 25px;
+    font: bold 12px Arial, Sans-serif;
+    height: 30px;
+    line-height: 30px;
+    color: #FFF;
+    background: #2C76A6 url(../img/icons/add.png) 5px center no-repeat;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #86BBDF #245F86 #245F86 #86BBDF;
+    padding: 0 5px 0 25px;
+}
+
+#panel-home .panel-block {
+    position:relative;
+}
+
+#panel-home .action.delete {
+    background-image: url(../img/icons/delete.png);
+}
+#panel-home .action.update {
+    background-image: url(../img/icons/pencil.png);
+}
+#panel-home .action.share {
+    background-image: url(../img/icons/world.png);
+}
+#panel-home .action.preview {
+    background-image: url(../img/icons/link.png);
 }
