@@ -3,7 +3,7 @@ from django import forms
 
 from accounts.models import Identity
 from sharing.models import Share
-from cvm.cvm1.models import Resume
+from cvm.resumes.models import Resume
 
 class IdentityForm(forms.ModelForm):
     class Meta(object):

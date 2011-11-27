@@ -11,9 +11,10 @@ from django.template.loader import render_to_string
 class Share(models.Model):
 
     hash = models.CharField(unique=True, editable=False, max_length=256, blank=True)
-    resume = models.ForeignKey('cvm1.Resume', related_name='shares')
+    resume = models.ForeignKey('resumes.Resume', related_name='shares')
     from_date = models.DateTimeField(default=datetime.datetime.now)
     to_date = models.DateTimeField()
+    name = models.CharField(max_length=256)
     email = models.EmailField()
 
     class Meta:
@@ -21,7 +22,8 @@ class Share(models.Model):
         verbose_name_plural = _(u'shares')
 
     def __unicode__(self):
-        return u"%s/%s" % (self.resume, self.email)
+        return u"%s - %s <%s>" % (self.resume, self.name, self.email)
+
 
     def get_absolute_url(self):
         return u'%s?hash=%s' % (self.resume.get_absolute_url(), self.hash)

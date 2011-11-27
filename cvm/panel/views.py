@@ -3,11 +3,12 @@ from __future__ import absolute_import
 import hashlib
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
 from accounts.models import Identity
 from django.template import RequestContext
-from cvm1.models import Resume
+from resumes.models import Resume
 from sharing.models import Share
 from .forms import IdentityForm, ShareForm
 from django.core.urlresolvers import reverse
@@ -21,7 +22,7 @@ reverse_lazy = lambda name = None, *args : lazy(reverse, str)(name, args=args)
 class MyCreateView(CreateView):
     object_name = None
     success_url = reverse_lazy('panel_home')
-    template_name = None
+    template_name = 'panel/form.html'
 
     def get_template_names(self):
         if self.template_name:
@@ -39,11 +40,20 @@ class MyCreateView(CreateView):
         messages.success(self.request, message)
         return super(MyCreateView, self).form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super(MyCreateView, self).get_context_data(**kwargs)
+        context['object_name'] = self.object_name
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(MyCreateView, self).dispatch(*args, **kwargs)
+
 
 class MyUpdateView(UpdateView):
     object_name = None
     success_url = reverse_lazy('panel_home')
-    template_name = None
+    template_name = 'panel/form.html'
 
     def get_template_names(self):
         if self.template_name:
@@ -66,6 +76,10 @@ class MyUpdateView(UpdateView):
         kwargs.update({'request':self.request})
         return kwargs
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(MyUpdateView, self).dispatch(*args, **kwargs)
+
 class MyDeleteView(DeleteView):
     object_name = None
     success_url = reverse_lazy('panel_home')
@@ -83,6 +97,10 @@ class MyDeleteView(DeleteView):
         messages.success(self.request, message)
         return super(MyDeleteView, self).post(*args, **kwargs)
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(MyDeleteView, self).dispatch(*args, **kwargs)
+
 
 @login_required
 def home(request):
@@ -96,7 +114,6 @@ def home(request):
 
 class IdentityCreateView(MyCreateView):
     object_name = 'identity'
-    template_name = 'panel/identity_form.html'
     model = Identity
     form_class = IdentityForm
 
@@ -104,7 +121,6 @@ class IdentityCreateView(MyCreateView):
 class IdentityUpdateView(MyUpdateView):
     form_class = IdentityForm
     object_name = 'identity'
-    template_name = 'panel/identity_form.html'
 
     def get_queryset(self):
         self.queryset = Identity.objects.filter(user=self.request.user)
@@ -124,7 +140,6 @@ class ShareCreateView(MyCreateView):
     model = Share
     form_class = ShareForm
     object_name = 'share'
-    template_name = 'panel/share_form.html'
 
     def get_initial(self):
         self.initial.update({'resume': self.kwargs.get('resume_pk', None)})
@@ -134,7 +149,6 @@ class ShareCreateView(MyCreateView):
 class ShareUpdateView(MyUpdateView):
     form_class = ShareForm
     object_name = 'share'
-    template_name = 'panel/share_form.html'
 
     def get_queryset(self):
         self.queryset = Share.objects.filter(resume__identity__user=self.request.user)

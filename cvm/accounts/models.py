@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Identity(models.Model):
-    # TODO: move to app resumes (cvm1)
+    # TODO: move to app resumes
     name = models.CharField(verbose_name=_(u'name'), max_length=256,
                             help_text=_("Your first and last name."))
     occupation = models.CharField(verbose_name=_(u'occupation'),

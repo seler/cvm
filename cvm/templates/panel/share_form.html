@@ -1,14 +1,7 @@
-{% extends "base.html" %}
-{% load i18n image %}
+{% extends "panel/base.html" %}
+{% load i18n %}
 
-{% block title %}share{% endblock title %}
-
-{% block menu %}
-    {% with "panel_home" as active %}
-        {% include "includes/menu.html" %}
-        {% include "includes/user_menu.html" %}
-    {% endwith %}
-{% endblock menu %}
+{% block title %}edit/create share - {{ block.super }}{% endblock %}
 
 {% block main %}
 <div id="panel-home">

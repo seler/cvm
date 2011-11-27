@@ -145,7 +145,7 @@ INSTALLED_APPS = (
 
     'registration',
 
-    'cvm1',
+    'resumes',
     'accounts',
     'sharing',
     'panel',

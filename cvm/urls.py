@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from .cvm1.views import ResumeDetailView, ResumeListView
+from .resumes.views import ResumeDetailView, ResumeListView
 
 admin.autodiscover()
 

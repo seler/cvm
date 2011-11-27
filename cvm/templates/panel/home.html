@@ -1,11 +1,5 @@
-{% extends "base.html" %}
+{% extends "panel/base.html" %}
 {% load i18n image %}
-
-{% block title %}panel - {% endblock title %}
-
-{% block menu %}
-    {% include "includes/menu_block.html" with active="panel_home" %}
-{% endblock menu %}
 
 {% block extrahead %}
 <script type="text/javascript">
@@ -15,12 +9,21 @@
 </script>
 {% endblock extrahead %}
 
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url home %}">{% trans "home" %}</a>
+    &rsaquo; {% trans "panel" %}
+</div>
+{% endblock %}
+
 {% block main %}
 <div id="panel-home">
     {% block identities %}
+    {% url panel_identity_create as panel_identity_create_url %}
     <div class="panel-block">
         <h3>{% trans "your identities" %}</h3>
-        <a class="action create" href='{% url panel_identity_create %}'>{% trans "create" %}</a>
+        <a class="action create" href='{{ panel_identity_create_url }}'>{% trans "create" %}</a>
+        {% if identity_list %}
         <table>
             <tr>
                 <th>{% trans "avatar" %}</th>
@@ -37,12 +40,17 @@
             </tr>
             {% endfor %}
         </table>
+        {% else %}
+        <p>{% blocktrans %}There's no identities. Maybe you should <a href="{{ panel_identity_create_url }}">create</a> one?{% endblocktrans %}</p>
+        {% endif %}
     </div>
     {% endblock identities %}
     {% block resumes %}
+    {% url panel_resume_create as panel_resume_create_url %}
     <div class="panel-block">
         <h3>{% trans "your resumes" %}</h3>
-        <a class="action create" href='{% url panel_resume_create %}'>{% trans "create" %}</a>
+        <a class="action create" href='{{ panel_resume_create_url }}'>{% trans "create" %}</a>
+        {% if resume_list %}
         <table>
             <tr>
                 <th>{% trans "identity" %}</th>
@@ -61,12 +69,18 @@
             </tr>
             {% endfor %}
         </table>
+        {% else %}
+        <p>{% blocktrans %}There's no resumes. Maybe you should <a href="{{panel_resume_create_url}}">create</a> one?{% endblocktrans %}</p>
+        {% endif %}
     </div>
     {% endblock resumes %}
     {% block shares %}
+    {% url panel_share_create as panel_share_create_url %}
     <div class="panel-block">
         <h3>{% trans "your shares" %}</h3>
-        <a class="action create" href='{% url panel_share_create %}'>{% trans "create" %}</a>
+        {% if resume_list %}
+        <a class="action create" href='{{ panel_share_create_url }}'>{% trans "create" %}</a>
+        {% if share_list %}
         <table>
             <tr>
                 <th>{% trans "resume" %}</th>
@@ -85,6 +99,12 @@
             </tr>
             {% endfor %}
         </table>
+        {% else %}
+        <p>{% blocktrans %}You're not sharing your resumes. Maybe you should <a href="{{ panel_share_create_url }}">share</a> one?{% endblocktrans %}</p>
+        {% endif %}
+        {% else %}
+        <p>{% blocktrans %}No resumes to share. Maybe you should <a href="{{ panel_resume_create_url }}">create</a> one?{% endblocktrans %}</p>
+        {% endif %}
     </div>
     {% endblock shares %}
 </div>
