@@ -1,14 +1,19 @@
 {% extends "base.html" %}
 {% load i18n image %}
 
-{% block title %}resumes{% endblock title %}
+{% block title %}panel - {% endblock title %}
 
 {% block menu %}
-{% with "panel_home" as active %}
-{% include "includes/menu.html" %}
-{% include "includes/user_menu.html" %}
-{% endwith %}
+    {% include "includes/menu_block.html" with active="panel_home" %}
 {% endblock menu %}
+
+{% block extrahead %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#panel-home .avatar a").fancybox();
+    });
+</script>
+{% endblock extrahead %}
 
 {% block main %}
 <div id="panel-home">
@@ -25,7 +30,7 @@
             </tr>
             {% for identity in identity_list %}
             <tr>
-                <td class="avatar"><img src="{% image identity.avatar 80x80 crop %}" width="80" height="80" alt="{{ identity.name }}"></td>
+                <td class="avatar"><a href="{{ identity.avatar.url }}"><img src="{% image identity.avatar 80x80 crop %}" width="80" height="80" alt="{{ identity.name }}"></a></td>
                 <td>{{ identity.name }}</td>
                 <td>{{ identity.occupation }}</td>
                 <td class="actions"><a class="action update" href="{% url panel_identity_update identity.id %}" title="{% trans "update identity" %}">{% trans "update" %}</a><a class="action delete" href="{% url panel_identity_delete identity.id %}" title="{% trans "delete identity" %}">{% trans "delete" %}</a></td>
@@ -47,7 +52,7 @@
             </tr>
             {% for resume in resume_list %}
             <tr>
-                <td class="avatar"><img src="{% image resume.identity.avatar 80x80 crop %}" width="80" height="80" alt="{{ resume.identity.name }} ({{ resume.identity.occupation }})" title="{{ resume.identity.name }} ({{ resume.identity.occupation }})">
+                <td class="avatar"><a href="{{ resume.identity.avatar.url }}"><img src="{% image resume.identity.avatar 80x80 crop %}" width="80" height="80" alt="{{ resume.identity.name }} ({{ resume.identity.occupation }})" title="{{ resume.identity.name }} ({{ resume.identity.occupation }})"></a>
                 <br>
                 {{ resume.identity.name }}</td>
                 <td>{{ resume.name }}</td>
