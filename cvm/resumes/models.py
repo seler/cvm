@@ -85,6 +85,7 @@ class IdentityField(models.Model):
 class Template(models.Model):
     name = models.CharField(max_length=256, verbose_name=_(u'name'))
     slug = models.SlugField(max_length=64, verbose_name=_(u'slug'))
+    screen = models.ImageField(upload_to='template', verbose_name=_(u'screen'))
 
     class Meta:
         verbose_name = _(u'template')
@@ -98,6 +99,7 @@ class TemplateVariant(models.Model):
     template = models.ForeignKey('Template', verbose_name=_('template'))
     name = models.CharField(max_length=256, verbose_name=_('name'))
     slug = models.SlugField(max_length=64, verbose_name=_('slug'))
+    screen = models.ImageField(upload_to='template', verbose_name=_(u'screen'), blank=True, null=True)
 
     class Meta:
         verbose_name = _(u'template variant')
@@ -108,6 +110,9 @@ class TemplateVariant(models.Model):
 
     def get_template_name(self):
         return '%s/%s/%s.%s' % (settings.RESUME_TEMPLATES_DIR_NAME, self.template.slug, self.slug, settings.RESUME_TEMPLATES_FORMAT)
+
+    def get_screen(self):
+        return self.screen if self.screen else self.template.screen
 
 
 class Resume(models.Model):
