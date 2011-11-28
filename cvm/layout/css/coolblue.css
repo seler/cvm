@@ -966,3 +966,30 @@ ul.archive li .post-details a:visited {
 #panel-home .action.preview {
     background-image: url(../img/icons/link.png);
 }
+
+.breadcrumbs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position:absolute;
+    left:20px;
+    top:200px;
+    width:750px;
+}
+
+.breadcrumbs li {
+    float: left;
+    padding: 10px 0 10px 5px;
+}
+
+.breadcrumbs li a {
+    margin: 0 5px 0 0;
+}
+
+.breadcrumbs li:after {
+    content: ">";
+}
+
+.breadcrumbs li:last-child:after {
+    content: "";
+}

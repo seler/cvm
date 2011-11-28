@@ -10,10 +10,10 @@
 {% endblock extrahead %}
 
 {% block breadcrumbs %}
-<div class="breadcrumbs">
-    <a href="{% url home %}">{% trans "home" %}</a>
-    &rsaquo; {% trans "panel" %}
-</div>
+<ul class="breadcrumbs">
+    <li><a href="{% url home %}">{% trans 'home' %}</a></li>
+    <li>{% trans "panel" %}</li>
+</ul>
 {% endblock %}
 
 {% block main %}

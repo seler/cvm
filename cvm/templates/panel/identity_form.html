@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-<div class="breadcrumbs">
-    <a href="{% url home %}">{% trans "home" %}</a>
-    &rsaquo; <a href="{% url panel_home %}">{% trans "panel" %}</a>
-    &rsaquo; {% if object %}{% trans "edit" %}{% else %}{% trans "create" %}{% endif %} {{ object_name }}
-</div>
+<ul class="breadcrumbs">
+    <li><a href="{% url home %}">{% trans 'home' %}</a></li>
+    <li><a href="{% url panel_home %}">{% trans "panel" %}</a></li>
+    <li>{% if object %}{% trans "edit" %}{% else %}{% trans "create" %}{% endif %} {{ object_name }}</li>
+</ul>
 {% endblock %}
 
 {% block main %}

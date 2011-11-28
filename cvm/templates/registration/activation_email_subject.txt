@@ -1,1 +1,1 @@
-Activate your djangoproject.com account
+{% load i18n %}{% trans "Activate your cv manager account" %}

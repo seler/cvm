@@ -1,8 +1,18 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block title %}log in - {% endblock %}
 
-{% block main %} <h1>log in</h1>
+{% block breadcrumbs %}
+<ul class="breadcrumbs">
+    <li>
+        <a href="{% url home %}">{% trans 'home' %}</a>
+    </li>
+    <li>{% trans 'login' %}</li>
+</ul>
+{% endblock %}
+
+{% block main %} 
+<h2>log in</h2>
 {% if form.errors %}
 <p class="error">
     please correct the errors below:

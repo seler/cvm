@@ -3,7 +3,16 @@
 
 {% block title %}confirm delete - {{ block.super }}{% endblock %}
 
+{% block breadcrumbs %}
+<ul class="breadcrumbs">
+    <li><a href="{% url home %}">{% trans 'home' %}</a></li>
+    <li><a href="{% url panel_home %}">{% trans "panel" %}</a></li>
+    <li>{% trans "delete" %} {{ object_name }} {{ object }}</li>
+</ul>
+{% endblock %}
+
 {% block main %}
+<h3>{% trans "delete" %} {{ object_name }} {{ object }}</h3>
 <p>
     {% blocktrans with object as escaped_object %}Are you sure you want to delete the {{ object_name }} "{{ escaped_object }}"? All of the following related items will be deleted:{% endblocktrans %}
 </p>

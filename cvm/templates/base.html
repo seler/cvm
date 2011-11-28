@@ -34,16 +34,18 @@
                         </button>
                     </fieldset>
                 </form>
+                {% block breadcrumbs %}
+                <ul class="breadcrumbs">
+                    <li>
+                        <a href="{% url home %}">{% trans 'home' %}</a>
+                    </li>
+                </ul>
+                {% endblock %}
                 <!--/header-->
             </div>
         </div>
         <!-- content-outer -->
         <div id="content-wrap" class="clear" >
-      {% block breadcrumbs %}
-      <div class="breadcrumbs">
-      <a href="{% url home %}">{% trans 'home' %}</a>
-      </div>
-      {% endblock %}
             <!-- content -->
             <div id="content">
                 <!-- main -->
