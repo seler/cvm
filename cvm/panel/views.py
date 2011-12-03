@@ -1,19 +1,24 @@
 from __future__ import absolute_import
 
 import hashlib
-from django.shortcuts import render_to_response
+
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
-from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
-from django.template import RequestContext
-from resumes.models import Resume, Identity
-from sharing.models import Share
-from .forms import IdentityForm, ShareForm, IdentityFieldFormSet
-from django.core.urlresolvers import reverse
-from django.utils.functional import lazy
 from django.contrib import messages
+from django.core.urlresolvers import reverse
+from django.forms.models import inlineformset_factory
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
+from django.utils.decorators import method_decorator
+from django.utils.functional import lazy
 from django.utils.translation import ugettext_lazy as _
+from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
+
+from resumes.models import Resume, Identity, IdentityField, Section
+from sharing.models import Share
+
+from .forms import IdentityForm, ShareForm, IdentityFieldFormSet, ResumeForm
 
 reverse_lazy = lambda name = None, *args : lazy(reverse, str)(name, args=args)
 
@@ -168,7 +173,7 @@ class IdentityUpdateView(MyUpdateView):
         if self.request.POST:
             context['identity_field_formset'] = IdentityFieldFormSet(self.request.POST)
         else:
-            context['identity_field_formset'] = IdentityFieldFormSet()
+            context['identity_field_formset'] = IdentityFieldFormSet(queryset=IdentityField.objects.all())
         return context
 
 
@@ -200,8 +205,6 @@ class ShareUpdateView(MyUpdateView):
         return self.queryset._clone()
 
 
-
-
 class ShareDeleteView(MyDeleteView):
     model = Share
     object_name = 'share'
@@ -209,3 +212,49 @@ class ShareDeleteView(MyDeleteView):
     def get_queryset(self):
         self.queryset = Share.objects.filter(resume__identity__user=self.request.user)
         return self.queryset._clone()
+
+
+class ResumeDeleteView(MyDeleteView):
+    model = Resume
+    object_name = 'resume'
+
+    def get_queryset(self):
+        self.queryset = Resume.objects.filter(identity__user=self.request.user)
+        return self.queryset._clone()
+
+
+@login_required
+def resume_edit(request, object_id=None):
+    SectionFormSet = inlineformset_factory(Resume, Section, extra=0)
+    if object_id:
+        obj = get_object_or_404(Resume, id=object_id)
+    if request.method == 'POST':
+        if object_id:
+            section_formset = SectionFormSet(request.POST, instance=obj, prefix='section')
+            form = ResumeForm(request.POST, request.FILES, request=request, instance=obj)
+        else:
+            form = ResumeForm(request.POST, request.FILES, request=request)
+        if form.is_valid():
+            instance = form.save()
+            if object_id:
+                if section_formset.is_valid():
+                    section_formset.save()
+            # message
+            if not object_id:
+                return HttpResponseRedirect(reverse_lazy('panel_resume_update', instance.pk))
+    else:
+        if object_id:
+            section_formset = SectionFormSet(instance=obj, prefix='section')
+            form = ResumeForm(instance=obj, request=request)
+        else:
+            #section_formset = SectionFormSet(prefix='section')
+            form = ResumeForm(request=request)
+
+    context_vars = {
+        'form': form,
+        'object_name': _('resume')
+    }
+    if object_id:
+        context_vars['object'] = obj
+        context_vars['section_formset'] = section_formset
+    return render_to_response('panel/resume_form.html', context_vars, RequestContext(request))

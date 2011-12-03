@@ -1,0 +1,6 @@
+<tr id="formset_row_{{ form.prefix }}" class="" {% if hidden %}style="display: none;"{% endif %}>
+    {{ form.id }} 
+    {% for field in form %}
+        {% if not field.is_hidden %}<td>{{ field.errors }}{{ field }}</td>{% endif %}
+    {% endfor %}
+</tr>

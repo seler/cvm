@@ -21,7 +21,7 @@
     <form action="." enctype="multipart/form-data" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        {{ identity_field_formset.as_p}}
+        {{ identity_field_formset}}
         <p class="no-border">
             <input type="submit" tabindex="5" value="{% trans "save" %}" class="button">
         </p>

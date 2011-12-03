@@ -37,3 +37,14 @@ class ShareForm(forms.ModelForm):
 
 
 IdentityFieldFormSet = forms.models.inlineformset_factory(Identity, IdentityField, form=IdentityForm, extra=3, can_order=True, can_delete=True)
+
+class ResumeForm(forms.ModelForm):
+
+    class Meta(object):
+        model = Resume
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(ResumeForm, self).__init__(*args, **kwargs)
+        choices = Identity.objects.filter(user=self.request.user).values_list('id', 'name')
+        self.fields["identity"].choices = choices
