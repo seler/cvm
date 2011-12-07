@@ -93,7 +93,6 @@ class Template(models.Model):
     def __unicode__(self):
         return self.name
 
-
 class TemplateVariant(models.Model):
     template = models.ForeignKey('Template', verbose_name=_('template'))
     name = models.CharField(max_length=256, verbose_name=_('name'))
@@ -179,7 +178,7 @@ class Section(models.Model):
          (TYPE_UNORDEREDLIST, _(u'bulleted list')),
          (TYPE_ORDEREDLIST, _(u'numbered list')),
     )
-    resume = models.ForeignKey('Resume', verbose_name=_(u'resume'))
+    resume = models.ForeignKey('Resume', verbose_name=_(u'resume'), related_name='sections')
     title = models.CharField(verbose_name=_(u'title'), max_length=100)
     type = models.PositiveSmallIntegerField(
             verbose_name=_(u'type'),
@@ -192,9 +191,8 @@ class Section(models.Model):
     def __unicode__(self):
         return '%s/%s' % (self.resume, self.title)
 
-
 class SectionEntry(models.Model):
-    section = models.ForeignKey(Section)
+    section = models.ForeignKey(Section, related_name='section_entries')
     from_date = models.DateField(
             verbose_name=_(u'from date'),
             blank=True,
@@ -216,4 +214,3 @@ class SectionEntry(models.Model):
 
     def __unicode__(self):
         return '%s/%s' % (self.section, self.title)
-
