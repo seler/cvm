@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from django import forms
 
 from sharing.models import Share
-from resumes.models import Resume, Identity, IdentityField
+from resumes.models import Resume, Identity, IdentityField, Section
 
 class IdentityForm(forms.ModelForm):
     class Meta(object):
@@ -48,3 +48,15 @@ class ResumeForm(forms.ModelForm):
         super(ResumeForm, self).__init__(*args, **kwargs)
         choices = Identity.objects.filter(user=self.request.user).values_list('id', 'name')
         self.fields["identity"].choices = choices
+
+
+class SectionForm(forms.ModelForm):
+
+    class Meta(object):
+        model = Section
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(SectionForm, self).__init__(*args, **kwargs)
+        choices = Resume.objects.filter(identity__user=self.request.user).values_list('id', 'name')
+        self.fields["resume"].choices = choices

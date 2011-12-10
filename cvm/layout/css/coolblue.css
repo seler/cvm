@@ -908,6 +908,29 @@ ul.archive li .post-details a:visited {
 /*******/
 /* CVM */
 /*******/
+
+#panel-home form {
+    width: 638px;
+    display: block;
+}
+
+#panel-home form table {
+    position: relative;
+    left: -51px;
+    margin-top:0px;
+}
+
+#panel-home form h4 {
+    background: #fff;
+    border-top: 1px solid #E2E4E7;
+    margin:0;
+    padding: 20px 0 10px;
+    width: 690px;
+    position: relative;
+    left: -26px;
+    top:-1px;
+}
+
 #panel-home table {
     width: 690px;
 }

@@ -52,8 +52,10 @@
     {% if object %}<h4>{{ object }}</h4>{% endif %}
     <form action="." enctype="multipart/form-data" method="post">
         {% csrf_token %}
-        {{ form.as_p }} 
-        
+        {{ form.as_p }}
+        <p class="no-border" style="padding: 20px 0;">
+            <input type="submit" tabindex="5" value="{% trans "save" %}" class="button">
+        </p>
         <h4>{% trans "Sections" %}</h4>
         <table id="section_formsets">
             {{ section_formset.management_form }}
@@ -63,7 +65,7 @@
                 {% include "panel/includes/inline_form.html" %}
             {% endfor %}
             <tr class="formRow">
-                <td><a id="add_section_form" href="javascript:;" title="Dodaj szkołę">Dodaj kolejną szkołę</a></td>
+                <td colspan="3"><a id="add_section_form" href="javascript:;" title="{% trans "add section" %}">{% trans "add secton" %}</a></td>
             </tr>
         </table>
         <p class="no-border">
