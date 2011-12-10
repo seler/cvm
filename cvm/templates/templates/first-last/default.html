@@ -51,6 +51,15 @@
 		.definitions2 dd{
 
 		}
+		#footer {
+			text-align: center;
+			font-size: 0.5em;
+		}
+		#avatar {
+			width: 200px
+			height: 200px
+			border-width: 0 0 0 0;
+		}
 		h1{
 			font-size:1.5em;
 			font-family: Helvetica, Verdana, Arial, sans-serif;
@@ -80,7 +89,8 @@
 <body>
 	{% block name %}<h1>{{ object.identity.name }}</h1>{% endblock name %}
 	{% block credentials %}
-	<div id="address"><div id="first">
+	<div id="address">
+	<div id="avatar">{% load image %}<img src="{% image object.identity.avatar 200x200 crop %}" /></div><div id="first">
 		<dl class="definitions">
 		{% for field in object.identity.identity_fields.all %}
 
@@ -141,7 +151,7 @@
 	{% endblock sections %}
 	
 	{% block footer %}
-
+		<div id="footer">Generated with CVManager</div>
 	{% endblock footer %}
 </body>
 </html>
