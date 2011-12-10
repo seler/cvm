@@ -1,6 +1,7 @@
 from xhtml2pdf import pisa
 
 from django.views.generic import DetailView, ListView
+from django.http import HttpResponse
 
 from .models import Resume
 

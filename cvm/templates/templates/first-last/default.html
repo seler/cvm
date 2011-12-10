@@ -40,7 +40,7 @@
 			clear: left;
 			float: left;
 			text-align: right;
-			width: 12em;
+			width: 13em;
 		}
 		.definitions dd{
 			float: left;
@@ -125,7 +125,7 @@
 
 	{% if section.type == section.TYPE_DEFINITIONLIST %}
 		<dl class="definitions">
-		{% for entry in section.sectionentry_set.all %}
+		{% for entry in section.section_entries.all %}
 		<dt>{{ entry.title }}</dt><dd>{{ entry.content }}</dd>
 		{% endfor %}
 		</dl>
@@ -133,7 +133,7 @@
 
 	{% if section.type == section.TYPE_UNORDEREDLIST %}
 		<ul>
-		{% for entry in section.sectionentry_set.all %}
+		{% for entry in section.section_entries.all %}
 		<li><b>{{ entry.title }}</b>: {{ entry.content }}</li>
 		{% endfor %}
 		</ul>
@@ -141,7 +141,7 @@
 
 	{% if section.type == section.TYPE_ORDEREDLIST %}
 		<ol>
-		{% for entry in section.sectionentry_set.all %}
+		{% for entry in section.section_entries.all %}
 		<li><b>{{ entry.title }}</b>: {{ entry.content }}</li>
 		{% endfor %}
 		</ol>
