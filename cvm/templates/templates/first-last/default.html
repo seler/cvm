@@ -40,16 +40,19 @@
 			clear: left;
 			float: left;
 			text-align: right;
-			width: 13em;
+			width: 15em;
 		}
 		.definitions dd{
 			float: left;
 		}
-		.definitions2 dt{
-
+		.identity dt{
+			clear: left;
+			float: left;
+			text-align: right;
+			width: 5em;
 		}
-		.definitions2 dd{
-
+		.identity dd{
+			float: left;
 		}
 		#footer {
 			text-align: center;
@@ -89,10 +92,10 @@
 <body>
 	{% block name %}<h1>{{ object.identity.name }}</h1>{% endblock name %}
 	{% block credentials %}
-	<div id="address">
-	<div id="avatar">{% load image %}<img src="{% image object.identity.avatar 200x200 crop %}" /></div><div id="first">
-		<dl class="definitions">
-		{% for field in object.identity.identity_fields.all %}
+	<div id="address"><div id="first">
+		<div id="avatar">{% load image %}<img src="{% image object.identity.avatar 200x200 crop %}" /></div></div>
+		<div><dl class="identity">
+			{% for field in object.identity.identity_fields.all %}
 
 			{% if field.type == field.TYPE_STRING %}
 			<dt>{{ field.name }}</dt><dd>{{ field.value }}</dd>
@@ -106,8 +109,9 @@
 			<dt>{{ field.name }}</dt><dd><a href=http://{{ field.value }}>{{ field.value }}</a></dd>
 			{% endif %}
 		{% endfor %}
-		</dl>
-	</div></div>
+
+		</dl></div>
+	</div>
 	{% endblock credentials %}
 	
 	{% block sections %}

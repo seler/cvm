@@ -7,7 +7,6 @@ from xhtml2pdf import pisa
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.http import HttpResponse
 from django.template.context import Context
 from django.template.defaultfilters import slugify
 from django.template.loader import get_template
@@ -159,15 +158,14 @@ class Resume(models.Model):
         username = slugify(self.identity.user.username)
         return 'resume/pdf/%s/%s.pdf' % (username, self.slug)
 
-    #def generate_pdf(self):
-    #    resp = HttpResponse(content_type='application/pdf')
-    #    t = get_template(self.get_template_name())
-    #    c = Context({'object': self, 'STATIC_URL': settings.STATIC_URL})
-    #    filename = os.path.join(settings.MEDIA_ROOT, self.get_pdf_filename())
-    #    html = t.render(c)
-    #    resp['Content-Disposition'] = 'attachment; filename=%s' % filename
-    #    pisa.CreatePDF(html.encode("UTF-8", resp, encoding='UTF-8')
-    #    return resp
+    def generate_pdf(self):
+        # no fucking idea on how this is supposed to work 
+        t = get_template(self.get_template_name())
+        c = Context({'object': self, 'STATIC_URL': settings.STATIC_URL})
+        filename = os.path.join(settings.MEDIA_ROOT, self.get_pdf_filename())
+        html = t.render(c)
+        pisa.CreatePDF(html.encode("UTF-8"), file(filename, 'wb'), encoding='UTF-8')
+        return filename
 
 class Section(models.Model):
     TYPE_DATELIST = 1         # html ul with dates?
