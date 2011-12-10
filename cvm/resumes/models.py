@@ -159,17 +159,15 @@ class Resume(models.Model):
         username = slugify(self.identity.user.username)
         return 'resume/pdf/%s/%s.pdf' % (username, self.slug)
 
-    def generate_pdf(self):
-        r = HttpResponse(content_type='application/pdf')
-        t = get_template(self.get_template_name())
-        c = Context({'object': self, 'STATIC_URL': settings.STATIC_URL})
-        filename = os.path.join(settings.MEDIA_ROOT, self.get_pdf_filename())
-        html = t.render(c)
-        r['Content-Disposition'] = 'attachment; filename=%s' % filename
-        pisa.CreatePDF(html.encode("UTF-8", r, encoding='UTF-8')
-        return r
-    generate_pdf.alters_data = True
-
+    #def generate_pdf(self):
+    #    resp = HttpResponse(content_type='application/pdf')
+    #    t = get_template(self.get_template_name())
+    #    c = Context({'object': self, 'STATIC_URL': settings.STATIC_URL})
+    #    filename = os.path.join(settings.MEDIA_ROOT, self.get_pdf_filename())
+    #    html = t.render(c)
+    #    resp['Content-Disposition'] = 'attachment; filename=%s' % filename
+    #    pisa.CreatePDF(html.encode("UTF-8", resp, encoding='UTF-8')
+    #    return resp
 
 class Section(models.Model):
     TYPE_DATELIST = 1         # html ul with dates?
