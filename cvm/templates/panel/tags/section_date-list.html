@@ -1,0 +1,14 @@
+{% load i18n %}
+<div class="date-list">
+	{% for entry in entry_list %}
+	<p class="title">
+		<strong>{{ entry.title }}</strong>
+	</p>
+	<p class="date">
+		{{ entry.from_date|date }} - {% if entry.current %}{% trans "present" %}{% else %}{{ entry.to_date|date }}{% endif %}
+	</p>
+	<p class="content">
+		{{ entry.content }}
+	</p>
+	{% endfor %}
+</div>

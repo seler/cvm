@@ -1,0 +1,37 @@
+{% extends "panel/base.html" %}
+{% load i18n panel_tags %}
+
+{% block title %}{% spaceless %}
+{% if object %}{% trans "edit" %}{% else %}{% trans "create" %}{% endif %} {{ object_name }} - {{ block.super }}
+{% endspaceless %}
+{% endblock %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumbs">
+    <li>
+        <a href="{% url home %}">{% trans 'home' %}</a>
+    </li>
+    <li>
+        <a href="{% url panel_home %}">{% trans "panel" %}</a>
+    </li>
+    <li>
+        resume {{ object }} details 
+    </li>
+</ul>
+{% endblock %}
+
+{% block main %}
+<div id="panel-home">
+    <h3>{{ object }}</h3><a class="action after_h" href="{% url panel_resume_update object.id %}" title="{% trans "update resume" %}">{% trans "update" %}</a>
+    {% get_fields object as fields %}
+    <dl>
+    {% for key, value in fields %}
+    	<dt>{{ key }}</dt><dd>{{ value }}</dd>
+    {% endfor %}
+   	</dl>
+   	{% for section in object.sections.all %}
+   	<h4>{{ section.title }}</h4><a class="action after_h" href="{% url panel_resume_section_update object.id section.id %}">edit section</a>
+   	{% section_detail section %}
+   	{% endfor %}
+</div>
+{% endblock main %} 

@@ -1,0 +1,79 @@
+{% extends "panel/base.html" %}
+{% load i18n %}
+
+{% block title %}{% spaceless %}
+{% if object %}{% trans "edit" %}{% else %}{% trans "create" %}{% endif %} {{ object_name }} - {{ block.super }}
+{% endspaceless %}
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/panel.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#add_section_entry_form').click(function() {
+                return addForm(this, 'section_entry');
+            });
+            
+            /**************/
+            /* HELP BOXES */
+            /**************/
+            $('.pomoclink a').live('click', function(){
+                $(this).addClass('openbox');
+                $(this).parent().next('.pomocbox').show();
+                return false;
+            });
+            $('.pomocbox a.closebox').live('click', function(){
+                $(this).parent().parent().hide();
+                $('a',$(this).parent().parent().prev('.pomoclink')).removeClass('openbox');
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumbs">
+    <li>
+        <a href="{% url home %}">{% trans 'home' %}</a>
+    </li>
+    <li>
+        <a href="{% url panel_home %}">{% trans "panel" %}</a>
+    </li>
+    <li>
+        <a href="{% url panel_resume_detail object.resume.id %}">{% blocktrans with resume_name=object.resume.name %}resume "{{resume_name}}" details {% endblocktrans %}</a>
+    </li>
+    <li>
+        {% if object %}{% trans "edit" %}{% else %}{% trans "create" %}{% endif %} {{ object_name }}
+    </li>
+</ul>
+{% endblock %}
+
+{% block main %}
+<div id="panel-home">
+    <h3>{% if object %}{% trans "edit" %}{% else %}{% trans "create" %}{% endif %} {{ object_name }}</h3>
+    {% if object %}<h4>{{ object }}</h4>{% endif %}
+    <form action="." enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p class="no-border" style="padding: 20px 0;">
+            <input type="submit" tabindex="5" value="{% trans "save" %}" class="button">
+        </p>
+        <h4>{% trans "entries" %}</h4>
+        <table id="section_entry_formsets">
+            {{ section_entry_formset.management_form }}
+            {{ section_entry_formset.non_form_errors }}
+            {% include "panel/includes/inline_form.html" with form=section_entry_formset.empty_form hidden="True" %}
+            {% for form in section_entry_formset.forms %}
+                {% include "panel/includes/inline_form.html" %}
+            {% endfor %}
+            <tr class="formRow">
+                <td colspan="3"><a id="add_section_entry_form" href="javascript:;" title="{% trans "add entry" %}">{% trans "add entry" %}</a></td>
+            </tr>
+        </table>
+        <p class="no-border">
+            <input type="submit" tabindex="5" value="{% trans "save" %}" class="button">
+        </p>
+    </form>
+</div>
+{% endblock main %} 
