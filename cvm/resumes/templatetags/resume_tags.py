@@ -58,3 +58,17 @@ def latest_resumes(parser, token):
     return LatestResumesNode(limit=limit, template_name=template_name, context_name=context_name)
 
     raise template.TemplateSyntaxError('image tag expects a syntax of {% image <image> [<width>x<height> <mode>] [as <context_name>] %}')
+
+@register.filter
+def chunks(l, n):
+    """
+    Yield successive n-sized chunks from l.
+    """
+    for i in xrange(0, len(l), n):
+        yield l[i:i+n]
+        
+
+@register.filter
+def swapby(l, n):
+    for i in xrange(0, len(l), n):
+        yield l[i:i+n]

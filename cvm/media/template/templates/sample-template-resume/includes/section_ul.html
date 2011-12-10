@@ -1,0 +1,17 @@
+{% load resume_tags %}
+<div class="yui-gf{% if forloop.last %} last{% endif %}">
+	<div class="yui-u first">
+		<h2>{{ section.title }}</h2>
+	</div>
+	<div class="yui-u">
+		{% for chunks in section.section_entries.all|swapby:3 %}
+		<ul class="talent{% if forloop.last %} last{% endif %}">
+		{% for entry in chunks %}
+			<li{% if forloop.last %}class="last"{% endif %}>
+				{{ entry.content }}
+			</li>
+		{% endfor %}
+		</ul>
+		{% endfor %}
+	</div>
+</div><!--// .yui-gf-->

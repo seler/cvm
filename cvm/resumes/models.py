@@ -158,6 +158,12 @@ class Resume(models.Model):
         username = slugify(self.identity.user.username)
         return 'resume/pdf/%s/%s.pdf' % (username, self.slug)
 
+    def get_pdf_url(self):
+        # TODO: jak bedzie widok i url to do niego kierowac
+#        kwargs = {'username': self.identity.user.username, 'slug':self.slug}
+#        return reverse('resume_detail', kwargs=kwargs)
+        return 'dupa'
+
     def generate_pdf(self):
         # no fucking idea on how this is supposed to work 
         t = get_template(self.get_template_name())

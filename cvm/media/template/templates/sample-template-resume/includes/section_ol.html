@@ -1,0 +1,11 @@
+{% load i18n %}
+<div class="yui-gf{% if forloop.last %} last{% endif %}">
+	<div class="yui-u first">
+		<h2>{{ section.title }}</h2>
+	</div>
+	<div class="yui-u">
+		{% for entry in section.section_entries.all %}
+		<h3>{{ forloop.counter|rjust:"3" }}. {{ entry.content }}</h3>
+		{% endfor %}
+	</div>
+</div><!--// .yui-gf-->
