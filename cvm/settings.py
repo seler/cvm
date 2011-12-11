@@ -133,7 +133,7 @@ RESUME_TEMPLATES_FORMAT = 'html'
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -151,7 +151,7 @@ INSTALLED_APPS = (
     'accounts',
     'sharing',
     'panel',
-)
+]
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -180,3 +180,9 @@ try:
     from local_settings import *
 except:
     pass
+else:
+    try:
+        INSTALLED_APPS += LOCAL_INSTALLED_APPS
+    except AttributeError:
+        pass
+
