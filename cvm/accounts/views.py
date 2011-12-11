@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from .forms import ProfileForm
 from .models import Profile
 
@@ -22,3 +23,16 @@ def edit_profile(request):
         form.save()
         return redirect('user_profile', request.user.username)
     return render(request, "accounts/edit_profile.html", {'form': form})
+
+# requires review
+@login_required
+def change_passwd(request):
+    try: # does this need handling anyway?
+        profile = Profile.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        return redirect() # where to?
+    form = PasswordChangeForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('user_profile', request.user.username)
+    return render(request, "accounts/change_password.html", {"form" : form})
