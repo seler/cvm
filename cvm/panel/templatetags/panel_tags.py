@@ -23,6 +23,13 @@ class GetFieldsNode(template.Node):
 
 @register.tag
 def get_fields(parser, token):
+    """Reurns list of tuples of models fields and values.
+
+    Usage::
+
+        {% get_fields <object> [as <context_name] %}
+    
+    """
     bits = token.split_contents()
 
     if len(bits) == 4 and bits[2] == 'as':
@@ -48,6 +55,13 @@ class SectionDetailNode(template.Node):
 
 @register.tag
 def section_detail(parser, token):
+    """Renders section details into appropriate template.
+    
+    Usage::
+
+        {% secton_detail <section> %}
+
+    """
     bits = token.split_contents()
     
     if len(bits) == 2:

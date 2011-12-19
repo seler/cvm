@@ -15,6 +15,13 @@ class CurrentSiteNode(template.Node):
 
 @register.tag
 def current_site(parser, token):
+    """Returns current `Site`.
+    
+    Usage::
+
+        {% current_site as <context_name> %}
+
+    """
     bits = token.split_contents()
     if bits[1] == 'as' and len(bits) == 3:
         return CurrentSiteNode(context_name=bits[2])

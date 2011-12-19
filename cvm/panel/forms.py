@@ -5,6 +5,7 @@ from sharing.models import Share
 from resumes.models import Resume, Identity, IdentityField, Section
 
 class IdentityForm(forms.ModelForm):
+    """Formularz tworzenia i edycji `Identity`."""
     class Meta(object):
         model = Identity
         exclude = ('user',)
@@ -25,6 +26,7 @@ class IdentityForm(forms.ModelForm):
         return instance
 
 class ShareForm(forms.ModelForm):
+    """Formularz tworzenia i edycji `Share`."""
 
     class Meta(object):
         model = Share
@@ -39,6 +41,7 @@ class ShareForm(forms.ModelForm):
 IdentityFieldFormSet = forms.models.inlineformset_factory(Identity, IdentityField, form=IdentityForm, extra=3, can_order=True, can_delete=True)
 
 class ResumeForm(forms.ModelForm):
+    """Formularz tworzenia i edycji `Resume`."""
 
     class Meta(object):
         model = Resume
@@ -51,6 +54,7 @@ class ResumeForm(forms.ModelForm):
 
 
 class SectionForm(forms.ModelForm):
+    """Formularz tworzenia i edycji `Section`."""
 
     class Meta(object):
         model = Section

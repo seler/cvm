@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from .models import Resume
 
 class ResumeDetailView(DetailView):
+    """Resume detail view"""
     def get_queryset(self):
         self.queryset = Resume.objects.qs_for_view(self.request, self.kwargs.get('username'), self.kwargs.get('slug'), self.kwargs.get('object_id'))
         return self.queryset._clone()
@@ -22,6 +23,7 @@ class ResumeDetailView(DetailView):
 
 
 class ResumePDFView(ResumeDetailView):
+    """Resume pdf view"""
     def render_to_response(self, context):
         # po to, zeby zweryfikowac uzytkownika itd bo nie chce mi sie tego pisac
         super(ResumePDFView, self).render_to_response(context)
@@ -32,4 +34,5 @@ class ResumePDFView(ResumeDetailView):
         return response
 
 class ResumeListView(ListView):
+    """List of public resumes"""
     queryset = Resume.objects.public()

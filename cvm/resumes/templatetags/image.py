@@ -90,12 +90,6 @@ def process_image(original_image, width, height, mode):
     return settings.MEDIA_URL + generate_image_path(mode, width, height, image_path)
 
 class ImageNode(template.Node):
-    """
-        modes:
-        - 1 - crop
-        - 2 - reduce
-        - 3 - stretch
-    """
     def __init__(self, original_image, width=None, height=None, mode=None, context_name=None):
         self.original_image = template.Variable(original_image)
         self.width = width
@@ -115,28 +109,28 @@ class ImageNode(template.Node):
 
 @register.tag
 def image(parser, token):
-    """Does this and that.
+    """Template tags that allows you to.
 
     Syntax::
 
         {% image <image> [<width>x<height> <mode>] [as <context_name>] %}
         
-    :``image``: instance of ImageField
-    :``width`` and ``height``: integers; divided by non-digit character are dimensions of resulting image
-    :``mode``: string representing mode
-    :``context_name``: ...
+    :image: instance of ImageField
+    :width and height: divided by non-digit character integers are dimensions of resulting image
+    :mode: string representing mode
+    :context_name: context name that image url will be returned to
 
     Available modes:
 
-        - ``reduce``
+        - reduce
 
             Reduces original image to given size while maintaining aspect ratio. Given ``width`` and ``height`` are treated as maximal values.
 
-        - ``crop``
+        - crop
 
             Crops original image to given size.
 
-        - ``stretch``
+        - stretch
 
             Stretches original image to given size discarding aspect ratio.
 

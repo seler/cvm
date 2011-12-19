@@ -31,11 +31,11 @@ class LatestResumesNode(template.Node):
 
 @register.tag
 def latest_resumes(parser, token):
-    """Does this and that.
+    """Reurns or renders a number of latest resumes.
 
     Syntax::
 
-        {% latest_identities [limit] [in <template_name>] [as <context_name>] %}
+        {% latest_resumes [limit] [in <template_name>] [as <context_name>] %}
     """
 
     bits = token.split_contents()
@@ -60,12 +60,25 @@ def latest_resumes(parser, token):
     raise template.TemplateSyntaxError('image tag expects a syntax of {% image <image> [<width>x<height> <mode>] [as <context_name>] %}')
 
 @register.filter
-def chunks(l, n):
+def chunks(list, n):
     """
-    Yield successive n-sized chunks from l.
+    Yield successive n-sized chunks from list.
+
+    Example usage::
+
+        {% for chunks in object_list|chunks:3 %}
+        <ul class="column-of-three">
+            {% for object in chunks %}
+            <li>
+                {{ object }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endfor %}
+
     """
-    for i in xrange(0, len(l), n):
-        yield l[i:i+n]
+    for i in xrange(0, len(list), n):
+        yield list[i:i+n]
         
 
 @register.filter

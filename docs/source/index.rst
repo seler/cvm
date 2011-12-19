@@ -48,19 +48,89 @@ Models schema
 Resumes app
 -----------
 
+Main app containing and controlling most important features.
+
+Models
+~~~~~~
+
 .. automodule:: resumes.models
    :members:
+   
+
+Views
+~~~~~
+
+.. automodule:: resumes.views
+   :members:
+   
+
+Managers
+~~~~~~~~
+
+.. automodule:: resumes.managers
+   :members:
+   
+
+Templatetags
+~~~~~~~~~~~~
+
+resume_tags
+...........
+
+.. automodule:: resumes.templatetags.resume_tags
+   :members:
+
+image
+.....
+
+.. automodule:: resumes.templatetags.image
+   :members:
+   
+
+current_site
+............
+
+.. automodule:: resumes.templatetags.current_site
+   :members:
+   
 
 Sharing app
 -----------
 
+App containing models for sharing feature.
+
 .. automodule:: sharing.models
    :members:
-
+   
 Accounts app
 ------------
 
+Nothing's really there yet. Can be used to extend user's profile. Made as separate app to maintain consistency with Django's buildins and coding style.
+
 .. automodule:: accounts.models
+   :members:
+   
+Portal app
+----------
+
+Views ad forms for user's panel are here.
+
+Views
+~~~~~
+
+.. automodule:: panel.views
+   :members:
+
+Forms
+~~~~~
+
+.. automodule:: panel.forms
+   :members:
+
+Templatetags (panel_tags)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: panel.templatetags.panel_tags
    :members:
 
 Source

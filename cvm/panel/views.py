@@ -26,6 +26,7 @@ reverse_lazy = lambda name = None, *args: lazy(reverse, str)(name, args=args)
 
 
 class MyCreateView(CreateView):
+    """Abstract. Slightly extended standard `CreateView`."""
     object_name = None
     success_url = reverse_lazy('panel_home')
     template_name = 'panel/form.html'
@@ -57,6 +58,7 @@ class MyCreateView(CreateView):
 
 
 class MyUpdateView(UpdateView):
+    """Abstract. Slightly extended `UpdateView`."""
     object_name = None
     success_url = reverse_lazy('panel_home')
     template_name = 'panel/form.html'
@@ -89,6 +91,7 @@ class MyUpdateView(UpdateView):
 
 
 class MyDeleteView(DeleteView):
+    """Abstract. Slightly extended `DeleteView`."""
     object_name = None
     success_url = reverse_lazy('panel_home')
 
@@ -113,6 +116,7 @@ class MyDeleteView(DeleteView):
 
 @login_required
 def home(request):
+    """Renders homepage."""
     context_vars = {
         'identity_list': Identity.objects.filter(user=request.user),
         'resume_list': Resume.objects.filter(identity__user=request.user),
@@ -123,6 +127,7 @@ def home(request):
 
 
 class IdentityCreateView(MyCreateView):
+    """Widok tworzenia nowego `Identity`."""
     object_name = 'identity'
     model = Identity
     form_class = IdentityForm
@@ -152,6 +157,7 @@ class IdentityCreateView(MyCreateView):
 
 
 class IdentityUpdateView(MyUpdateView):
+    """Widok zmiany `Identity`."""
     form_class = IdentityForm
     object_name = 'identity'
     template_name = 'panel/identity_form.html'
@@ -184,6 +190,7 @@ class IdentityUpdateView(MyUpdateView):
 
 
 class IdentityDeleteView(MyDeleteView):
+    """Widok usuwane `Identity`."""
     model = Identity
     object_name = 'identity'
 
@@ -193,6 +200,7 @@ class IdentityDeleteView(MyDeleteView):
 
 
 class ShareCreateView(MyCreateView):
+    """Widok tworzenia nowego wspoludzialu."""
     model = Share
     form_class = ShareForm
     object_name = 'share'
@@ -203,6 +211,7 @@ class ShareCreateView(MyCreateView):
 
 
 class ShareUpdateView(MyUpdateView):
+    """Widok edycji wspoludzialu."""
     form_class = ShareForm
     object_name = 'share'
 
@@ -212,6 +221,7 @@ class ShareUpdateView(MyUpdateView):
 
 
 class ShareDeleteView(MyDeleteView):
+    """Widok usuwania wspoludzialu."""
     model = Share
     object_name = 'share'
 
@@ -221,6 +231,7 @@ class ShareDeleteView(MyDeleteView):
 
 
 class ResumeDeleteView(MyDeleteView):
+    """Widok usuwania `Resume`."""
     model = Resume
     object_name = 'resume'
 
@@ -231,6 +242,7 @@ class ResumeDeleteView(MyDeleteView):
 
 @login_required
 def resume_detail(request, object_id):
+    """Widok podgladu szczegolow `Resume`."""
     queryset = Resume.objects.filter(identity__user=request.user)
     return object_detail(request, queryset,
         object_id=object_id,
@@ -240,6 +252,7 @@ def resume_detail(request, object_id):
 
 @login_required
 def resume_edit(request, object_id=None):
+    """Widok tworzenia i edycji `Resume`."""
     SectionFormSet = inlineformset_factory(Resume, Section, extra=0)
     context_vars = {
         'object_name': _('resume')
@@ -284,6 +297,7 @@ def resume_edit(request, object_id=None):
 
 @login_required
 def section_edit(request, resume_id, section_id):
+    """Widok tworzenia i edcji sekcji."""
     SectionEntryFormSet = inlineformset_factory(Section, SectionEntry, extra=0)
     obj = get_object_or_404(Section, id=section_id, resume__id=resume_id)
     if request.method == 'POST':
