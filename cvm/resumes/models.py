@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import datetime
 import os
 
 from xhtml2pdf import pisa
@@ -13,6 +13,7 @@ from django.template.loader import get_template
 from django.utils.translation import ugettext_lazy as _
 
 from .managers import ResumeManager
+
 
 class Identity(models.Model):
     name = models.CharField(verbose_name=_(u'name'), max_length=256,
@@ -31,27 +32,33 @@ class Identity(models.Model):
         return '%s, %s' % (self.name, self.occupation)
 
     def get_email(self):
+        """Tries to obtain email from ``identity_fields``, defaults to
+        ``user.email``"""
         try:
-            email_qs = IdentityField.objects.filter(type=IdentityField.TYPE_EMAIL, identity=self)[:1]
+            email_qs = IdentityField.objects.filter(
+                type=IdentityField.TYPE_EMAIL, identity=self)[:1]
             email = email_qs.get()
         except IdentityField.DoesNotExist:
             email = self.user.email
         return email
 
-
     def get_fields(self):
+        """Returns list of ``IdentityField`` as tuples, each containing field
+        ``name``, ``value`` and ``type`` display"""
         fields = []
         for field in self.identity_fields.all():
             fields.append(field.name, field.value, field.get_type_display())
         return fields
 
     def get_field_names(self):
+        """Returns list of all fields names"""
         names = []
         for field in self.identity_fields.all():
             names.append(field.name)
         return names
 
     def get_field_values(self):
+        """Returns list of all fields values"""
         values = []
         for field in self.identity_fields.all():
             values.append(field.value)
@@ -67,7 +74,8 @@ class IdentityField(models.Model):
         (TYPE_EMAIL, _(u'email address')),
         (TYPE_URL, _(u'url address'))
     )
-    identity = models.ForeignKey('Identity', verbose_name=_('identity'), related_name='identity_fields')
+    identity = models.ForeignKey('Identity', verbose_name=_('identity'),
+        related_name='identity_fields')
     name = models.CharField(max_length=64, verbose_name=_(u'field name'))
     value = models.CharField(max_length=512, verbose_name=_(u'field value'))
     type = models.SmallIntegerField(verbose_name=_(u'field type'),
@@ -93,11 +101,13 @@ class Template(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class TemplateVariant(models.Model):
     template = models.ForeignKey('Template', verbose_name=_('template'))
     name = models.CharField(max_length=256, verbose_name=_('name'))
     slug = models.SlugField(max_length=64, verbose_name=_('slug'))
-    screen = models.ImageField(upload_to='template', verbose_name=_(u'screen'), blank=True, null=True)
+    screen = models.ImageField(upload_to='template', verbose_name=_(u'screen'),
+        blank=True, null=True)
 
     class Meta:
         verbose_name = _(u'template variant')
@@ -107,9 +117,14 @@ class TemplateVariant(models.Model):
         return '%s/%s' % (self.template.name, self.name)
 
     def get_template_name(self):
-        return '%s/%s/%s.%s' % (settings.RESUME_TEMPLATES_DIR_NAME, self.template.slug, self.slug, settings.RESUME_TEMPLATES_FORMAT)
+        """returns template variant filename to render to"""
+        return '%s/%s/%s.%s' % (settings.RESUME_TEMPLATES_DIR_NAME,
+                                self.template.slug, self.slug,
+                                settings.RESUME_TEMPLATES_FORMAT)
 
     def get_screen(self):
+        """returns screenshot of the template variant or of template if variant
+        lacks it"""
         return self.screen if self.screen else self.template.screen
 
 
@@ -132,6 +147,7 @@ class Resume(models.Model):
     public = models.BooleanField(
             verbose_name=_(u'is public'),
             default=False,)
+    pdf_generation_date = models.DateTimeField(editable=False, null=True)
 
     objects = ResumeManager()
 
@@ -139,39 +155,63 @@ class Resume(models.Model):
         verbose_name = _(u'resume')
         verbose_name_plural = _(u'resumes')
 
-    def validate_unique(self, exclude=None):
-        # TODO: validate that resume.slug and identity.user.username 
-        # are unique together
-        pass
-
     def __unicode__(self):
         return '%s/%s' % (self.identity.name, self.name)
 
     def get_absolute_url(self):
-        kwargs = {'username': self.identity.user.username, 'slug':self.slug}
+        """returns absolute url to Resume"""
+        kwargs = {'username': self.identity.user.username, 'slug': self.slug,
+                  'object_id': self.id}
         return reverse('resume_detail', kwargs=kwargs)
 
     def get_template_name(self):
+        """returns template name that resuem should be rendered to"""
         return self.template_variant.get_template_name()
 
     def get_pdf_filename(self):
+        """returns path to pdf file"""
         username = slugify(self.identity.user.username)
-        return 'resume/pdf/%s/%s.pdf' % (username, self.slug)
+        filename = 'resume/pdf/%s/%s.pdf' % (username, self.slug)
+        return os.path.abspath(filename)
+
+    def get_pdf_file(self):
+        """returns pdf file instance. generates it if's not there"""
+        if not self.pdf_generation_date or self.pdf_generation_date < \
+                                           self.modification_date:
+            self.generate_pdf()
+        return open(self.get_pdf_filename())
 
     def get_pdf_url(self):
-        # TODO: jak bedzie widok i url to do niego kierowac
-#        kwargs = {'username': self.identity.user.username, 'slug':self.slug}
-#        return reverse('resume_detail', kwargs=kwargs)
-        return 'dupa'
+        """returns absolute url to pdf file"""
+        kwargs = {'username': self.identity.user.username, 'slug': self.slug,
+                  'object_id': self.id}
+        return reverse('resume_pdf', kwargs=kwargs)
 
     def generate_pdf(self):
-        # no fucking idea on how this is supposed to work 
+        """generates pdf"""
         t = get_template(self.get_template_name())
-        c = Context({'object': self, 'STATIC_URL': settings.STATIC_URL})
-        filename = os.path.join(settings.MEDIA_ROOT, self.get_pdf_filename())
+        c = Context({
+            'object': self,
+            'STATIC_URL': settings.STATIC_URL,
+            'TEMPLATE_STATIC_URL': settings.STATIC_URL + r'%s/' % \
+                                        self.template_variant.template.slug
+        })
+        filename = os.path.abspath(os.path.join(settings.MEDIA_ROOT,
+            self.get_pdf_filename()))
+        dirname = os.path.dirname(filename)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
         html = t.render(c)
-        pisa.CreatePDF(html.encode("UTF-8"), file(filename, 'wb'), encoding='UTF-8')
-        return filename
+
+        css = open(os.path.join(settings.MEDIA_ROOT, 'template/templates',
+            self.template_variant.template.slug, 'css/default.css')).read()
+
+        f = file(filename, 'wb')
+        pisa.CreatePDF(html.encode("UTF-8"), f, encoding='UTF-8',
+            default_css=css)
+        f.close()
+        self.pdf_generation_date = datetime.datetime.now()
+
 
 class Section(models.Model):
     TYPE_DATELIST = 1         # html ul with dates?
@@ -184,7 +224,8 @@ class Section(models.Model):
          (TYPE_UNORDEREDLIST, _(u'bulleted list')),
          (TYPE_ORDEREDLIST, _(u'numbered list')),
     )
-    resume = models.ForeignKey('Resume', verbose_name=_(u'resume'), related_name='sections')
+    resume = models.ForeignKey('Resume', verbose_name=_(u'resume'),
+        related_name='sections')
     title = models.CharField(verbose_name=_(u'title'), max_length=100)
     type = models.PositiveSmallIntegerField(
             verbose_name=_(u'type'),
@@ -196,6 +237,7 @@ class Section(models.Model):
 
     def __unicode__(self):
         return '%s/%s' % (self.resume, self.title)
+
 
 class SectionEntry(models.Model):
     section = models.ForeignKey(Section, related_name='section_entries')

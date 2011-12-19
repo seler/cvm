@@ -3,14 +3,16 @@ from django.conf import settings
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from .resumes.views import ResumeDetailView, ResumeListView
+from .resumes.views import ResumeDetailView, ResumePDFView, ResumeListView
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view(template_name="home.html"), name='home'),
-    url(r'^resume/(?P<username>[\w.@+-]+)/(?P<slug>[-\w]+)/$',
+    url(r'^resume/(?P<username>[\w.@+-]+)/(?P<slug>[-\w]+)/(?P<object_id>\d+)/$',
         ResumeDetailView.as_view(), name='resume_detail'),
+    url(r'^resume/(?P<username>[\w.@+-]+)/(?P<slug>[-\w]+)/(?P<object_id>\d+)/pdf/$',
+        ResumePDFView.as_view(), name='resume_pdf'),
     url(r'^resumes/', ResumeListView.as_view(), name='resume_list'),
 
     url(r'^accounts/', include('accounts.urls')),

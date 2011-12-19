@@ -5,7 +5,7 @@
             <a href="{% url panel_home %}">panel</a>
         </li>
         <li{% ifequal active "account" %} id="current"{% endifequal %}>
-            <a href="{% url edit_profile %}">account</a>
+            <a href="{% url auth_password_change %}">account</a>
         </li>
         {% if user.is_staff %}
         <li>

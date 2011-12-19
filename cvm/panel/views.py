@@ -13,15 +13,16 @@ from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.utils.functional import lazy
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
+from django.views.generic import UpdateView, CreateView, DeleteView
 
-from resumes.models import Resume, Identity, IdentityField, Section, SectionEntry
+from resumes.models import *
 from sharing.models import Share
 
-from .forms import IdentityForm, ShareForm, IdentityFieldFormSet, ResumeForm, SectionForm
+from .forms import (IdentityForm, ShareForm, IdentityFieldFormSet,
+                    ResumeForm, SectionForm)
 from django.views.generic.list_detail import object_detail
 
-reverse_lazy = lambda name = None, *args : lazy(reverse, str)(name, args=args)
+reverse_lazy = lambda name = None, *args: lazy(reverse, str)(name, args=args)
 
 
 class MyCreateView(CreateView):
@@ -37,7 +38,7 @@ class MyCreateView(CreateView):
 
     def get_form_kwargs(self):
         kwargs = super(MyCreateView, self).get_form_kwargs()
-        kwargs.update({'request':self.request})
+        kwargs.update({'request': self.request})
         return kwargs
 
     def form_valid(self, form):
@@ -72,18 +73,20 @@ class MyUpdateView(UpdateView):
         return context
 
     def form_valid(self, form):
-        message = _("Successfully updated %s \"%s\".") % (self.object_name, self.object)
+        message = _("Successfully updated %s \"%s\".") % \
+                  (self.object_name, self.object)
         messages.success(self.request, message)
         return super(MyUpdateView, self).form_valid(form)
 
     def get_form_kwargs(self):
         kwargs = super(MyUpdateView, self).get_form_kwargs()
-        kwargs.update({'request':self.request})
+        kwargs.update({'request': self.request})
         return kwargs
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(MyUpdateView, self).dispatch(*args, **kwargs)
+
 
 class MyDeleteView(DeleteView):
     object_name = None
@@ -98,7 +101,8 @@ class MyDeleteView(DeleteView):
         return context
 
     def post(self, *args, **kwargs):
-        message = _("Successfully deleted %s \"%s\".") % (self.object_name, self.get_object())
+        message = _("Successfully deleted %s \"%s\".") % \
+                  (self.object_name, self.get_object())
         messages.success(self.request, message)
         return super(MyDeleteView, self).post(*args, **kwargs)
 
@@ -112,9 +116,10 @@ def home(request):
     context_vars = {
         'identity_list': Identity.objects.filter(user=request.user),
         'resume_list': Resume.objects.filter(identity__user=request.user),
-        'share_list': Share.objects.filter(resume__identity__user=request.user),
+        'share_list': Share.objects.filter(resume__identity__user=request.user)
     }
-    return render_to_response('panel/home.html', context_vars, context_instance=RequestContext(request))
+    return render_to_response('panel/home.html', context_vars,
+        context_instance=RequestContext(request))
 
 
 class IdentityCreateView(MyCreateView):
@@ -228,30 +233,40 @@ class ResumeDeleteView(MyDeleteView):
 def resume_detail(request, object_id):
     queryset = Resume.objects.filter(identity__user=request.user)
     return object_detail(request, queryset,
-        object_id = object_id,
-        template_name = 'panel/resume_detail.html' 
+        object_id=object_id,
+        template_name='panel/resume_detail.html'
     )
 
 
 @login_required
 def resume_edit(request, object_id=None):
     SectionFormSet = inlineformset_factory(Resume, Section, extra=0)
+    context_vars = {
+        'object_name': _('resume')
+    }
     if object_id:
         obj = get_object_or_404(Resume, id=object_id)
+        context_vars['object'] = obj
     if request.method == 'POST':
         if object_id:
-            section_formset = SectionFormSet(request.POST, instance=obj, prefix='section')
-            form = ResumeForm(request.POST, request.FILES, request=request, instance=obj)
+            section_formset = SectionFormSet(request.POST, instance=obj,
+                prefix='section')
+            form = ResumeForm(request.POST, request.FILES, request=request,
+                instance=obj)
+            if form.is_valid() and section_formset.is_valid():
+                instance = form.save()
+                section_formset.save()
+                message = _("Successfully saved resume \"%s\".") % instance
+                messages.success(request, message)
+                return HttpResponseRedirect(reverse_lazy('panel_home'))
+
         else:
             form = ResumeForm(request.POST, request.FILES, request=request)
-        if form.is_valid():
-            instance = form.save()
-            if object_id:
-                if section_formset.is_valid():
-                    section_formset.save()
-            message = _("Successfully saved resume \"%s\".") % (instance)
-            messages.success(request, message)
-            return HttpResponseRedirect(reverse_lazy('panel_home'))
+            if form.is_valid():
+                instance = form.save()
+                message = _("Successfully saved resume \"%s\".") % instance
+                messages.success(request, message)
+                return HttpResponseRedirect(reverse_lazy('panel_home'))
     else:
         if object_id:
             section_formset = SectionFormSet(instance=obj, prefix='section')
@@ -260,14 +275,11 @@ def resume_edit(request, object_id=None):
             #section_formset = SectionFormSet(prefix='section')
             form = ResumeForm(request=request)
 
-    context_vars = {
-        'form': form,
-        'object_name': _('resume')
-    }
+    context_vars['form'] = form
     if object_id:
-        context_vars['object'] = obj
         context_vars['section_formset'] = section_formset
-    return render_to_response('panel/resume_form.html', context_vars, RequestContext(request))
+    return render_to_response('panel/resume_form.html', context_vars,
+        RequestContext(request))
 
 
 @login_required
@@ -275,8 +287,10 @@ def section_edit(request, resume_id, section_id):
     SectionEntryFormSet = inlineformset_factory(Section, SectionEntry, extra=0)
     obj = get_object_or_404(Section, id=section_id, resume__id=resume_id)
     if request.method == 'POST':
-        section_entry_formset = SectionEntryFormSet(request.POST, instance=obj, prefix='section_entry')
-        form = SectionForm(request.POST, request.FILES, request=request, instance=obj)
+        section_entry_formset = SectionEntryFormSet(request.POST, instance=obj,
+            prefix='section_entry')
+        form = SectionForm(request.POST, request.FILES, request=request,
+            instance=obj)
         if form.is_valid() and section_entry_formset.is_valid():
             instance = form.save()
             section_entry_formset.save()
@@ -284,7 +298,8 @@ def section_edit(request, resume_id, section_id):
             messages.success(request, message)
             return HttpResponseRedirect(reverse_lazy('panel_home'))
     else:
-        section_entry_formset = SectionEntryFormSet(instance=obj, prefix='section_entry')
+        section_entry_formset = SectionEntryFormSet(instance=obj,
+            prefix='section_entry')
         form = SectionForm(instance=obj, request=request)
 
     context_vars = {
@@ -293,4 +308,5 @@ def section_edit(request, resume_id, section_id):
     }
     context_vars['object'] = obj
     context_vars['section_entry_formset'] = section_entry_formset
-    return render_to_response('panel/section_form.html', context_vars, RequestContext(request))
+    return render_to_response('panel/section_form.html', context_vars,
+        RequestContext(request))

@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>cv manager documentation &mdash; cv manager v0.1 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="top" title="cv manager v0.1 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">cv manager v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="cv-manager-documentation">
+<h1><a class="toc-backref" href="#id1">cv manager documentation</a><a class="headerlink" href="#cv-manager-documentation" title="Permalink to this headline">¶</a></h1>
+<img alt="_images/cv-horizontal.png" src="_images/cv-horizontal.png" />
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#cv-manager-documentation" id="id1">cv manager documentation</a><ul>
+<li><a class="reference internal" href="#introduction" id="id2">Introduction</a><ul>
+<li><a class="reference internal" href="#what-is-cvm" id="id3">What is CVM?</a></li>
+<li><a class="reference internal" href="#publication-and-sharing" id="id4">Publication and Sharing</a></li>
+<li><a class="reference internal" href="#how-cvm-works" id="id5">How CVM works?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#structure" id="id6">Structure</a><ul>
+<li><a class="reference internal" href="#models-schema" id="id7">Models schema</a></li>
+<li><a class="reference internal" href="#module-resumes.models" id="id8">Resumes app</a></li>
+<li><a class="reference internal" href="#module-sharing.models" id="id9">Sharing app</a></li>
+<li><a class="reference internal" href="#module-accounts.models" id="id10">Accounts app</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id2">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-cvm">
+<h3><a class="toc-backref" href="#id3">What is CVM?</a><a class="headerlink" href="#what-is-cvm" title="Permalink to this headline">¶</a></h3>
+<p>It&#8217;s a web application, that allows it&#8217;s users to easily manage, share and publish their resumes.
+It allows the user to create multiple identities for the purpose of managing resumes of multiple people, like family or friends. Each identity is able to contain multiple resumes of a person, so that each resume can be created for a specific job application. The user is able to choose a layout for the resume from templates designed by professional graphic artists.</p>
+</div>
+<div class="section" id="publication-and-sharing">
+<h3><a class="toc-backref" href="#id4">Publication and Sharing</a><a class="headerlink" href="#publication-and-sharing" title="Permalink to this headline">¶</a></h3>
+<p>The user is able to generate PDF files for printing or electronic use. The user is also able to publish a resume on the portal or to send a link, allowing the manager to view a resume for a limited period of time.</p>
+</div>
+<div class="section" id="how-cvm-works">
+<h3><a class="toc-backref" href="#id5">How CVM works?</a><a class="headerlink" href="#how-cvm-works" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>User registers</li>
+<li>User creates new Resume</li>
+<li>User fills in Resume
+a. User creates or chooses already created Identity
+b. User uploads or chooses already uploaded Photo
+c. Users fills in Sections and Entries</li>
+<li>User Shares or Publish Resume</li>
+<li>User edits or creates new Resumes</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="structure">
+<h2><a class="toc-backref" href="#id6">Structure</a><a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="models-schema">
+<h3><a class="toc-backref" href="#id7">Models schema</a><a class="headerlink" href="#models-schema" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/models.png" src="_images/models.png" />
+</div>
+<div class="section" id="module-resumes.models">
+<span id="resumes-app"></span><h3><a class="toc-backref" href="#id8">Resumes app</a><a class="headerlink" href="#module-resumes.models" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="resumes.models.Identity">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Identity</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identity(id, name, occupation, user_id, avatar)</p>
+<dl class="method">
+<dt id="resumes.models.Identity.get_email">
+<tt class="descname">get_email</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to obtain email from <tt class="docutils literal"><span class="pre">identity_fields</span></tt>, defaults to
+<tt class="docutils literal"><span class="pre">user.email</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Identity.get_field_names">
+<tt class="descname">get_field_names</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of all fields names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Identity.get_field_values">
+<tt class="descname">get_field_values</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_field_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of all fields values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Identity.get_fields">
+<tt class="descname">get_fields</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of <tt class="docutils literal"><span class="pre">IdentityField</span></tt> as tuples, each containing field
+<tt class="docutils literal"><span class="pre">name</span></tt>, <tt class="docutils literal"><span class="pre">value</span></tt> and <tt class="docutils literal"><span class="pre">type</span></tt> display</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.IdentityField">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">IdentityField</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.IdentityField" title="Permalink to this definition">¶</a></dt>
+<dd><p>IdentityField(id, identity_id, name, value, type)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.Resume">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Resume</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Resume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resume(id, identity_id, name, slug, creation_date, modification_date, template_variant_id, active, public, pdf_generation_date)</p>
+<dl class="method">
+<dt id="resumes.models.Resume.generate_pdf">
+<tt class="descname">generate_pdf</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.generate_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates pdf</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Resume.get_absolute_url">
+<tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns absolute url to Resume</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Resume.get_pdf_file">
+<tt class="descname">get_pdf_file</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_pdf_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns pdf file instance. generates it if&#8217;s not there</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Resume.get_pdf_filename">
+<tt class="descname">get_pdf_filename</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_pdf_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns path to pdf file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Resume.get_pdf_url">
+<tt class="descname">get_pdf_url</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_pdf_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns absolute url to pdf file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Resume.get_template_name">
+<tt class="descname">get_template_name</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_template_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns template name that resuem should be rendered to</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.Section">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Section</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Section(id, resume_id, title, type)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.SectionEntry">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">SectionEntry</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.SectionEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>SectionEntry(id, section_id, from_date, to_date, current, title, content)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.Template">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Template</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Template(id, name, slug, screen)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.TemplateVariant">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">TemplateVariant</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.TemplateVariant" title="Permalink to this definition">¶</a></dt>
+<dd><p>TemplateVariant(id, template_id, name, slug, screen)</p>
+<dl class="method">
+<dt id="resumes.models.TemplateVariant.get_screen">
+<tt class="descname">get_screen</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.TemplateVariant.get_screen" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns screenshot of the template variant or of template if variant
+lacks it</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.TemplateVariant.get_template_name">
+<tt class="descname">get_template_name</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.TemplateVariant.get_template_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns template variant filename to render to</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-sharing.models">
+<span id="sharing-app"></span><h3><a class="toc-backref" href="#id9">Sharing app</a><a class="headerlink" href="#module-sharing.models" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="sharing.models.Share">
+<em class="property">class </em><tt class="descclassname">sharing.models.</tt><tt class="descname">Share</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#sharing.models.Share" title="Permalink to this definition">¶</a></dt>
+<dd><p>Share(id, hash, resume_id, from_date, to_date, name, email)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-accounts.models">
+<span id="accounts-app"></span><h3><a class="toc-backref" href="#id10">Accounts app</a><a class="headerlink" href="#module-accounts.models" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="accounts.models.Profile">
+<em class="property">class </em><tt class="descclassname">accounts.models.</tt><tt class="descname">Profile</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#accounts.models.Profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Profile(id, user_id, name)</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">cv manager documentation</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#what-is-cvm">What is CVM?</a></li>
+<li><a class="reference internal" href="#publication-and-sharing">Publication and Sharing</a></li>
+<li><a class="reference internal" href="#how-cvm-works">How CVM works?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#structure">Structure</a><ul>
+<li><a class="reference internal" href="#models-schema">Models schema</a></li>
+<li><a class="reference internal" href="#module-resumes.models">Resumes app</a></li>
+<li><a class="reference internal" href="#module-sharing.models">Sharing app</a></li>
+<li><a class="reference internal" href="#module-accounts.models">Accounts app</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">cv manager v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Rafał Selewońko, Ksawery Dziekoński.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+    </div>
+  </body>
+</html>

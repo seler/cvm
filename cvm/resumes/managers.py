@@ -12,8 +12,8 @@ class ResumeManager(models.Manager):
     def public(self):
         return self.active().filter(public=True)
 
-    def qs_for_view(self, request, username, slug):
-        qs = self.active().filter(identity__user__username=username, slug=slug)
+    def qs_for_view(self, request, username, slug, id):
+        qs = self.active().filter(identity__user__username=username, slug=slug, id=id)
         if not request.user.is_superuser:
             qs = qs.filter(
                        Q(identity__user__id=request.user.id) |
