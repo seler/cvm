@@ -72,7 +72,10 @@ def generate_new_image(original_image_path, image_path, mode, width, height):
     return image_path
 
 def process_image(original_image, width, height, mode):
-    original_image_path = original_image.name
+    if original_image:
+        original_image_path = original_image.name
+    else:
+        original_image_path = 'noimage.jpg'
 
     image_path = os.path.join(settings.MEDIA_ROOT, generate_image_path(mode, width, height, original_image_path))
 

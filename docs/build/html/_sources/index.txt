@@ -62,3 +62,12 @@ Accounts app
 
 .. automodule:: accounts.models
    :members:
+
+Source
+======
+
+All sources for this project are available online at `bitbucket.org/seler/cvm <https://bitbucket.org/seler/cvm/>`_.
+
+To clone this repository run::
+
+    hg clone https://bitbucket.org/seler/cvm
