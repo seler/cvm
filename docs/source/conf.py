@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'cv manager'
-copyright = u'2011, Rafał Selewońko, Ksawery Dziekoński'
+copyright = u'2011, Rafał Selewońko'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
