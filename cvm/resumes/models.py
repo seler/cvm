@@ -236,7 +236,7 @@ class Section(models.Model):
         verbose_name_plural = _(u'sections')
 
     def __unicode__(self):
-        return '%s/%s' % (self.resume, self.title)
+        return u'%s/%s' % (self.resume, self.title)
 
 
 class SectionEntry(models.Model):

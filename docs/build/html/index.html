@@ -46,7 +46,7 @@
             
   <div class="section" id="cv-manager-documentation">
 <h1><a class="toc-backref" href="#id1">cv manager documentation</a><a class="headerlink" href="#cv-manager-documentation" title="Permalink to this headline">¶</a></h1>
-<img alt="_images/cv-horizontal.png" src="_images/cv-horizontal.png" />
+<img alt="_images/cv-horizontal3.png" src="_images/cv-horizontal3.png" />
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
@@ -59,11 +59,18 @@
 </li>
 <li><a class="reference internal" href="#structure" id="id6">Structure</a><ul>
 <li><a class="reference internal" href="#models-schema" id="id7">Models schema</a></li>
-<li><a class="reference internal" href="#module-resumes.models" id="id8">Resumes app</a></li>
-<li><a class="reference internal" href="#module-sharing.models" id="id9">Sharing app</a></li>
-<li><a class="reference internal" href="#module-accounts.models" id="id10">Accounts app</a></li>
+<li><a class="reference internal" href="#resumes-app" id="id8">Resumes app</a><ul>
+<li><a class="reference internal" href="#models" id="id9">Models</a></li>
+<li><a class="reference internal" href="#views" id="id10">Views</a></li>
+<li><a class="reference internal" href="#module-resumes.managers" id="id11">Managers</a></li>
+<li><a class="reference internal" href="#templatetags" id="id12">Templatetags</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-sharing.models" id="id13">Sharing app</a></li>
+<li><a class="reference internal" href="#module-accounts.models" id="id14">Accounts app</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#source" id="id15">Source</a></li>
 </ul>
 </li>
 </ul>
@@ -99,130 +106,31 @@ c. Users fills in Sections and Entries</li>
 <h2><a class="toc-backref" href="#id6">Structure</a><a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="models-schema">
 <h3><a class="toc-backref" href="#id7">Models schema</a><a class="headerlink" href="#models-schema" title="Permalink to this headline">¶</a></h3>
-<img alt="_images/models.png" src="_images/models.png" />
+<img alt="_images/models3.png" src="_images/models3.png" />
 </div>
-<div class="section" id="module-resumes.models">
-<span id="resumes-app"></span><h3><a class="toc-backref" href="#id8">Resumes app</a><a class="headerlink" href="#module-resumes.models" title="Permalink to this headline">¶</a></h3>
-<dl class="class">
-<dt id="resumes.models.Identity">
-<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Identity</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Identity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Identity(id, name, occupation, user_id, avatar)</p>
-<dl class="method">
-<dt id="resumes.models.Identity.get_email">
-<tt class="descname">get_email</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_email" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tries to obtain email from <tt class="docutils literal"><span class="pre">identity_fields</span></tt>, defaults to
-<tt class="docutils literal"><span class="pre">user.email</span></tt></p>
+<div class="section" id="resumes-app">
+<h3><a class="toc-backref" href="#id8">Resumes app</a><a class="headerlink" href="#resumes-app" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="models">
+<h4><a class="toc-backref" href="#id9">Models</a><a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="views">
+<h4><a class="toc-backref" href="#id10">Views</a><a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="module-resumes.managers">
+<span id="managers"></span><h4><a class="toc-backref" href="#id11">Managers</a><a class="headerlink" href="#module-resumes.managers" title="Permalink to this headline">¶</a></h4>
+<dl class="function">
+<dt id="resumes.managers.NOW">
+<tt class="descclassname">resumes.managers.</tt><tt class="descname">NOW</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.managers.NOW" title="Permalink to this definition">¶</a></dt>
+<dd><p>[tz] -&gt; new datetime with tz&#8217;s local day and time.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="resumes.models.Identity.get_field_names">
-<tt class="descname">get_field_names</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_field_names" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns list of all fields names</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="resumes.models.Identity.get_field_values">
-<tt class="descname">get_field_values</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_field_values" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns list of all fields values</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="resumes.models.Identity.get_fields">
-<tt class="descname">get_fields</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_fields" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns list of <tt class="docutils literal"><span class="pre">IdentityField</span></tt> as tuples, each containing field
-<tt class="docutils literal"><span class="pre">name</span></tt>, <tt class="docutils literal"><span class="pre">value</span></tt> and <tt class="docutils literal"><span class="pre">type</span></tt> display</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="resumes.models.IdentityField">
-<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">IdentityField</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.IdentityField" title="Permalink to this definition">¶</a></dt>
-<dd><p>IdentityField(id, identity_id, name, value, type)</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="resumes.models.Resume">
-<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Resume</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Resume" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resume(id, identity_id, name, slug, creation_date, modification_date, template_variant_id, active, public, pdf_generation_date)</p>
-<dl class="method">
-<dt id="resumes.models.Resume.generate_pdf">
-<tt class="descname">generate_pdf</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.generate_pdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>generates pdf</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="resumes.models.Resume.get_absolute_url">
-<tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_absolute_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns absolute url to Resume</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="resumes.models.Resume.get_pdf_file">
-<tt class="descname">get_pdf_file</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_pdf_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns pdf file instance. generates it if&#8217;s not there</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="resumes.models.Resume.get_pdf_filename">
-<tt class="descname">get_pdf_filename</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_pdf_filename" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns path to pdf file</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="resumes.models.Resume.get_pdf_url">
-<tt class="descname">get_pdf_url</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_pdf_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns absolute url to pdf file</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="resumes.models.Resume.get_template_name">
-<tt class="descname">get_template_name</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_template_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns template name that resuem should be rendered to</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="resumes.models.Section">
-<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Section</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Section" title="Permalink to this definition">¶</a></dt>
-<dd><p>Section(id, resume_id, title, type)</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="resumes.models.SectionEntry">
-<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">SectionEntry</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.SectionEntry" title="Permalink to this definition">¶</a></dt>
-<dd><p>SectionEntry(id, section_id, from_date, to_date, current, title, content)</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="resumes.models.Template">
-<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Template</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Template" title="Permalink to this definition">¶</a></dt>
-<dd><p>Template(id, name, slug, screen)</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="resumes.models.TemplateVariant">
-<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">TemplateVariant</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.TemplateVariant" title="Permalink to this definition">¶</a></dt>
-<dd><p>TemplateVariant(id, template_id, name, slug, screen)</p>
-<dl class="method">
-<dt id="resumes.models.TemplateVariant.get_screen">
-<tt class="descname">get_screen</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.TemplateVariant.get_screen" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns screenshot of the template variant or of template if variant
-lacks it</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="resumes.models.TemplateVariant.get_template_name">
-<tt class="descname">get_template_name</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.TemplateVariant.get_template_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns template variant filename to render to</p>
-</dd></dl>
-
-</dd></dl>
-
+</div>
+<div class="section" id="templatetags">
+<h4><a class="toc-backref" href="#id12">Templatetags</a><a class="headerlink" href="#templatetags" title="Permalink to this headline">¶</a></h4>
+</div>
 </div>
 <div class="section" id="module-sharing.models">
-<span id="sharing-app"></span><h3><a class="toc-backref" href="#id9">Sharing app</a><a class="headerlink" href="#module-sharing.models" title="Permalink to this headline">¶</a></h3>
+<span id="sharing-app"></span><h3><a class="toc-backref" href="#id13">Sharing app</a><a class="headerlink" href="#module-sharing.models" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="sharing.models.Share">
 <em class="property">class </em><tt class="descclassname">sharing.models.</tt><tt class="descname">Share</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#sharing.models.Share" title="Permalink to this definition">¶</a></dt>
@@ -231,13 +139,20 @@ lacks it</p>
 
 </div>
 <div class="section" id="module-accounts.models">
-<span id="accounts-app"></span><h3><a class="toc-backref" href="#id10">Accounts app</a><a class="headerlink" href="#module-accounts.models" title="Permalink to this headline">¶</a></h3>
+<span id="accounts-app"></span><h3><a class="toc-backref" href="#id14">Accounts app</a><a class="headerlink" href="#module-accounts.models" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="accounts.models.Profile">
 <em class="property">class </em><tt class="descclassname">accounts.models.</tt><tt class="descname">Profile</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#accounts.models.Profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Profile(id, user_id, name)</p>
 </dd></dl>
 
+</div>
+</div>
+<div class="section" id="source">
+<h2><a class="toc-backref" href="#id15">Source</a><a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<p>All sources for this project are available online at <a class="reference external" href="https://bitbucket.org/seler/cvm/">bitbucket.org/seler/cvm</a>.</p>
+<p>To clone this repository run:</p>
+<div class="highlight-python"><pre>hg clone https://bitbucket.org/seler/cvm</pre>
 </div>
 </div>
 </div>
@@ -259,11 +174,18 @@ lacks it</p>
 </li>
 <li><a class="reference internal" href="#structure">Structure</a><ul>
 <li><a class="reference internal" href="#models-schema">Models schema</a></li>
-<li><a class="reference internal" href="#module-resumes.models">Resumes app</a></li>
+<li><a class="reference internal" href="#resumes-app">Resumes app</a><ul>
+<li><a class="reference internal" href="#models">Models</a></li>
+<li><a class="reference internal" href="#views">Views</a></li>
+<li><a class="reference internal" href="#module-resumes.managers">Managers</a></li>
+<li><a class="reference internal" href="#templatetags">Templatetags</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-sharing.models">Sharing app</a></li>
 <li><a class="reference internal" href="#module-accounts.models">Accounts app</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#source">Source</a></li>
 </ul>
 </li>
 </ul>
@@ -276,7 +198,7 @@ lacks it</p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" size="18" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -304,7 +226,7 @@ lacks it</p>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Rafał Selewońko.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
     </div>
   </body>
 </html>

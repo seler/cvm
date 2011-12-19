@@ -1,7 +1,7 @@
 {% load i18n resume_tags %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
-        {% block head %} <title>{% block title %}{% endblock %}cv manager - rafał selewońko, indefinite</title>
+        {% block head %} <title>{% block title %}{% endblock %}cv manager - rafał selewońko</title>
         <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
         <meta name="description" content="Easily create manage, share and publish your resumes. Resume templates designed by professional graphic artists." />
         <meta name="keywords" content="cv, curriculum, curriculum vitae, cv templates" />
@@ -69,6 +69,7 @@
                 <!-- sidebar -->
                 <div id="sidebar">
                     {% block sidebar %}
+                    {# latest_resumes 1 in "resumes/tags/latest_resume.html" #}
                     <div class="about-me">
                         <h3>About Me</h3>
                         <p>
@@ -355,7 +356,7 @@
         <!-- footer-bottom -->
         <div id="footer-bottom">
             <p class="bottom-left">
-                &copy; {% now "Y" %} <strong><a href="http://selewonko.com">rafał selewońko</a>, indefinite</strong>&nbsp; &nbsp; &nbsp;
+                &copy; {% now "Y" %} <strong><a href="http://selewonko.com">rafał selewońko</a></strong>&nbsp; &nbsp; &nbsp;
                 design by <a href="http://styleshout.com/">erwin aligam</a>, <a href="http://selewonko.com">rafał selewońko</a>
             </p>
             <p class="bottom-right">
