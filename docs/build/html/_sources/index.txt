@@ -71,3 +71,22 @@ All sources for this project are available online at `bitbucket.org/seler/cvm <h
 To clone this repository run::
 
     hg clone https://bitbucket.org/seler/cvm
+
+Requirements
+------------
+
+* Django
+
+    Version 1.3 or higher.
+
+* PIL
+
+    Tested using version 1.1.7
+
+* django-registration
+
+    Version 0.7. Newer version wont work because of backwards imcompatible changes
+
+* xhtml2pdf
+  
+   Make sure you checkout latest source from https://github.com/chrisglass/xhtml2pdf
