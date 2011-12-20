@@ -277,6 +277,40 @@ lacks it</p>
 <dd><p>[tz] -&gt; new datetime with tz&#8217;s local day and time.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="resumes.managers.ResumeManager">
+<em class="property">class </em><tt class="descclassname">resumes.managers.</tt><tt class="descname">ResumeManager</tt><a class="headerlink" href="#resumes.managers.ResumeManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>ResumeManager</p>
+<dl class="method">
+<dt id="resumes.managers.ResumeManager.active">
+<tt class="descname">active</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.managers.ResumeManager.active" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only active resumes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.managers.ResumeManager.public">
+<tt class="descname">public</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.managers.ResumeManager.public" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only active and public resumes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.managers.ResumeManager.qs_for_view">
+<tt class="descname">qs_for_view</tt><big>(</big><em>request</em>, <em>username</em>, <em>slug</em>, <em>id</em><big>)</big><a class="headerlink" href="#resumes.managers.ResumeManager.qs_for_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Special queryset for view.</p>
+<dl class="docutils">
+<dt>Allows to view Resume only if:</dt>
+<dd><ul class="first last simple">
+<li>user is superuser (admin)</li>
+<li>user is owner of Resume</li>
+<li>if resume is public</li>
+<li>given hash is valid</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="templatetags">
 <h4><a class="toc-backref" href="#id13">Templatetags</a><a class="headerlink" href="#templatetags" title="Permalink to this headline">¶</a></h4>

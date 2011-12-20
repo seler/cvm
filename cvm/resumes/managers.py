@@ -6,6 +6,7 @@ Q = models.Q
 NOW = datetime.datetime.now
 
 class ResumeManager(models.Manager):
+    """ResumeManager"""
     def active(self):
         """Only active resumes"""
         return self.filter(active=True)
