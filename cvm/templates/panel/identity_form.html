@@ -14,17 +14,57 @@
 </ul>
 {% endblock %}
 
+{% block extrahead %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/panel.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#add_identity_field_form').click(function() {
+                return addForm(this, 'identity_field');
+            });
+
+            /**************/
+            /* HELP BOXES */
+            /**************/
+            $('.pomoclink a').live('click', function(){
+                $(this).addClass('openbox');
+                $(this).parent().next('.pomocbox').show();
+                return false;
+            });
+            $('.pomocbox a.closebox').live('click', function(){
+                $(this).parent().parent().hide();
+                $('a',$(this).parent().parent().prev('.pomoclink')).removeClass('openbox');
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block main %}
-<div id="panel-home">
-    <h3>{% if object %}{% trans "edit" %}{% else %}{% trans "create" %}{% endif %} {{ object_name }}</h3>
-    {% if object %}<h4>{{ object }}</h4>{% endif %}
-    <form action="." enctype="multipart/form-data" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {{ identity_field_formset}}
-        <p class="no-border">
-            <input type="submit" tabindex="5" value="{% trans "save" %}" class="button">
-        </p>
-    </form>
-</div>
+    <div id="panel-home">
+        <h3>{% if object %}{% trans "edit" %}{% else %}{% trans "create" %}{% endif %} {{ object_name }}</h3>
+        {% if object %}<h4>{{ object }}</h4>{% endif %}
+        <form action="." enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p class="no-border" style="padding: 20px 0;">
+                <input type="submit" tabindex="5" value="{% trans "save" %}" class="button">
+            </p>
+            <h4>{% trans "Sections" %}</h4>
+            <table id="identity_field_formsets">
+                {{ identity_field_formset.management_form }}
+                {{ identity_field_formset.non_form_errors }}
+                {% include "panel/includes/inline_form.html" with form=identity_field_formset.empty_form hidden="True" %}
+                {% for form in identity_field_formset.forms %}
+                    {% include "panel/includes/inline_form.html" %}
+                {% endfor %}
+                <tr class="formRow">
+                    <td colspan="3"><a id="add_identity_field_form" href="javascript:;" title="{% trans "add identity" %}">{% trans "add identity" %}</a></td>
+                </tr>
+            </table>
+            <p class="no-border">
+                <input type="submit" tabindex="5" value="{% trans "save" %}" class="button">
+            </p>
+        </form>
+    </div>
 {% endblock main %}

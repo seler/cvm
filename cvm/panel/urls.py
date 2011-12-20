@@ -4,8 +4,8 @@ from .views import *
 
 urlpatterns = patterns('',
     url(r'^$', home, name='panel_home'),
-    url(r'^identity/create/$', IdentityCreateView.as_view(), name='panel_identity_create'),
-    url(r'^identity/(?P<pk>[0-9]+)/$', IdentityUpdateView.as_view(), name='panel_identity_update'),
+    url(r'^identity/create/$', identity_edit, name='panel_identity_create'),
+    url(r'^identity/(?P<pk>[0-9]+)/$', identity_edit, name='panel_identity_update'),
     url(r'^identity/delete/(?P<pk>[0-9]+)/$', IdentityDeleteView.as_view(), name='panel_identity_delete'),
     url(r'^resume/create/$', resume_edit, name='panel_resume_create'),
     url(r'^resume/(?P<object_id>[0-9]+)/$', resume_detail, name='panel_resume_detail'),

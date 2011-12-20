@@ -142,6 +142,15 @@ To clone this repository run::
 
     hg clone https://bitbucket.org/seler/cvm
 
+Django
+------
+
+cv managers is built using `Django framework<http://djangoproject.com>`_.
+
+The core Django MVC framework consists of an object-relational mapper which mediates between data models (defined as Python classes) and a relational database ("*M*odel"); a system for processing requests with a web templating system ("*V*iew") and a regular-expression-based URL dispatcher ("*C*ontroller").
+
+For more information visit `djangoproject.com<http://djangoproject.com>`_
+
 Requirements
 ------------
 
@@ -160,3 +169,18 @@ Requirements
 * xhtml2pdf
   
    Make sure you checkout latest source from https://github.com/chrisglass/xhtml2pdf
+
+Initial data
+------------
+
+cv manager comes with sample data which is automatically inserted into database.
+
+login with followin credentials:
+
+:login: admin
+:password: admin
+
+and
+
+:login: lenna
+:password: lenna

@@ -253,7 +253,7 @@ def resume_detail(request, object_id):
 @login_required
 def resume_edit(request, object_id=None):
     """Widok tworzenia i edycji `Resume`."""
-    SectionFormSet = inlineformset_factory(Resume, Section, extra=0)
+    SectionFormSet = inlineformset_factory(Resume, Section, extra=3)
     context_vars = {
         'object_name': _('resume')
     }
@@ -298,7 +298,7 @@ def resume_edit(request, object_id=None):
 @login_required
 def section_edit(request, resume_id, section_id):
     """Widok tworzenia i edcji sekcji."""
-    SectionEntryFormSet = inlineformset_factory(Section, SectionEntry, extra=0)
+    SectionEntryFormSet = inlineformset_factory(Section, SectionEntry, extra=3)
     obj = get_object_or_404(Section, id=section_id, resume__id=resume_id)
     if request.method == 'POST':
         section_entry_formset = SectionEntryFormSet(request.POST, instance=obj,
@@ -323,4 +323,38 @@ def section_edit(request, resume_id, section_id):
     context_vars['object'] = obj
     context_vars['section_entry_formset'] = section_entry_formset
     return render_to_response('panel/section_form.html', context_vars,
+        RequestContext(request))
+
+
+@login_required
+def identity_edit(request, pk=None):
+    """Widok tworzenia i edcji identity."""
+    IdentityFieldFormSet = inlineformset_factory(Identity, IdentityField, extra=3)
+    if pk:
+        obj = get_object_or_404(Identity, id=pk)
+    else:
+        obj = None
+    if request.method == 'POST':
+        identity_field_formset = IdentityFieldFormSet(request.POST, instance=obj,
+            prefix='identity_field')
+        form = IdentityForm(request.POST, request.FILES, request=request,
+            instance=obj)
+        if form.is_valid() and identity_field_formset.is_valid():
+            instance = form.save()
+            identity_field_formset.save()
+            message = _("Successfully saved identity \"%s\".") % instance
+            messages.success(request, message)
+            return HttpResponseRedirect(reverse_lazy('panel_home'))
+    else:
+        identity_field_formset = IdentityFieldFormSet(instance=obj,
+            prefix='identity_field')
+        form = IdentityForm(instance=obj, request=request)
+
+    context_vars = {
+        'form': form,
+        'object_name': _('identity')
+    }
+    context_vars['object'] = obj
+    context_vars['identity_field_formset'] = identity_field_formset
+    return render_to_response('panel/identity_form.html', context_vars,
         RequestContext(request))
