@@ -1,0 +1,711 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>cv manager v0.1 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="top" title="None" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="#">cv manager v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="cv-manager-documentation">
+<h1><a class="toc-backref" href="#id2">cv manager documentation</a><a class="headerlink" href="#cv-manager-documentation" title="Permalink to this headline">¶</a></h1>
+<img alt="_images/cv-horizontal3.png" src="_images/cv-horizontal3.png" />
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#cv-manager-documentation" id="id2">cv manager documentation</a><ul>
+<li><a class="reference internal" href="#introduction" id="id3">Introduction</a><ul>
+<li><a class="reference internal" href="#what-is-cvm" id="id4">What is CVM?</a></li>
+<li><a class="reference internal" href="#publication-and-sharing" id="id5">Publication and Sharing</a></li>
+<li><a class="reference internal" href="#how-cvm-works" id="id6">How CVM works?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#structure" id="id7">Structure</a><ul>
+<li><a class="reference internal" href="#models-schema" id="id8">Models schema</a></li>
+<li><a class="reference internal" href="#resumes-app" id="id9">Resumes app</a><ul>
+<li><a class="reference internal" href="#module-resumes.models" id="id10">Models</a></li>
+<li><a class="reference internal" href="#module-resumes.views" id="id11">Views</a></li>
+<li><a class="reference internal" href="#module-resumes.managers" id="id12">Managers</a></li>
+<li><a class="reference internal" href="#templatetags" id="id13">Templatetags</a><ul>
+<li><a class="reference internal" href="#module-resumes.templatetags.resume_tags" id="id14">resume_tags</a></li>
+<li><a class="reference internal" href="#module-resumes.templatetags.image" id="id15">image</a></li>
+<li><a class="reference internal" href="#module-resumes.templatetags.current_site" id="id16">current_site</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sharing-app" id="id17">Sharing app</a></li>
+<li><a class="reference internal" href="#accounts-app" id="id18">Accounts app</a></li>
+<li><a class="reference internal" href="#portal-app" id="id19">Portal app</a><ul>
+<li><a class="reference internal" href="#id1" id="id20">Views</a></li>
+<li><a class="reference internal" href="#module-panel.forms" id="id21">Forms</a></li>
+<li><a class="reference internal" href="#module-panel.templatetags.panel_tags" id="id22">Templatetags (panel_tags)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#source" id="id23">Source</a><ul>
+<li><a class="reference internal" href="#django" id="id24">Django</a></li>
+<li><a class="reference internal" href="#requirements" id="id25">Requirements</a></li>
+<li><a class="reference internal" href="#local-settings-py" id="id26">local_settings.py</a></li>
+<li><a class="reference internal" href="#initial-data" id="id27">Initial data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id3">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-cvm">
+<h3><a class="toc-backref" href="#id4">What is CVM?</a><a class="headerlink" href="#what-is-cvm" title="Permalink to this headline">¶</a></h3>
+<p>It&#8217;s a web application, that allows it&#8217;s users to easily manage, share and publish their resumes.
+It allows the user to create multiple identities for the purpose of managing resumes of multiple people, like family or friends. Each identity is able to contain multiple resumes of a person, so that each resume can be created for a specific job application. The user is able to choose a layout for the resume from templates designed by professional graphic artists.</p>
+</div>
+<div class="section" id="publication-and-sharing">
+<h3><a class="toc-backref" href="#id5">Publication and Sharing</a><a class="headerlink" href="#publication-and-sharing" title="Permalink to this headline">¶</a></h3>
+<p>The user is able to generate PDF files for printing or electronic use. The user is also able to publish a resume on the portal or to send a link, allowing the manager to view a resume for a limited period of time.</p>
+</div>
+<div class="section" id="how-cvm-works">
+<h3><a class="toc-backref" href="#id6">How CVM works?</a><a class="headerlink" href="#how-cvm-works" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>User registers</li>
+<li>User creates new Resume</li>
+<li>User fills in Resume
+a. User creates or chooses already created Identity
+b. User uploads or chooses already uploaded Photo
+c. Users fills in Sections and Entries</li>
+<li>User Shares or Publish Resume</li>
+<li>User edits or creates new Resumes</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="structure">
+<h2><a class="toc-backref" href="#id7">Structure</a><a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="models-schema">
+<h3><a class="toc-backref" href="#id8">Models schema</a><a class="headerlink" href="#models-schema" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/models3.png" src="_images/models3.png" />
+</div>
+<div class="section" id="resumes-app">
+<h3><a class="toc-backref" href="#id9">Resumes app</a><a class="headerlink" href="#resumes-app" title="Permalink to this headline">¶</a></h3>
+<p>Main app containing and controlling most important features.</p>
+<div class="section" id="module-resumes.models">
+<span id="models"></span><h4><a class="toc-backref" href="#id10">Models</a><a class="headerlink" href="#module-resumes.models" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="resumes.models.Identity">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Identity</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identity(id, name, occupation, user_id, avatar)</p>
+<dl class="method">
+<dt id="resumes.models.Identity.get_email">
+<tt class="descname">get_email</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to obtain email from <tt class="docutils literal"><span class="pre">identity_fields</span></tt>, defaults to
+<tt class="docutils literal"><span class="pre">user.email</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Identity.get_field_names">
+<tt class="descname">get_field_names</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of all fields names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Identity.get_field_values">
+<tt class="descname">get_field_values</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_field_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of all fields values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Identity.get_fields">
+<tt class="descname">get_fields</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Identity.get_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of <tt class="docutils literal"><span class="pre">IdentityField</span></tt> as tuples, each containing field
+<tt class="docutils literal"><span class="pre">name</span></tt>, <tt class="docutils literal"><span class="pre">value</span></tt> and <tt class="docutils literal"><span class="pre">type</span></tt> display</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.IdentityField">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">IdentityField</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.IdentityField" title="Permalink to this definition">¶</a></dt>
+<dd><p>IdentityField(id, identity_id, name, value, type)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.Resume">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Resume</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Resume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resume(id, identity_id, name, slug, creation_date, modification_date, template_variant_id, active, public, pdf_generation_date)</p>
+<dl class="method">
+<dt id="resumes.models.Resume.generate_pdf">
+<tt class="descname">generate_pdf</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.generate_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates pdf</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Resume.get_absolute_url">
+<tt class="descname">get_absolute_url</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_absolute_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns absolute url to Resume</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Resume.get_pdf_file">
+<tt class="descname">get_pdf_file</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_pdf_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns pdf file instance. generates it if&#8217;s not there</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Resume.get_pdf_filename">
+<tt class="descname">get_pdf_filename</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_pdf_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns path to pdf file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Resume.get_pdf_url">
+<tt class="descname">get_pdf_url</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_pdf_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns absolute url to pdf file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.Resume.get_template_name">
+<tt class="descname">get_template_name</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.Resume.get_template_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns template name that resuem should be rendered to</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.Section">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Section</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Section(id, resume_id, title, type)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.SectionEntry">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">SectionEntry</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.SectionEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>SectionEntry(id, section_id, from_date, to_date, current, title, content)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.Template">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">Template</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.Template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Template(id, name, slug, screen)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.models.TemplateVariant">
+<em class="property">class </em><tt class="descclassname">resumes.models.</tt><tt class="descname">TemplateVariant</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.models.TemplateVariant" title="Permalink to this definition">¶</a></dt>
+<dd><p>TemplateVariant(id, template_id, name, slug, screen)</p>
+<dl class="method">
+<dt id="resumes.models.TemplateVariant.get_screen">
+<tt class="descname">get_screen</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.TemplateVariant.get_screen" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns screenshot of the template variant or of template if variant
+lacks it</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resumes.models.TemplateVariant.get_template_name">
+<tt class="descname">get_template_name</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.models.TemplateVariant.get_template_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns template variant filename to render to</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-resumes.views">
+<span id="views"></span><h4><a class="toc-backref" href="#id11">Views</a><a class="headerlink" href="#module-resumes.views" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="resumes.views.ResumeDetailView">
+<em class="property">class </em><tt class="descclassname">resumes.views.</tt><tt class="descname">ResumeDetailView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.views.ResumeDetailView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resume detail view</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.views.ResumeListView">
+<em class="property">class </em><tt class="descclassname">resumes.views.</tt><tt class="descname">ResumeListView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.views.ResumeListView" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of public resumes</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resumes.views.ResumePDFView">
+<em class="property">class </em><tt class="descclassname">resumes.views.</tt><tt class="descname">ResumePDFView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#resumes.views.ResumePDFView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resume pdf view</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-resumes.managers">
+<span id="managers"></span><h4><a class="toc-backref" href="#id12">Managers</a><a class="headerlink" href="#module-resumes.managers" title="Permalink to this headline">¶</a></h4>
+<dl class="function">
+<dt id="resumes.managers.NOW">
+<tt class="descclassname">resumes.managers.</tt><tt class="descname">NOW</tt><big>(</big><big>)</big><a class="headerlink" href="#resumes.managers.NOW" title="Permalink to this definition">¶</a></dt>
+<dd><p>[tz] -&gt; new datetime with tz&#8217;s local day and time.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="templatetags">
+<h4><a class="toc-backref" href="#id13">Templatetags</a><a class="headerlink" href="#templatetags" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="module-resumes.templatetags.resume_tags">
+<span id="resume-tags"></span><h5><a class="toc-backref" href="#id14">resume_tags</a><a class="headerlink" href="#module-resumes.templatetags.resume_tags" title="Permalink to this headline">¶</a></h5>
+<dl class="function">
+<dt id="resumes.templatetags.resume_tags.chunks">
+<tt class="descclassname">resumes.templatetags.resume_tags.</tt><tt class="descname">chunks</tt><big>(</big><em>list</em>, <em>n</em><big>)</big><a class="headerlink" href="#resumes.templatetags.resume_tags.chunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yield successive n-sized chunks from list.</p>
+<p>Example usage:</p>
+<div class="highlight-python"><pre>{% for chunks in object_list|chunks:3 %}
+&lt;ul class="column-of-three"&gt;
+    {% for object in chunks %}
+    &lt;li&gt;
+        {{ object }}
+    &lt;/li&gt;
+    {% endfor %}
+&lt;/ul&gt;
+{% endfor %}</pre>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="resumes.templatetags.resume_tags.latest_resumes">
+<tt class="descclassname">resumes.templatetags.resume_tags.</tt><tt class="descname">latest_resumes</tt><big>(</big><em>parser</em>, <em>token</em><big>)</big><a class="headerlink" href="#resumes.templatetags.resume_tags.latest_resumes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reurns or renders a number of latest resumes.</p>
+<p>Syntax:</p>
+<div class="highlight-python"><pre>{% latest_resumes [limit] [in &lt;template_name&gt;] [as &lt;context_name&gt;] %}</pre>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-resumes.templatetags.image">
+<span id="image"></span><h5><a class="toc-backref" href="#id15">image</a><a class="headerlink" href="#module-resumes.templatetags.image" title="Permalink to this headline">¶</a></h5>
+<dl class="function">
+<dt id="resumes.templatetags.image.image">
+<tt class="descclassname">resumes.templatetags.image.</tt><tt class="descname">image</tt><big>(</big><em>parser</em>, <em>token</em><big>)</big><a class="headerlink" href="#resumes.templatetags.image.image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Template tags that allows you to.</p>
+<p>Syntax:</p>
+<div class="highlight-python"><pre>{% image &lt;image&gt; [&lt;width&gt;x&lt;height&gt; &lt;mode&gt;] [as &lt;context_name&gt;] %}</pre>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Image :</th><td class="field-body">instance of ImageField</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Width and height:</th></tr>
+<tr class="field"><td>&nbsp;</td><td class="field-body">divided by non-digit character integers are dimensions of resulting image</td>
+</tr>
+<tr class="field"><th class="field-name">Mode :</th><td class="field-body">string representing mode</td>
+</tr>
+<tr class="field"><th class="field-name">Context_name :</th><td class="field-body">context name that image url will be returned to</td>
+</tr>
+</tbody>
+</table>
+<p>Available modes:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">reduce</p>
+<blockquote>
+<div><p>Reduces original image to given size while maintaining aspect ratio. Given <tt class="docutils literal"><span class="pre">width</span></tt> and <tt class="docutils literal"><span class="pre">height</span></tt> are treated as maximal values.</p>
+</div></blockquote>
+</li>
+<li><p class="first">crop</p>
+<blockquote>
+<div><p>Crops original image to given size.</p>
+</div></blockquote>
+</li>
+<li><p class="first">stretch</p>
+<blockquote>
+<div><p>Stretches original image to given size discarding aspect ratio.</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>Example usage:</p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">{%</span> <span class="pre">image</span> <span class="pre">object.image</span> <span class="pre">%}</span></tt></p>
+<blockquote>
+<div>Returns url to original sized image.</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">{%</span> <span class="pre">image</span> <span class="pre">object.image</span> <span class="pre">as</span> <span class="pre">image_url</span> <span class="pre">%}</span></tt></p>
+<blockquote>
+<div>Puts url to original sized image into contex as <tt class="docutils literal"><span class="pre">image_url</span></tt>.</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">{%</span> <span class="pre">image</span> <span class="pre">object.image</span> <span class="pre">100x100</span> <span class="pre">reduce</span> <span class="pre">%}</span></tt></p>
+<blockquote>
+<div>Return url to reduced image.</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">{%</span> <span class="pre">image</span> <span class="pre">object.image</span> <span class="pre">100x100</span> <span class="pre">crop</span> <span class="pre">as</span> <span class="pre">cropped_image_url</span> <span class="pre">%}</span></tt></p>
+<blockquote>
+<div>Puts url to cropped image into context as <tt class="docutils literal"><span class="pre">cropped_image_url</span></tt>.</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">{%</span> <span class="pre">image</span> <span class="pre">object.image</span> <span class="pre">100x100</span> <span class="pre">stretch</span> <span class="pre">%}</span></tt></p>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-resumes.templatetags.current_site">
+<span id="current-site"></span><h5><a class="toc-backref" href="#id16">current_site</a><a class="headerlink" href="#module-resumes.templatetags.current_site" title="Permalink to this headline">¶</a></h5>
+<dl class="function">
+<dt id="resumes.templatetags.current_site.current_site">
+<tt class="descclassname">resumes.templatetags.current_site.</tt><tt class="descname">current_site</tt><big>(</big><em>parser</em>, <em>token</em><big>)</big><a class="headerlink" href="#resumes.templatetags.current_site.current_site" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns current <cite>Site</cite>.</p>
+<p>Usage:</p>
+<div class="highlight-python"><pre>{% current_site as &lt;context_name&gt; %}</pre>
+</div>
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="sharing-app">
+<h3><a class="toc-backref" href="#id17">Sharing app</a><a class="headerlink" href="#sharing-app" title="Permalink to this headline">¶</a></h3>
+<p>App containing models for sharing feature.</p>
+<span class="target" id="module-sharing.models"></span><dl class="class">
+<dt id="sharing.models.Share">
+<em class="property">class </em><tt class="descclassname">sharing.models.</tt><tt class="descname">Share</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#sharing.models.Share" title="Permalink to this definition">¶</a></dt>
+<dd><p>Share(id, hash, resume_id, from_date, to_date, name, email)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="accounts-app">
+<h3><a class="toc-backref" href="#id18">Accounts app</a><a class="headerlink" href="#accounts-app" title="Permalink to this headline">¶</a></h3>
+<p>Nothing&#8217;s really there yet. Can be used to extend user&#8217;s profile. Made as separate app to maintain consistency with Django&#8217;s buildins and coding style.</p>
+<span class="target" id="module-accounts.models"></span><dl class="class">
+<dt id="accounts.models.Profile">
+<em class="property">class </em><tt class="descclassname">accounts.models.</tt><tt class="descname">Profile</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#accounts.models.Profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Profile(id, user_id, name)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="portal-app">
+<h3><a class="toc-backref" href="#id19">Portal app</a><a class="headerlink" href="#portal-app" title="Permalink to this headline">¶</a></h3>
+<p>Views ad forms for user&#8217;s panel are here.</p>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="#id20">Views</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<span class="target" id="module-panel.views"></span><dl class="class">
+<dt id="panel.views.IdentityCreateView">
+<em class="property">class </em><tt class="descclassname">panel.views.</tt><tt class="descname">IdentityCreateView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.IdentityCreateView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widok tworzenia nowego <cite>Identity</cite>.</p>
+<dl class="attribute">
+<dt id="panel.views.IdentityCreateView.form_class">
+<tt class="descname">form_class</tt><a class="headerlink" href="#panel.views.IdentityCreateView.form_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">IdentityForm</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="panel.views.IdentityCreateView.model">
+<tt class="descname">model</tt><a class="headerlink" href="#panel.views.IdentityCreateView.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Identity</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.views.IdentityDeleteView">
+<em class="property">class </em><tt class="descclassname">panel.views.</tt><tt class="descname">IdentityDeleteView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.IdentityDeleteView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widok usuwane <cite>Identity</cite>.</p>
+<dl class="attribute">
+<dt id="panel.views.IdentityDeleteView.model">
+<tt class="descname">model</tt><a class="headerlink" href="#panel.views.IdentityDeleteView.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Identity</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.views.IdentityUpdateView">
+<em class="property">class </em><tt class="descclassname">panel.views.</tt><tt class="descname">IdentityUpdateView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.IdentityUpdateView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widok zmiany <cite>Identity</cite>.</p>
+<dl class="attribute">
+<dt id="panel.views.IdentityUpdateView.form_class">
+<tt class="descname">form_class</tt><a class="headerlink" href="#panel.views.IdentityUpdateView.form_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">IdentityForm</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.views.MyCreateView">
+<em class="property">class </em><tt class="descclassname">panel.views.</tt><tt class="descname">MyCreateView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.MyCreateView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract. Slightly extended standard <cite>CreateView</cite>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.views.MyDeleteView">
+<em class="property">class </em><tt class="descclassname">panel.views.</tt><tt class="descname">MyDeleteView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.MyDeleteView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract. Slightly extended <cite>DeleteView</cite>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.views.MyUpdateView">
+<em class="property">class </em><tt class="descclassname">panel.views.</tt><tt class="descname">MyUpdateView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.MyUpdateView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract. Slightly extended <cite>UpdateView</cite>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.views.ResumeDeleteView">
+<em class="property">class </em><tt class="descclassname">panel.views.</tt><tt class="descname">ResumeDeleteView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.ResumeDeleteView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widok usuwania <cite>Resume</cite>.</p>
+<dl class="attribute">
+<dt id="panel.views.ResumeDeleteView.model">
+<tt class="descname">model</tt><a class="headerlink" href="#panel.views.ResumeDeleteView.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Resume</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.views.ShareCreateView">
+<em class="property">class </em><tt class="descclassname">panel.views.</tt><tt class="descname">ShareCreateView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.ShareCreateView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widok tworzenia nowego wspoludzialu.</p>
+<dl class="attribute">
+<dt id="panel.views.ShareCreateView.form_class">
+<tt class="descname">form_class</tt><a class="headerlink" href="#panel.views.ShareCreateView.form_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">ShareForm</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="panel.views.ShareCreateView.model">
+<tt class="descname">model</tt><a class="headerlink" href="#panel.views.ShareCreateView.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Share</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.views.ShareDeleteView">
+<em class="property">class </em><tt class="descclassname">panel.views.</tt><tt class="descname">ShareDeleteView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.ShareDeleteView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widok usuwania wspoludzialu.</p>
+<dl class="attribute">
+<dt id="panel.views.ShareDeleteView.model">
+<tt class="descname">model</tt><a class="headerlink" href="#panel.views.ShareDeleteView.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Share</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.views.ShareUpdateView">
+<em class="property">class </em><tt class="descclassname">panel.views.</tt><tt class="descname">ShareUpdateView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.ShareUpdateView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widok edycji wspoludzialu.</p>
+<dl class="attribute">
+<dt id="panel.views.ShareUpdateView.form_class">
+<tt class="descname">form_class</tt><a class="headerlink" href="#panel.views.ShareUpdateView.form_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">ShareForm</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="panel.views.home">
+<tt class="descclassname">panel.views.</tt><tt class="descname">home</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.home" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders homepage.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="panel.views.identity_edit">
+<tt class="descclassname">panel.views.</tt><tt class="descname">identity_edit</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.identity_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widok tworzenia i edcji identity.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="panel.views.resume_detail">
+<tt class="descclassname">panel.views.</tt><tt class="descname">resume_detail</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.resume_detail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widok podgladu szczegolow <cite>Resume</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="panel.views.resume_edit">
+<tt class="descclassname">panel.views.</tt><tt class="descname">resume_edit</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.resume_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widok tworzenia i edycji <cite>Resume</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="panel.views.section_edit">
+<tt class="descclassname">panel.views.</tt><tt class="descname">section_edit</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.views.section_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widok tworzenia i edcji sekcji.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-panel.forms">
+<span id="forms"></span><h4><a class="toc-backref" href="#id21">Forms</a><a class="headerlink" href="#module-panel.forms" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="panel.forms.IdentityForm">
+<em class="property">class </em><tt class="descclassname">panel.forms.</tt><tt class="descname">IdentityForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.forms.IdentityForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formularz tworzenia i edycji <cite>Identity</cite>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.forms.ResumeForm">
+<em class="property">class </em><tt class="descclassname">panel.forms.</tt><tt class="descname">ResumeForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.forms.ResumeForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formularz tworzenia i edycji <cite>Resume</cite>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.forms.SectionForm">
+<em class="property">class </em><tt class="descclassname">panel.forms.</tt><tt class="descname">SectionForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.forms.SectionForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formularz tworzenia i edycji <cite>Section</cite>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="panel.forms.ShareForm">
+<em class="property">class </em><tt class="descclassname">panel.forms.</tt><tt class="descname">ShareForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#panel.forms.ShareForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formularz tworzenia i edycji <cite>Share</cite>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-panel.templatetags.panel_tags">
+<span id="templatetags-panel-tags"></span><h4><a class="toc-backref" href="#id22">Templatetags (panel_tags)</a><a class="headerlink" href="#module-panel.templatetags.panel_tags" title="Permalink to this headline">¶</a></h4>
+<dl class="function">
+<dt id="panel.templatetags.panel_tags.get_fields">
+<tt class="descclassname">panel.templatetags.panel_tags.</tt><tt class="descname">get_fields</tt><big>(</big><em>parser</em>, <em>token</em><big>)</big><a class="headerlink" href="#panel.templatetags.panel_tags.get_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reurns list of tuples of models fields and values.</p>
+<p>Usage:</p>
+<div class="highlight-python"><pre>{% get_fields &lt;object&gt; [as &lt;context_name] %}</pre>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="panel.templatetags.panel_tags.section_detail">
+<tt class="descclassname">panel.templatetags.panel_tags.</tt><tt class="descname">section_detail</tt><big>(</big><em>parser</em>, <em>token</em><big>)</big><a class="headerlink" href="#panel.templatetags.panel_tags.section_detail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders section details into appropriate template.</p>
+<p>Usage:</p>
+<div class="highlight-python"><pre>{% secton_detail &lt;section&gt; %}</pre>
+</div>
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="source">
+<h2><a class="toc-backref" href="#id23">Source</a><a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<p>All sources for this project are available online at <a class="reference external" href="https://bitbucket.org/seler/cvm/">https://bitbucket.org/seler/cvm/</a></p>
+<p>To clone this repository run:</p>
+<div class="highlight-python"><pre>hg clone https://bitbucket.org/seler/cvm</pre>
+</div>
+<div class="section" id="django">
+<h3><a class="toc-backref" href="#id24">Django</a><a class="headerlink" href="#django" title="Permalink to this headline">¶</a></h3>
+<p>cv managers is built using Django framework.</p>
+<p>The core Django MVC framework consists of an object-relational mapper which
+mediates between data models (defined as Python classes) and a relational
+database (&#8220;Model&#8221;); a system for processing requests with a web templating
+system (&#8220;View&#8221;) and a regular-expression-based URL dispatcher (&#8220;Controller&#8221;).</p>
+<p>For more information visit <a class="reference external" href="http://djangoproject.com">http://djangoproject.com</a></p>
+</div>
+<div class="section" id="requirements">
+<h3><a class="toc-backref" href="#id25">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">Django</p>
+<blockquote>
+<div><p>Version 1.3 or higher.</p>
+</div></blockquote>
+</li>
+<li><p class="first">PIL</p>
+<blockquote>
+<div><p>Tested using version 1.1.7</p>
+</div></blockquote>
+</li>
+<li><p class="first">django-registration</p>
+<blockquote>
+<div><p>Version 0.7. Newer version wont work because of backwards imcompatible changes</p>
+</div></blockquote>
+</li>
+<li><p class="first">xhtml2pdf</p>
+<blockquote>
+<div><p>Make sure you checkout latest source from <a class="reference external" href="https://github.com/chrisglass/xhtml2pdf">https://github.com/chrisglass/xhtml2pdf</a></p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="local-settings-py">
+<h3><a class="toc-backref" href="#id26">local_settings.py</a><a class="headerlink" href="#local-settings-py" title="Permalink to this headline">¶</a></h3>
+<p>Domyslne ustawienia <cite>settings.py</cite> zakladaja, ze dla celow maszyny na ktorej program jest uruchamiany w tym samym katalogu znajduje sie plik <cite>local_settings.py</cite> zawierajacy specyficzne ustawienia dla tej konkretnej maszyny, np ustawienia serwera smtp email lub inne.</p>
+<p>W repozytorium znajduje sie plik <cite>example_local_settings.py</cite>, ktory nalezy edytowac i zapisac jako <cite>local_settings.py</cite>.</p>
+</div>
+<div class="section" id="initial-data">
+<h3><a class="toc-backref" href="#id27">Initial data</a><a class="headerlink" href="#initial-data" title="Permalink to this headline">¶</a></h3>
+<p>cv manager comes with sample data which is automatically inserted into database.</p>
+<p>login with followin credentials:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">login:</th><td class="field-body">admin</td>
+</tr>
+<tr class="field"><th class="field-name">password:</th><td class="field-body">admin</td>
+</tr>
+</tbody>
+</table>
+<p>and</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">login:</th><td class="field-body">lenna</td>
+</tr>
+<tr class="field"><th class="field-name">password:</th><td class="field-body">lenna</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="#">cv manager v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Rafał Selewońko.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+    </div>
+  </body>
+</html>

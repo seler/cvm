@@ -1,0 +1,674 @@
+.TH "CVMANAGER" "1" "December 20, 2011" "0.1" "cv manager"
+.SH NAME
+cvmanager \- cv manager Documentation
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.\" Man page generated from reStructeredText.
+.
+[image]
+.SS Contents
+.INDENT 0.0
+.IP \(bu 2
+\fI\%cv manager documentation\fP
+.INDENT 2.0
+.IP \(bu 2
+\fI\%Introduction\fP
+.INDENT 2.0
+.IP \(bu 2
+\fI\%What is CVM?\fP
+.IP \(bu 2
+\fI\%Publication and Sharing\fP
+.IP \(bu 2
+\fI\%How CVM works?\fP
+.UNINDENT
+.IP \(bu 2
+\fI\%Structure\fP
+.INDENT 2.0
+.IP \(bu 2
+\fI\%Models schema\fP
+.IP \(bu 2
+\fI\%Resumes app\fP
+.INDENT 2.0
+.IP \(bu 2
+\fI\%Models\fP
+.IP \(bu 2
+\fI\%Views\fP
+.IP \(bu 2
+\fI\%Managers\fP
+.IP \(bu 2
+\fI\%Templatetags\fP
+.INDENT 2.0
+.IP \(bu 2
+\fI\%resume_tags\fP
+.IP \(bu 2
+\fI\%image\fP
+.IP \(bu 2
+\fI\%current_site\fP
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+\fI\%Sharing app\fP
+.IP \(bu 2
+\fI\%Accounts app\fP
+.IP \(bu 2
+\fI\%Portal app\fP
+.INDENT 2.0
+.IP \(bu 2
+\fI\%Views\fP
+.IP \(bu 2
+\fI\%Forms\fP
+.IP \(bu 2
+\fI\%Templatetags (panel_tags)\fP
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+\fI\%Source\fP
+.INDENT 2.0
+.IP \(bu 2
+\fI\%Django\fP
+.IP \(bu 2
+\fI\%Requirements\fP
+.IP \(bu 2
+\fI\%local_settings.py\fP
+.IP \(bu 2
+\fI\%Initial data\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SH INTRODUCTION
+.SS What is CVM?
+.sp
+It\(aqs a web application, that allows it\(aqs users to easily manage, share and publish their resumes.
+It allows the user to create multiple identities for the purpose of managing resumes of multiple people, like family or friends. Each identity is able to contain multiple resumes of a person, so that each resume can be created for a specific job application. The user is able to choose a layout for the resume from templates designed by professional graphic artists.
+.SS Publication and Sharing
+.sp
+The user is able to generate PDF files for printing or electronic use. The user is also able to publish a resume on the portal or to send a link, allowing the manager to view a resume for a limited period of time.
+.SS How CVM works?
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP 1. 3
+User registers
+.IP 2. 3
+User creates new Resume
+.IP 3. 3
+User fills in Resume
+a. User creates or chooses already created Identity
+b. User uploads or chooses already uploaded Photo
+c. Users fills in Sections and Entries
+.IP 4. 3
+User Shares or Publish Resume
+.IP 5. 3
+User edits or creates new Resumes
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SH STRUCTURE
+.SS Models schema
+[image]
+.SS Resumes app
+.sp
+Main app containing and controlling most important features.
+.SS Models
+.INDENT 0.0
+.TP
+.B class resumes.models.Identity(*args, **kwargs)
+Identity(id, name, occupation, user_id, avatar)
+.INDENT 7.0
+.TP
+.B get_email()
+Tries to obtain email from \fBidentity_fields\fP, defaults to
+\fBuser.email\fP
+.UNINDENT
+.INDENT 7.0
+.TP
+.B get_field_names()
+Returns list of all fields names
+.UNINDENT
+.INDENT 7.0
+.TP
+.B get_field_values()
+Returns list of all fields values
+.UNINDENT
+.INDENT 7.0
+.TP
+.B get_fields()
+Returns list of \fBIdentityField\fP as tuples, each containing field
+\fBname\fP, \fBvalue\fP and \fBtype\fP display
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class resumes.models.IdentityField(*args, **kwargs)
+IdentityField(id, identity_id, name, value, type)
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class resumes.models.Resume(*args, **kwargs)
+Resume(id, identity_id, name, slug, creation_date, modification_date, template_variant_id, active, public, pdf_generation_date)
+.INDENT 7.0
+.TP
+.B generate_pdf()
+generates pdf
+.UNINDENT
+.INDENT 7.0
+.TP
+.B get_absolute_url(*moreargs, **morekwargs)
+returns absolute url to Resume
+.UNINDENT
+.INDENT 7.0
+.TP
+.B get_pdf_file()
+returns pdf file instance. generates it if\(aqs not there
+.UNINDENT
+.INDENT 7.0
+.TP
+.B get_pdf_filename()
+returns path to pdf file
+.UNINDENT
+.INDENT 7.0
+.TP
+.B get_pdf_url()
+returns absolute url to pdf file
+.UNINDENT
+.INDENT 7.0
+.TP
+.B get_template_name()
+returns template name that resuem should be rendered to
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class resumes.models.Section(*args, **kwargs)
+Section(id, resume_id, title, type)
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class resumes.models.SectionEntry(*args, **kwargs)
+SectionEntry(id, section_id, from_date, to_date, current, title, content)
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class resumes.models.Template(*args, **kwargs)
+Template(id, name, slug, screen)
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class resumes.models.TemplateVariant(*args, **kwargs)
+TemplateVariant(id, template_id, name, slug, screen)
+.INDENT 7.0
+.TP
+.B get_screen()
+returns screenshot of the template variant or of template if variant
+lacks it
+.UNINDENT
+.INDENT 7.0
+.TP
+.B get_template_name()
+returns template variant filename to render to
+.UNINDENT
+.UNINDENT
+.SS Views
+.INDENT 0.0
+.TP
+.B class resumes.views.ResumeDetailView(**kwargs)
+Resume detail view
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class resumes.views.ResumeListView(**kwargs)
+List of public resumes
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class resumes.views.ResumePDFView(**kwargs)
+Resume pdf view
+.UNINDENT
+.SS Managers
+.INDENT 0.0
+.TP
+.B resumes.managers.NOW()
+[tz] \-> new datetime with tz\(aqs local day and time.
+.UNINDENT
+.SS Templatetags
+.SS resume_tags
+.INDENT 0.0
+.TP
+.B resumes.templatetags.resume_tags.chunks(list, n)
+Yield successive n\-sized chunks from list.
+.sp
+Example usage:
+.sp
+.nf
+.ft C
+{% for chunks in object_list|chunks:3 %}
+<ul class="column\-of\-three">
+    {% for object in chunks %}
+    <li>
+        {{ object }}
+    </li>
+    {% endfor %}
+</ul>
+{% endfor %}
+.ft P
+.fi
+.UNINDENT
+.INDENT 0.0
+.TP
+.B resumes.templatetags.resume_tags.latest_resumes(parser, token)
+Reurns or renders a number of latest resumes.
+.sp
+Syntax:
+.sp
+.nf
+.ft C
+{% latest_resumes [limit] [in <template_name>] [as <context_name>] %}
+.ft P
+.fi
+.UNINDENT
+.SS image
+.INDENT 0.0
+.TP
+.B resumes.templatetags.image.image(parser, token)
+Template tags that allows you to.
+.sp
+Syntax:
+.sp
+.nf
+.ft C
+{% image <image> [<width>x<height> <mode>] [as <context_name>] %}
+.ft P
+.fi
+.INDENT 7.0
+.TP
+.B Image 
+instance of ImageField
+.TP
+.B Width and height
+divided by non\-digit character integers are dimensions of resulting image
+.TP
+.B Mode 
+string representing mode
+.TP
+.B Context_name 
+context name that image url will be returned to
+.UNINDENT
+.sp
+Available modes:
+.INDENT 7.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+reduce
+.INDENT 2.0
+.INDENT 3.5
+Reduces original image to given size while maintaining aspect ratio. Given \fBwidth\fP and \fBheight\fP are treated as maximal values.
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+crop
+.INDENT 2.0
+.INDENT 3.5
+Crops original image to given size.
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+stretch
+.INDENT 2.0
+.INDENT 3.5
+Stretches original image to given size discarding aspect ratio.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Example usage:
+.INDENT 7.0
+.INDENT 3.5
+\fB{% image object.image %}\fP
+.INDENT 0.0
+.INDENT 3.5
+Returns url to original sized image.
+.UNINDENT
+.UNINDENT
+.sp
+\fB{% image object.image as image_url %}\fP
+.INDENT 0.0
+.INDENT 3.5
+Puts url to original sized image into contex as \fBimage_url\fP.
+.UNINDENT
+.UNINDENT
+.sp
+\fB{% image object.image 100x100 reduce %}\fP
+.INDENT 0.0
+.INDENT 3.5
+Return url to reduced image.
+.UNINDENT
+.UNINDENT
+.sp
+\fB{% image object.image 100x100 crop as cropped_image_url %}\fP
+.INDENT 0.0
+.INDENT 3.5
+Puts url to cropped image into context as \fBcropped_image_url\fP.
+.UNINDENT
+.UNINDENT
+.sp
+\fB{% image object.image 100x100 stretch %}\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SS current_site
+.INDENT 0.0
+.TP
+.B resumes.templatetags.current_site.current_site(parser, token)
+Returns current \fISite\fP.
+.sp
+Usage:
+.sp
+.nf
+.ft C
+{% current_site as <context_name> %}
+.ft P
+.fi
+.UNINDENT
+.SS Sharing app
+.sp
+App containing models for sharing feature.
+.INDENT 0.0
+.TP
+.B class sharing.models.Share(*args, **kwargs)
+Share(id, hash, resume_id, from_date, to_date, name, email)
+.UNINDENT
+.SS Accounts app
+.sp
+Nothing\(aqs really there yet. Can be used to extend user\(aqs profile. Made as separate app to maintain consistency with Django\(aqs buildins and coding style.
+.INDENT 0.0
+.TP
+.B class accounts.models.Profile(*args, **kwargs)
+Profile(id, user_id, name)
+.UNINDENT
+.SS Portal app
+.sp
+Views ad forms for user\(aqs panel are here.
+.SS Views
+.INDENT 0.0
+.TP
+.B class panel.views.IdentityCreateView(**kwargs)
+Widok tworzenia nowego \fIIdentity\fP.
+.INDENT 7.0
+.TP
+.B form_class
+alias of \fBIdentityForm\fP
+.UNINDENT
+.INDENT 7.0
+.TP
+.B model
+alias of \fBIdentity\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.views.IdentityDeleteView(**kwargs)
+Widok usuwane \fIIdentity\fP.
+.INDENT 7.0
+.TP
+.B model
+alias of \fBIdentity\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.views.IdentityUpdateView(**kwargs)
+Widok zmiany \fIIdentity\fP.
+.INDENT 7.0
+.TP
+.B form_class
+alias of \fBIdentityForm\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.views.MyCreateView(**kwargs)
+Abstract. Slightly extended standard \fICreateView\fP.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.views.MyDeleteView(**kwargs)
+Abstract. Slightly extended \fIDeleteView\fP.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.views.MyUpdateView(**kwargs)
+Abstract. Slightly extended \fIUpdateView\fP.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.views.ResumeDeleteView(**kwargs)
+Widok usuwania \fIResume\fP.
+.INDENT 7.0
+.TP
+.B model
+alias of \fBResume\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.views.ShareCreateView(**kwargs)
+Widok tworzenia nowego wspoludzialu.
+.INDENT 7.0
+.TP
+.B form_class
+alias of \fBShareForm\fP
+.UNINDENT
+.INDENT 7.0
+.TP
+.B model
+alias of \fBShare\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.views.ShareDeleteView(**kwargs)
+Widok usuwania wspoludzialu.
+.INDENT 7.0
+.TP
+.B model
+alias of \fBShare\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.views.ShareUpdateView(**kwargs)
+Widok edycji wspoludzialu.
+.INDENT 7.0
+.TP
+.B form_class
+alias of \fBShareForm\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B panel.views.home(request, *args, **kwargs)
+Renders homepage.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B panel.views.identity_edit(request, *args, **kwargs)
+Widok tworzenia i edcji identity.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B panel.views.resume_detail(request, *args, **kwargs)
+Widok podgladu szczegolow \fIResume\fP.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B panel.views.resume_edit(request, *args, **kwargs)
+Widok tworzenia i edycji \fIResume\fP.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B panel.views.section_edit(request, *args, **kwargs)
+Widok tworzenia i edcji sekcji.
+.UNINDENT
+.SS Forms
+.INDENT 0.0
+.TP
+.B class panel.forms.IdentityForm(*args, **kwargs)
+Formularz tworzenia i edycji \fIIdentity\fP.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.forms.ResumeForm(*args, **kwargs)
+Formularz tworzenia i edycji \fIResume\fP.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.forms.SectionForm(*args, **kwargs)
+Formularz tworzenia i edycji \fISection\fP.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class panel.forms.ShareForm(*args, **kwargs)
+Formularz tworzenia i edycji \fIShare\fP.
+.UNINDENT
+.SS Templatetags (panel_tags)
+.INDENT 0.0
+.TP
+.B panel.templatetags.panel_tags.get_fields(parser, token)
+Reurns list of tuples of models fields and values.
+.sp
+Usage:
+.sp
+.nf
+.ft C
+{% get_fields <object> [as <context_name] %}
+.ft P
+.fi
+.UNINDENT
+.INDENT 0.0
+.TP
+.B panel.templatetags.panel_tags.section_detail(parser, token)
+Renders section details into appropriate template.
+.sp
+Usage:
+.sp
+.nf
+.ft C
+{% secton_detail <section> %}
+.ft P
+.fi
+.UNINDENT
+.SH SOURCE
+.sp
+All sources for this project are available online at \fI\%https://bitbucket.org/seler/cvm/\fP
+.sp
+To clone this repository run:
+.sp
+.nf
+.ft C
+hg clone https://bitbucket.org/seler/cvm
+.ft P
+.fi
+.SS Django
+.sp
+cv managers is built using Django framework.
+.sp
+The core Django MVC framework consists of an object\-relational mapper which
+mediates between data models (defined as Python classes) and a relational
+database ("Model"); a system for processing requests with a web templating
+system ("View") and a regular\-expression\-based URL dispatcher ("Controller").
+.sp
+For more information visit \fI\%http://djangoproject.com\fP
+.SS Requirements
+.INDENT 0.0
+.IP \(bu 2
+Django
+.INDENT 2.0
+.INDENT 3.5
+Version 1.3 or higher.
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+PIL
+.INDENT 2.0
+.INDENT 3.5
+Tested using version 1.1.7
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+django\-registration
+.INDENT 2.0
+.INDENT 3.5
+Version 0.7. Newer version wont work because of backwards imcompatible changes
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+xhtml2pdf
+.INDENT 2.0
+.INDENT 3.5
+Make sure you checkout latest source from \fI\%https://github.com/chrisglass/xhtml2pdf\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SS local_settings.py
+.sp
+Domyslne ustawienia \fIsettings.py\fP zakladaja, ze dla celow maszyny na ktorej program jest uruchamiany w tym samym katalogu znajduje sie plik \fIlocal_settings.py\fP zawierajacy specyficzne ustawienia dla tej konkretnej maszyny, np ustawienia serwera smtp email lub inne.
+.sp
+W repozytorium znajduje sie plik \fIexample_local_settings.py\fP, ktory nalezy edytowac i zapisac jako \fIlocal_settings.py\fP.
+.SS Initial data
+.sp
+cv manager comes with sample data which is automatically inserted into database.
+.sp
+login with followin credentials:
+.INDENT 0.0
+.TP
+.B login
+admin
+.TP
+.B password
+admin
+.UNINDENT
+.sp
+and
+.INDENT 0.0
+.TP
+.B login
+lenna
+.TP
+.B password
+lenna
+.UNINDENT
+.SH AUTHOR
+Rafał Selewońko, Ksawery Dziekoński
+.SH COPYRIGHT
+2011, Rafał Selewońko
+.\" Generated by docutils manpage writer.
+.\" 
+.
