@@ -1,60 +1,7 @@
 cv manager documentation
 ************************
 
-Contents
-^^^^^^^^
-
-* cv manager documentation
-
-  * Introduction
-
-    * What is CVM?
-
-    * Publication and Sharing
-
-    * How CVM works?
-
-  * Structure
-
-    * Models schema
-
-    * Resumes app
-
-      * Models
-
-      * Views
-
-      * Managers
-
-      * Templatetags
-
-        * resume_tags
-
-        * image
-
-        * current_site
-
-    * Sharing app
-
-    * Accounts app
-
-    * Portal app
-
-      * Views
-
-      * Forms
-
-      * Templatetags (panel_tags)
-
-  * Source
-
-    * Django
-
-    * Requirements
-
-    * local_settings.py
-
-    * Initial data
+.. contents::
 
 
 Introduction
