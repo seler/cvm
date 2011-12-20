@@ -136,7 +136,7 @@ Templatetags (panel_tags)
 Source
 ======
 
-All sources for this project are available online at `bitbucket.org/seler/cvm <https://bitbucket.org/seler/cvm/>`_.
+All sources for this project are available online at https://bitbucket.org/seler/cvm/
 
 To clone this repository run::
 
@@ -145,11 +145,14 @@ To clone this repository run::
 Django
 ------
 
-cv managers is built using `Django framework<http://djangoproject.com>`_.
+cv managers is built using Django framework.
 
-The core Django MVC framework consists of an object-relational mapper which mediates between data models (defined as Python classes) and a relational database ("*M*odel"); a system for processing requests with a web templating system ("*V*iew") and a regular-expression-based URL dispatcher ("*C*ontroller").
+The core Django MVC framework consists of an object-relational mapper which
+mediates between data models (defined as Python classes) and a relational
+database ("Model"); a system for processing requests with a web templating
+system ("View") and a regular-expression-based URL dispatcher ("Controller").
 
-For more information visit `djangoproject.com<http://djangoproject.com>`_
+For more information visit http://djangoproject.com
 
 Requirements
 ------------
@@ -169,6 +172,13 @@ Requirements
 * xhtml2pdf
   
    Make sure you checkout latest source from https://github.com/chrisglass/xhtml2pdf
+
+local_settings.py
+-----------------
+
+Domyslne ustawienia `settings.py` zakladaja, ze dla celow maszyny na ktorej program jest uruchamiany w tym samym katalogu znajduje sie plik `local_settings.py` zawierajacy specyficzne ustawienia dla tej konkretnej maszyny, np ustawienia serwera smtp email lub inne.
+
+W repozytorium znajduje sie plik `example_local_settings.py`, ktory nalezy edytowac i zapisac jako `local_settings.py`.
 
 Initial data
 ------------
