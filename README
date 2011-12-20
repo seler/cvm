@@ -1,145 +1,145 @@
-cv manager documentation
-************************
+==========
+cv manager
+==========
+
+.. image:: http://bitbucket.org/seler/cvm/raw/f4623107a79d/materials/cv256-transparent.png
+   :alt: cv manager logo
+   :align: right
 
 .. contents::
-
+   :depth: 1
+   :backlinks: top
 
 Introduction
 ============
 
-
 What is CVM?
 ------------
 
-It's a web application, that allows it's users to easily manage, share
-and publish their resumes. It allows the user to create multiple
-identities for the purpose of managing resumes of multiple people,
-like family or friends. Each identity is able to contain multiple
-resumes of a person, so that each resume can be created for a specific
-job application. The user is able to choose a layout for the resume
-from templates designed by professional graphic artists.
-
+It's a web application, that allows it's users to easily manage, share and publish their resumes.
+It allows the user to create multiple identities for the purpose of managing resumes of multiple people, like family or friends. Each identity is able to contain multiple resumes of a person, so that each resume can be created for a specific job application. The user is able to choose a layout for the resume from templates designed by professional graphic artists.
 
 Publication and Sharing
 -----------------------
 
-The user is able to generate PDF files for printing or electronic use.
-The user is also able to publish a resume on the portal or to send a
-link, allowing the manager to view a resume for a limited period of
-time.
-
+The user is able to generate PDF files for printing or electronic use. The user is also able to publish a resume on the portal or to send a link, allowing the manager to view a resume for a limited period of time.
 
 How CVM works?
 --------------
 
-   1. User registers
-
-   2. User creates new Resume
-
-   3. User fills in Resume a. User creates or chooses already created
-      Identity b. User uploads or chooses already uploaded Photo c.
-      Users fills in Sections and Entries
-
-   4. User Shares or Publish Resume
-
-   5. User edits or creates new Resumes
-
+ 1. User registers
+ 2. User creates new Resume
+ 3. User fills in Resume
+    a. User creates or chooses already created Identity
+    b. User uploads or chooses already uploaded Photo
+    c. Users fills in Sections and Entries
+ 4. User Shares or Publish Resume
+ 5. User edits or creates new Resumes
 
 Structure
 =========
 
+User
+----
 
-Models schema
--------------
+Model containg basic user account information. All Resumes, Identities, Photos, Payments, Invoices etc are tied to User instance.
 
-Resumes app
------------
+Fields:
 
-Main app containing and controlling most important features.
+:username: 
+:first name:
+:last name:
+:email:
+:password:
+:last login:
+:date joined:
+
+Identity
+--------
+
+Model containing identity details. All it's fields are custom. Uppon creation there are some predefined and prepopulated fields:
+
+:first name: prepopulated with Users first name
+:last name: prepopulated with Users last name
+:email: prepopulated with Users email
+:phone no.: empty
+:address line 1: empty # TODO: or maybe it's better to have form as ``textarea``?
+:address line 2: empty
+:address line 3: empty
+
+Model fields:
+
+:user: foreign key to User instance
+:fields: custom IdentityFields
 
 
-Models
-~~~~~~
+IdentityField
+~~~~~~~~~~~~~
 
-class class resumes.models.Identity(*args, **kwargs)
+Custom Identity fields.
 
-   Identity(id, name, occupation, user_id, avatar)
+Model fields:
 
-   get_email()
+:name:
+:value:
+:order:
 
-      Tries to obtain email from ``identity_fields``, defaults to
-      ``user.email``
+Photo
+-----
 
-   get_field_names()
+Model containing original uploaded photo, cropped version and thumbnail.
 
-      Returns list of all fields names
+Model fields:
 
-   get_field_values()
+:image:
 
-      Returns list of all fields values
+# TODO: uzupelnic i zastanowic sie jak to rozwiazac
 
-   get_fields()
+Resume
+------
 
-      Returns list of ``IdentityField`` as tuples, each containing
-      field ``name``, ``value`` and ``type`` display
+# TODO: write description
 
-class class resumes.models.IdentityField(*args, **kwargs)
+Model fields:
 
-   IdentityField(id, identity_id, name, value, type)
+:user: 
+:identity:
+:photo:
+:creation date:
+:modification date:
+:template variant: 
+:cos jeszcze?:
 
-class class resumes.models.Resume(*args, **kwargs)
+Template
+--------
 
-   Resume(id, identity_id, name, slug, creation_date,
-   modification_date, template_variant_id, active, public,
-   pdf_generation_date)
+:name:
+:slug: it will be name of folder where variants are (ie: if slug is 'name' then folder location is 'templates/templates/name/'
 
-   generate_pdf()
+TemplateVariant
+~~~~~~~~~~~~~~~
 
-      generates pdf
+:template:
+:name:
+:slug: template file name w/o '.html'
 
-   get_absolute_url(*moreargs, **morekwargs)
+Section
+-------
 
-      returns absolute url to Resume
+Resume sections ie. Experience, Education, Skills etc.
 
-   get_pdf_file()
+Model fields:
 
-      returns pdf file instance. generates it if's not there
+:name:
+:type: choices: bulleted, dated, ...
 
-   get_pdf_filename()
+SectionEntry
+~~~~~~~~~~~~
 
-      returns path to pdf file
+Section entry.
 
-   get_pdf_url()
+Model fields:
 
-      returns absolute url to pdf file
-
-   get_template_name()
-
-      returns template name that resuem should be rendered to
-
-class class resumes.models.Section(*args, **kwargs)
-
-   Section(id, resume_id, title, type)
-
-class class resumes.models.SectionEntry(*args, **kwargs)
-
-   SectionEntry(id, section_id, from_date, to_date, current, title,
-   content)
-
-class class resumes.models.Template(*args, **kwargs)
-
-   Template(id, name, slug, screen)
-
-class class resumes.models.TemplateVariant(*args, **kwargs)
-
-   TemplateVariant(id, template_id, name, slug, screen)
-
-   get_screen()
-
-      returns screenshot of the template variant or of template if
-      variant lacks it
-
-   get_template_name()
-
-      returns template variant filename to render to
-
+:from date:
+:to date:
+:current:
