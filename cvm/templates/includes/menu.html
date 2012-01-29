@@ -1,4 +1,4 @@
-<div id="nav">
+<div id="nav">{% comment %}
     <ul>
         <li{% ifequal active "home" %} id="current"{% endifequal %}>
             <a href="{% url home %}">home</a>
@@ -18,5 +18,6 @@
         <li{% ifequal active "/about/" %} id="current"{% endifequal %}>
             <a href="/about/">about</a>
         </li>
-    </ul>
+    </ul>{% endcomment %}
+{% include "menu.html" %}
 </div>

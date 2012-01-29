@@ -45,6 +45,35 @@ Models schema
 
 .. image:: _static/models.png
 
+CMS app
+-------
+
+Możliwość dodawania zagnieżdzonych stron w wielu językach.
+
+Models
+~~~~~~
+
+.. automodule:: cms.models
+   :members:
+
+Views
+~~~~~
+
+.. automodule:: cms.views
+   :members:
+
+Middleware
+~~~~~~~~~~
+
+.. automodule:: cms.middleware
+   :members:
+
+Helpers
+~~~~~~~
+
+.. automodule:: cms.helpers
+   :members:
+
 Resumes app
 -----------
 
@@ -114,6 +143,7 @@ Portal app
 ----------
 
 Views ad forms for user's panel are here.
+
 
 Views
 ~~~~~

@@ -1,0 +1,582 @@
+cv manager documentation
+************************
+
+Contents
+^^^^^^^^
+
+* cv manager documentation
+
+  * Introduction
+
+    * What is CVM?
+
+    * Publication and Sharing
+
+    * How CVM works?
+
+  * Structure
+
+    * Models schema
+
+    * Resumes app
+
+      * Models
+
+      * Views
+
+      * Managers
+
+      * Templatetags
+
+        * resume_tags
+
+        * image
+
+        * current_site
+
+    * Sharing app
+
+    * Accounts app
+
+    * Portal app
+
+      * Views
+
+      * Forms
+
+      * Templatetags (panel_tags)
+
+  * Source
+
+    * Django
+
+    * Requirements
+
+    * local_settings.py
+
+    * Initial data
+
+
+Introduction
+============
+
+
+What is CVM?
+------------
+
+It's a web application, that allows it's users to easily manage, share
+and publish their resumes. It allows the user to create multiple
+identities for the purpose of managing resumes of multiple people,
+like family or friends. Each identity is able to contain multiple
+resumes of a person, so that each resume can be created for a specific
+job application. The user is able to choose a layout for the resume
+from templates designed by professional graphic artists.
+
+
+Publication and Sharing
+-----------------------
+
+The user is able to generate PDF files for printing or electronic use.
+The user is also able to publish a resume on the portal or to send a
+link, allowing the manager to view a resume for a limited period of
+time.
+
+
+How CVM works?
+--------------
+
+   1. User registers
+
+   2. User creates new Resume
+
+   3. User fills in Resume a. User creates or chooses already created
+      Identity b. User uploads or chooses already uploaded Photo c.
+      Users fills in Sections and Entries
+
+   4. User Shares or Publish Resume
+
+   5. User edits or creates new Resumes
+
+
+Structure
+=========
+
+
+Models schema
+-------------
+
+[image]
+
+
+Resumes app
+-----------
+
+Main app containing and controlling most important features.
+
+
+Models
+~~~~~~
+
+class class resumes.models.Identity(*args, **kwargs)
+
+   Identity(id, name, occupation, user_id, avatar)
+
+   get_email()
+
+      Tries to obtain email from ``identity_fields``, defaults to
+      ``user.email``
+
+   get_field_names()
+
+      Returns list of all fields names
+
+   get_field_values()
+
+      Returns list of all fields values
+
+   get_fields()
+
+      Returns list of ``IdentityField`` as tuples, each containing
+      field ``name``, ``value`` and ``type`` display
+
+class class resumes.models.IdentityField(*args, **kwargs)
+
+   IdentityField(id, identity_id, name, value, type)
+
+class class resumes.models.Resume(*args, **kwargs)
+
+   Resume(id, identity_id, name, slug, creation_date,
+   modification_date, template_variant_id, active, public,
+   pdf_generation_date)
+
+   generate_pdf()
+
+      generates pdf
+
+   get_absolute_url(*moreargs, **morekwargs)
+
+      returns absolute url to Resume
+
+   get_pdf_file()
+
+      returns pdf file instance. generates it if's not there
+
+   get_pdf_filename()
+
+      returns path to pdf file
+
+   get_pdf_url()
+
+      returns absolute url to pdf file
+
+   get_template_name()
+
+      returns template name that resuem should be rendered to
+
+class class resumes.models.Section(*args, **kwargs)
+
+   Section(id, resume_id, title, type)
+
+class class resumes.models.SectionEntry(*args, **kwargs)
+
+   SectionEntry(id, section_id, from_date, to_date, current, title,
+   content)
+
+class class resumes.models.Template(*args, **kwargs)
+
+   Template(id, name, slug, screen)
+
+class class resumes.models.TemplateVariant(*args, **kwargs)
+
+   TemplateVariant(id, template_id, name, slug, screen)
+
+   get_screen()
+
+      returns screenshot of the template variant or of template if
+      variant lacks it
+
+   get_template_name()
+
+      returns template variant filename to render to
+
+
+Views
+~~~~~
+
+class class resumes.views.ResumeDetailView(**kwargs)
+
+   Resume detail view
+
+class class resumes.views.ResumeListView(**kwargs)
+
+   List of public resumes
+
+class class resumes.views.ResumePDFView(**kwargs)
+
+   Resume pdf view
+
+
+Managers
+~~~~~~~~
+
+resumes.managers.NOW()
+
+   [tz] -> new datetime with tz's local day and time.
+
+
+Templatetags
+~~~~~~~~~~~~
+
+
+resume_tags
+"""""""""""
+
+resumes.templatetags.resume_tags.chunks(list, n)
+
+   Yield successive n-sized chunks from list.
+
+   Example usage:
+
+      {% for chunks in object_list|chunks:3 %}
+      <ul class="column-of-three">
+          {% for object in chunks %}
+          <li>
+              {{ object }}
+          </li>
+          {% endfor %}
+      </ul>
+      {% endfor %}
+
+resumes.templatetags.resume_tags.latest_resumes(parser, token)
+
+   Reurns or renders a number of latest resumes.
+
+   Syntax:
+
+      {% latest_resumes [limit] [in <template_name>] [as <context_name>] %}
+
+
+image
+"""""
+
+resumes.templatetags.image.image(parser, token)
+
+   Template tags that allows you to.
+
+   Syntax:
+
+      {% image <image> [<width>x<height> <mode>] [as <context_name>] %}
+
+   Image :
+      instance of ImageField
+
+   Width and height:
+      divided by non-digit character integers are dimensions of
+      resulting image
+
+   Mode :
+      string representing mode
+
+   Context_name :
+      context name that image url will be returned to
+
+   Available modes:
+
+      * reduce
+
+           Reduces original image to given size while maintaining
+           aspect ratio. Given ``width`` and ``height`` are treated as
+           maximal values.
+
+      * crop
+
+           Crops original image to given size.
+
+      * stretch
+
+           Stretches original image to given size discarding aspect
+           ratio.
+
+   Example usage:
+
+      ``{% image object.image %}``
+
+         Returns url to original sized image.
+
+      ``{% image object.image as image_url %}``
+
+         Puts url to original sized image into contex as
+         ``image_url``.
+
+      ``{% image object.image 100x100 reduce %}``
+
+         Return url to reduced image.
+
+      ``{% image object.image 100x100 crop as cropped_image_url %}``
+
+         Puts url to cropped image into context as
+         ``cropped_image_url``.
+
+      ``{% image object.image 100x100 stretch %}``
+
+
+current_site
+""""""""""""
+
+resumes.templatetags.current_site.current_site(parser, token)
+
+   Returns current *Site*.
+
+   Usage:
+
+      {% current_site as <context_name> %}
+
+
+Sharing app
+-----------
+
+App containing models for sharing feature.
+
+class class sharing.models.Share(*args, **kwargs)
+
+   Share(id, hash, resume_id, from_date, to_date, name, email)
+
+
+Accounts app
+------------
+
+Nothing's really there yet. Can be used to extend user's profile. Made
+as separate app to maintain consistency with Django's buildins and
+coding style.
+
+class class accounts.models.Profile(*args, **kwargs)
+
+   Profile(id, user_id, name)
+
+
+Portal app
+----------
+
+Views ad forms for user's panel are here.
+
+
+Views
+~~~~~
+
+class class panel.views.IdentityCreateView(**kwargs)
+
+   Widok tworzenia nowego *Identity*.
+
+   form_class
+
+      alias of ``IdentityForm``
+
+   model
+
+      alias of ``Identity``
+
+class class panel.views.IdentityDeleteView(**kwargs)
+
+   Widok usuwane *Identity*.
+
+   model
+
+      alias of ``Identity``
+
+class class panel.views.IdentityUpdateView(**kwargs)
+
+   Widok zmiany *Identity*.
+
+   form_class
+
+      alias of ``IdentityForm``
+
+class class panel.views.MyCreateView(**kwargs)
+
+   Abstract. Slightly extended standard *CreateView*.
+
+class class panel.views.MyDeleteView(**kwargs)
+
+   Abstract. Slightly extended *DeleteView*.
+
+class class panel.views.MyUpdateView(**kwargs)
+
+   Abstract. Slightly extended *UpdateView*.
+
+class class panel.views.ResumeDeleteView(**kwargs)
+
+   Widok usuwania *Resume*.
+
+   model
+
+      alias of ``Resume``
+
+class class panel.views.ShareCreateView(**kwargs)
+
+   Widok tworzenia nowego wspoludzialu.
+
+   form_class
+
+      alias of ``ShareForm``
+
+   model
+
+      alias of ``Share``
+
+class class panel.views.ShareDeleteView(**kwargs)
+
+   Widok usuwania wspoludzialu.
+
+   model
+
+      alias of ``Share``
+
+class class panel.views.ShareUpdateView(**kwargs)
+
+   Widok edycji wspoludzialu.
+
+   form_class
+
+      alias of ``ShareForm``
+
+panel.views.home(request, *args, **kwargs)
+
+   Renders homepage.
+
+panel.views.identity_edit(request, *args, **kwargs)
+
+   Widok tworzenia i edcji identity.
+
+panel.views.resume_detail(request, *args, **kwargs)
+
+   Widok podgladu szczegolow *Resume*.
+
+panel.views.resume_edit(request, *args, **kwargs)
+
+   Widok tworzenia i edycji *Resume*.
+
+panel.views.section_edit(request, *args, **kwargs)
+
+   Widok tworzenia i edcji sekcji.
+
+
+Forms
+~~~~~
+
+class class panel.forms.IdentityForm(*args, **kwargs)
+
+   Formularz tworzenia i edycji *Identity*.
+
+class class panel.forms.ResumeForm(*args, **kwargs)
+
+   Formularz tworzenia i edycji *Resume*.
+
+class class panel.forms.SectionForm(*args, **kwargs)
+
+   Formularz tworzenia i edycji *Section*.
+
+class class panel.forms.ShareForm(*args, **kwargs)
+
+   Formularz tworzenia i edycji *Share*.
+
+
+Templatetags (panel_tags)
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+panel.templatetags.panel_tags.get_fields(parser, token)
+
+   Reurns list of tuples of models fields and values.
+
+   Usage:
+
+      {% get_fields <object> [as <context_name] %}
+
+panel.templatetags.panel_tags.section_detail(parser, token)
+
+   Renders section details into appropriate template.
+
+   Usage:
+
+      {% secton_detail <section> %}
+
+
+Source
+======
+
+All sources for this project are available online at
+https://bitbucket.org/seler/cvm/
+
+To clone this repository run:
+
+   hg clone https://bitbucket.org/seler/cvm
+
+
+Django
+------
+
+cv managers is built using Django framework.
+
+The core Django MVC framework consists of an object-relational mapper
+which mediates between data models (defined as Python classes) and a
+relational database ("Model"); a system for processing requests with a
+web templating system ("View") and a regular-expression-based URL
+dispatcher ("Controller").
+
+For more information visit http://djangoproject.com
+
+
+Requirements
+------------
+
+* Django
+
+     Version 1.3 or higher.
+
+* PIL
+
+     Tested using version 1.1.7
+
+* django-registration
+
+     Version 0.7. Newer version wont work because of backwards
+     imcompatible changes
+
+* xhtml2pdf
+
+     Make sure you checkout latest source from
+     https://github.com/chrisglass/xhtml2pdf
+
+
+local_settings.py
+-----------------
+
+Domyslne ustawienia *settings.py* zakladaja, ze dla celow maszyny na
+ktorej program jest uruchamiany w tym samym katalogu znajduje sie plik
+*local_settings.py* zawierajacy specyficzne ustawienia dla tej
+konkretnej maszyny, np ustawienia serwera smtp email lub inne.
+
+W repozytorium znajduje sie plik *example_local_settings.py*, ktory
+nalezy edytowac i zapisac jako *local_settings.py*.
+
+
+Initial data
+------------
+
+cv manager comes with sample data which is automatically inserted into
+database.
+
+login with followin credentials:
+
+login:
+   admin
+
+password:
+   admin
+
+and
+
+login:
+   lenna
+
+password:
+   lenna

@@ -251,11 +251,23 @@ form#quick-search {
   	width: 250px;
 }
 fieldset.search {
-	border: none;
+   border: none;
    width: 250px; height: 40px;
    padding: 0; margin: 0;
-   background: url(../img/search.gif) no-repeat;
 }
+
+.search ul {
+	list-style: none;
+}
+
+.search li {
+	display: inline-block;
+}
+
+.search img {
+	padding:5px;
+}
+
 .search input {
   	border: none;
   	float: left;
@@ -317,6 +329,24 @@ fieldset.search {
 #header #nav ul li#current a, #header #user-nav ul li#current a {
 	background: transparent url(../img/current.jpg) no-repeat center bottom;
 	color: #fff;
+}
+
+#header #nav li ul {
+	display: none;
+	position: absolute;
+	top: 30px;
+}
+#header #nav li:hover ul {
+	display: block;
+}
+#header #nav li ul li a {
+	background: #161B1F;
+	padding:10px;
+	display: block;
+	width: 120px;
+}
+#header #nav li ul li {
+	float: none;
 }
 
 /* content */

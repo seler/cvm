@@ -2,13 +2,14 @@ from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
 from django.views.generic import TemplateView
+from django.views.generic.simple import redirect_to
 
 from .resumes.views import ResumeDetailView, ResumePDFView, ResumeListView
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', TemplateView.as_view(template_name="home.html"), name='home'),
+    url(r'^./$', redirect_to, {'url': '/'}, name='home'), # brzydki hack
     url(r'^resume/(?P<username>[\w.@+-]+)/(?P<slug>[-\w]+)/(?P<object_id>\d+)/$',
         ResumeDetailView.as_view(), name='resume_detail'),
     url(r'^resume/(?P<username>[\w.@+-]+)/(?P<slug>[-\w]+)/(?P<object_id>\d+)/pdf/$',

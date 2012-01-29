@@ -37,6 +37,15 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
+ugettext = lambda s: s
+
+LANGUAGES = (
+    ('en', ugettext('english')),
+    ('pl', ugettext('polish')),
+    ('fr', ugettext('french')),
+    ('ru', ugettext('russian')),
+)
+
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
@@ -70,6 +79,7 @@ STATIC_URL = '/static/'
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
+FEINCMS_ADMIN_MEDIA = '/static/feincms/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -105,6 +115,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'cms.middleware.PageFallbackMiddleware',
+    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
 )
 
 CONTEXT_PROCESSORS = (
@@ -115,6 +127,7 @@ CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
+    "cms.context_processors.feincms_admin_media",
 )
 
 ROOT_URLCONF = 'cvm.urls'
@@ -144,6 +157,7 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'django.contrib.humanize',
     'django.contrib.flatpages',
+    'django.contrib.redirects',
 
     'registration',
 
@@ -151,6 +165,11 @@ INSTALLED_APPS = [
     'accounts',
     'sharing',
     'panel',
+    'cms',
+    'mptt',
+    'tagging',
+    'imagekit',
+    'tinymce',
 ]
 
 # A sample logging configuration. The only tangible logging

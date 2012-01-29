@@ -1,8 +1,19 @@
 {% extends "base.html" %}
+{% load i18n image %}
 
-{% block menu %}
-    {% with "resumes" as active %}
-        {% include "includes/menu.html" %}
-        {% include "includes/user_menu.html" %}
-    {% endwith %}
-{% endblock menu %}
+{% block breadcrumbs %}
+<ul class="breadcrumbs">
+    <li><a href="{% url home %}">{% trans 'home' %}</a></li>
+    <li>{% trans "resumes" %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+{% for object in object_list %}
+
+<p>
+    <a href="{{ object.get_absolute_url }}"><img src="{% image object.identity.avatar 100x120 crop %}" width="100" height="120" alt="{{ object.identity }}" class="float-left" /></a><h3>{{ object.identity }}</h3>
+    <a href="{{ object.get_absolute_url }}">{% trans "view resume" %}</a>
+</p>
+{% endfor %}
+{% endblock content %}

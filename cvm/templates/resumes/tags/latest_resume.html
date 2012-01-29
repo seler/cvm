@@ -1,7 +1,11 @@
+{% load i18n image %}
 <div class="about-me">
-    <h3>Latest resume</h3>
-    <p>
-    <a href=""><img src="" width="40" height="40" alt="" title="" class="float-left" /></a>
-    Lorem ipsum dolor sit amet...
-    </p>
+	<h3>{% trans "Latest resume" %}</h3>
+	{% with object_list.0 as object %}
+	<p>
+		<a href="{{ object.get_absolute_url }}" title="{{ object.identity }}"><img src="{% image object.identity.avatar 200x120 crop %}" width="200" height="120" alt="{{ object.identity }}" /></a>
+		<br/>
+		<a href="{{ object.get_absolute_url }}" title="{{ object.identity }}">{{ object.identity }}</a>
+	</p>
+	{% endwith %}
 </div>

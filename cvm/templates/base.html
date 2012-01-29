@@ -27,11 +27,12 @@
                 {% endblock menu %}
                 <form id="quick-search" method="get" action="index.html">
                     <fieldset class="search">
-                        <label for="qsearch">Search:</label>
-                        <input class="tbox" id="qsearch" type="text" name="qsearch" value="Search..." title="Start typing and hit ENTER" />
-                        <button class="btn" title="Submit Search">
-                            Search
-                        </button>
+          <ul>
+            <li><a href="/?lang=en" title="Home Page in English"><img src="{{ STATIC_URL }}img/flag_en.gif" alt="English" /></a></li>
+            <li><a href="/?lang=pl" title="Strona główna po polsku"><img src="{{ STATIC_URL }}img/flag_pl.gif" alt="Polish" /></a></li>
+            <li><a href="/?lang=fr" title="Page d'accueil en français"><img src="{{ STATIC_URL }}img/flag_fr.gif" alt="French" /></a></li>
+            <li><a href="/?lang=ru" title="Главная страница на русском языке"><img src="{{ STATIC_URL }}img/flag_ru.gif" alt="Russian" /></a></li>
+          </ul>
                     </fieldset>
                 </form>
                 {% block breadcrumbs %}
@@ -69,16 +70,20 @@
                 <!-- sidebar -->
                 <div id="sidebar">
                     {% block sidebar %}
-                    {# latest_resumes 1 in "resumes/tags/latest_resume.html" #}
-                    <div class="about-me">
-                        <h3>About Me</h3>
-                        <p>
-                            <a href="index.html"><img src="img/gravatar.jpg" width="40" height="40" alt="firefox" class="float-left" /></a>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-                            Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-                            posuere nunc justo tempus leo <a href="index.html">Learn more...</a>
-                        </p>
-                    </div>
+                    {% latest_resumes 1 in "resumes/tags/latest_resume.html" %}
+                    {% if page.get_translations.count %}
+                    {% ifnotequal page.get_translations.count 1 %}
+                    <div class="sidemenu">
+                        <h3>{% trans "W innych językach" %}</h3><ul>
+                    	{% for translation in page.get_translations.all %}
+							{% ifnotequal translation.language_code page.language_code %}
+								<li><a href="{{ translation.get_absolute_url }}?lang={{ translation.language_code }}">{{ translation.get_language }}, {{ translation.title }}</a></li>
+							{% endifnotequal %}
+						{% endfor %}
+        			</ul></div>
+        			{% endifnotequal %}
+        			{% endif %}
+                    {% comment %}
                     <div class="sidemenu">
                         <h3>Sidebar Menu</h3>
                         <ul>
@@ -159,6 +164,7 @@
                             </li>
                         </ul>
                     </div>
+                    {% endcomment %}
                     <!-- /sidebar -->
                     {% endblock sidebar %}
                 </div>
@@ -169,23 +175,10 @@
         <!-- footer-outer -->
         <div id="footer-outer" class="clear">
             <div id="footer-wrap">
-                {% latest_resumes 10 in "resumes/tags/latest_resumes_avatars.html" %}
+                
                 <div class="col-a">
-                    <h3>Contact Info</h3>
-                    <p>
-                        <strong>Phone: </strong>+1234567
-                        <br/>
-                        <strong>Fax: </strong>+123456789
-                    </p>
-                    <p>
-                        <strong>Address: </strong>123 Put Your Address Here
-                    </p>
-                    <p>
-                        <strong>E-mail: </strong>me@coolblue.com
-                    </p>
-                    <p>
-                        Want more info - go to our <a href="#">contact page</a>
-                    </p>
+                    {% latest_resumes 10 in "resumes/tags/latest_resumes_avatars.html" %}
+                {% comment %}
                     <h3>Updates</h3>
                     <ul class="subscribe-stuff">
                         <li>
@@ -204,7 +197,9 @@
                     <p>
                         Stay up to date. Subscribe via <a href="index">RSS</a>, <a href="index">Facebook</a>, <a href="index">Twitter</a> or <a href="index">Email</a>
                     </p>
+                {% endcomment %}
                 </div>
+                {% comment %}
                 <div class="col-a">
                     <h3>Site Links</h3>
                     <div class="footer-list">
@@ -349,6 +344,7 @@
                             </li>
                         </ul>
                     </div>
+                    {% endcomment %}
                 </div>
                 <!-- /footer-outer -->
             </div>
@@ -358,9 +354,6 @@
             <p class="bottom-left">
                 &copy; {% now "Y" %} <strong><a href="http://selewonko.com">rafał selewońko</a></strong>&nbsp; &nbsp; &nbsp;
                 design by <a href="http://styleshout.com/">erwin aligam</a>, <a href="http://selewonko.com">rafał selewońko</a>
-            </p>
-            <p class="bottom-right">
-                <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | <a href="http://validator.w3.org/check/referer">XHTML</a> | <a href="index.html">Home</a> | <a href="index.html">Sitemap</a> | <a href="index.html">RSS Feed</a> | <strong><a href="#top">Back to Top</a></strong>
             </p>
             <!-- /footer-bottom-->
         </div>

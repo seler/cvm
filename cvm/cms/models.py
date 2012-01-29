@@ -7,7 +7,6 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from tagging.fields import TagField
 from cms.helpers import first_not_empty
-from imagekit.models import ImageModel
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
@@ -47,7 +46,6 @@ class Page(MPTTModel):
 	translates = models.ForeignKey('self', verbose_name=_('translates'), blank=True, null=True, related_name=_('translations'))
 	url = models.CharField(_('URL'), max_length=100, null=True, blank=True)
 	url_type = models.BooleanField(blank=False, null=False, choices=URL_TYPE_CHOICES, verbose_name=_('URL type'), default=False)
-	images = generic.GenericRelation('Photo', blank = True, null = True)
 
 	class Meta:
 		db_table = 'cms_page'
@@ -56,9 +54,6 @@ class Page(MPTTModel):
 		permissions = (
 			("view_drafts", "Can see drafts"),
 		)
-
-#	class IKOptions:
-#		spec_module = 'cms.specs'
 
 	def save(self):
 		'''
@@ -151,30 +146,14 @@ class Page(MPTTModel):
 		'''
 		boolean: true if the page is shown in menu
 		'''
-		if len(self.menu_name) == 0:
-			return False
-		else:
-			return True
+		return bool(self.menu_name)
 
 	def was_modified(self):
 		'''
 		boolean: true if the page has been modified
 		'''
 		return self.publish_date < self.last_modified
-
-
-class Photo(ImageModel):
-	name = models.CharField(max_length=100)
-	original_image = models.ImageField(upload_to='photos')
-	num_views = models.PositiveIntegerField(editable=False, default=0)
-	content_type = models.ForeignKey(ContentType)
-	object_id = models.PositiveIntegerField()
-	content_object = generic.GenericForeignKey('content_type', 'object_id')
-
-	class IKOptions:
-		# This inner cla	ss is where we define the ImageKit options for the model
-		spec_module = 'cms.specs'
-		cache_dir = 'cache'
-		image_field = 'original_image'
-		save_count_as = 'num_views'
+	
+	def get_parents(self):
+		return
 
