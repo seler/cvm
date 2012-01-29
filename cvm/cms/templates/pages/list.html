@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+	
+	{% block content %}	
+        
+        <!-- Pagetitle -->
+        <h1 class="pagetitle">{{ page.title }}</h1>
+	<div>{{ page.content }}</div>
+	<!-- Content unit - One column -->
+	{% for c in page.children.all|dictsortreversed:"publish_date" %}
+        <div class="column1-unit">
+		<h1><a href="{{ c.get_absolute_url }}">{{ c.title  }}</a></h1>                            
+	  <h3>{{ c.publish_date }} by {{ c.author }}</h3>
+	  <div>{{ c.content|truncatewords_html:50|safe }}</div>
+        </div>
+	<hr class="clear-contentunit" />
+	{% endfor %}
+
+        <!-- Content unit - One column -->
+        <div class="column1-unit">{% for translation in page.get_translations.all %}
+		{% ifnotequal translation.language_code page.language_code %}
+			<p><a href="{{ translation.get_absolute_url }}?lang={{ translation.language_code }}">{{ translation.get_language }}, {{ translation.title }}</a></p>
+		{% endifnotequal %}
+	{% endfor %}
+        </div>
+	{% endblock %}

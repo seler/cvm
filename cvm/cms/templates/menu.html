@@ -1,0 +1,19 @@
+{% load mptt_tags %}
+{% load pages %}
+{% get_pages for user as nodes %}
+<ul>
+{% spaceless %}
+{% recursetree nodes %}
+    	<li class="{% ifequal node.pk page.pk %}current{% endifequal %} {% if not node.is_published %}draft{% endif %}">
+    		{% if node.is_leaf_node %}
+        		<a href={{ node.get_absolute_url }}>{{ node.menu_name }}</a></li>
+        	{% else %}
+    			<a href={{ node.get_absolute_url }}>{{ node.menu_name }}</a>
+    			<ul>
+    				{{ children }}
+    			</ul>
+    		</li>
+    	{% endif %}
+{% endrecursetree %}
+{% endspaceless %}
+</ul>

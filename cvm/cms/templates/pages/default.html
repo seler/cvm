@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% if page.has_translations %} sa tlumaczenia {% else %} nie ma tlumaczen {% endif %}
+
+{% for translation in page.get_translations.all %}
+<p><a href="{{ translation.get_absolute_url }}">{{ translation.get_language }}, {{ translation.title }}</a></p>
+{% endfor %}
+
+<p>translacje bez siebie:</p>
+
+	{% for translation in page.get_translations.all %}
+		{% ifnotequal translation.language_code page.language_code %}
+			<p><a href="{{ translation.get_absolute_url }}">{{ translation.get_language }}, {{ translation.title }}</a></p>
+		{% endifnotequal %}
+	{% endfor %}
+	
+	
+	
+	{% block content %}	
+        
+        <!-- Pagetitle -->
+        <h1 class="pagetitle">{{ page.title }}</h1>
+
+        <!-- Content unit - One column -->
+        <div class="column1-unit">
+          <h1>Flexible and robust template</h1>                            
+          <h3>Now substantially improved and simplified</h3>
+          <p>page content >>> {{ page.content }} <<<</p>
+          <ul>
+          	{% for p in page.images.all %}
+		<li><a href="{{ p.display.url }}" title="{{ p.name }}"><img src="{{ p.thumbnail_image.url }}" alt="{{ p.name }}"/></a></li>
+			{% endfor %}
+          </ul>
+        </div>
+        <hr class="clear-contentunit" />          
+
+        <!-- Content unit - One column -->
+        <div class="column1-unit">{% for translation in page.get_translations.all %}
+		{% ifnotequal translation.language_code page.language_code %}
+			<p><a href="{{ translation.get_absolute_url }}?lang={{ translation.language_code }}">{{ translation.get_language }}, {{ translation.title }}</a></p>
+		{% endifnotequal %}
+	{% endfor %}
+        </div>
+	{% endblock %}
