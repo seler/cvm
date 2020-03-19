@@ -22,7 +22,7 @@ html5lib==0.90
 logilab-common==0.57.1
 numpy==1.5.1
 pep8==0.6.1
-pyOpenSSL==0.13
+pyOpenSSL==17.5.0
 pyPdf==1.13
 pyasn1==0.0.11a
 pycurl==7.19.0
