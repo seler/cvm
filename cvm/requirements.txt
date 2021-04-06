@@ -12,7 +12,7 @@ cups==1.0
 django-extensions==0.7.1
 django-imagekit==1.1
 django-mptt==0.5.2
-django-registration==0.7
+django-registration==3.1.2
 django-sphinx==2.2.4
 django-tagging==0.3.1
 django-tinymce==1.5.1b2
