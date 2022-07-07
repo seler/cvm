@@ -19,7 +19,7 @@ django-tinymce==1.5.1b2
 docutils==0.8.1
 fpconst==0.7.2
 html5lib==0.90
-logilab-common==0.57.1
+logilab-common==0.61.0
 numpy==1.5.1
 pep8==0.6.1
 pyOpenSSL==0.13
